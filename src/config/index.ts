@@ -1,3 +1,5 @@
+import { HomeIcon, UtensilsIcon } from 'lucide-react';
+
 export const config = {
   api: {
     baseURL: import.meta.env.VITE_API_URL || '/api',
@@ -8,12 +10,8 @@ export const config = {
     menu: '/menu',
     qr: '/qr',
   },
-  defaultLanguage: 'en',
-  defaultTheme: 'light',
-  defaultViewMode: 'list',
-  defaultAnimation: 'fadeIn',
-  defaultAnimationDuration: 300,
-  defaultSlideDirection: 'left',
+  navigationLinks: [
+    { name: 'Home', href: '/', icon: HomeIcon },
+    { name: 'Menu', href: '/menu', icon: UtensilsIcon },
+  ],
 };
-
-export * from './theme';

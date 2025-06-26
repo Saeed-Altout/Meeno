@@ -1,10 +1,5 @@
-import axios, {
-  type AxiosError,
-  type AxiosInstance,
-  type AxiosRequestConfig,
-} from "axios";
-import { useAuthStore } from "@/stores/local-storage-store";
-import { config } from "@/config";
+import axios, { type AxiosError, type AxiosInstance } from 'axios';
+import { config } from '@/config';
 
 /**
  * Configuration for the API client
@@ -13,7 +8,7 @@ const API_CONFIG = {
   baseURL: config.api.baseURL,
   timeout: config.api.timeout,
   headers: {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
   },
 };
 
@@ -25,63 +20,63 @@ const createApiClient = (): AxiosInstance => {
 
   // Request interceptor to add auth token
   instance.interceptors.request.use(
-    (config) => {
-      const { accessToken } = useAuthStore.getState();
+    config => {
+      // const { accessToken } = useAuthStore.getState();
 
-      if (accessToken) {
-        config.headers.Authorization = `Bearer ${accessToken}`;
-      }
+      // if (accessToken) {
+      //   config.headers.Authorization = `Bearer ${accessToken}`;
+      // }
 
       return config;
     },
-    (error) => Promise.reject(error)
+    error => Promise.reject(error)
   );
 
   // Response interceptor for error handling and token refresh
   instance.interceptors.response.use(
-    (response) => response,
+    response => response,
     async (error: AxiosError) => {
-      const originalRequest = error.config as AxiosRequestConfig & {
-        _retry?: boolean;
-      };
+      // const originalRequest = error.config as AxiosRequestConfig & {
+      //   _retry?: boolean;
+      // };
 
       // Handle 401 Unauthorized errors (token expired)
-      if (error.response?.status === 401 && !originalRequest._retry) {
-        originalRequest._retry = true;
+      // if (error.response?.status === 401 && !originalRequest._retry) {
+      //   originalRequest._retry = true;
 
-        try {
-          const { refreshToken } = useAuthStore.getState();
+      //   try {
+      //     const { refreshToken } = useAuthStore.getState();
 
-          if (!refreshToken) {
-            // No refresh token available, logout user
-            useAuthStore.getState().clearAuth();
-            return Promise.reject(error);
-          }
+      //     if (!refreshToken) {
+      //       // No refresh token available, logout user
+      //       useAuthStore.getState().clearAuth();
+      //       return Promise.reject(error);
+      //     }
 
-          // Attempt to refresh the token
-          const response = await axios.post(
-            `${API_CONFIG.baseURL}/auth/refresh-token`,
-            { refreshToken }
-          );
+      //     // Attempt to refresh the token
+      //     const response = await axios.post(
+      //       `${API_CONFIG.baseURL}/auth/refresh-token`,
+      //       { refreshToken }
+      //     );
 
-          const { accessToken, refreshToken: newRefreshToken } = response.data;
+      //     const { accessToken, refreshToken: newRefreshToken } = response.data;
 
-          // Update tokens in store
-          useAuthStore.getState().setTokens(accessToken, newRefreshToken);
+      //     // Update tokens in store
+      //     useAuthStore.getState().setTokens(accessToken, newRefreshToken);
 
-          // Retry the original request with new token
-          originalRequest.headers = {
-            ...originalRequest.headers,
-            Authorization: `Bearer ${accessToken}`,
-          };
+      //     // Retry the original request with new token
+      //     originalRequest.headers = {
+      //       ...originalRequest.headers,
+      //       Authorization: `Bearer ${accessToken}`,
+      //     };
 
-          return instance(originalRequest);
-        } catch (refreshError) {
-          // If refresh fails, logout user
-          useAuthStore.getState().clearAuth();
-          return Promise.reject(refreshError);
-        }
-      }
+      //     return instance(originalRequest);
+      //   } catch (refreshError) {
+      //     // If refresh fails, logout user
+      //     useAuthStore.getState().clearAuth();
+      //     return Promise.reject(refreshError);
+      //   }
+      // }
 
       return Promise.reject(error);
     }

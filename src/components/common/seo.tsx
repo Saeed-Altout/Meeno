@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react';
 import { useEffect } from 'react';
-import { DEFAULT_SEO } from '@/config/seo';
 
 interface SEOProps {
   children?: ReactNode;
@@ -25,10 +24,10 @@ interface SEOProps {
  * ```
  */
 export function SEO({ children, title, description, keywords = [] }: SEOProps) {
-  const seoTitle = title || DEFAULT_SEO.title;
-  const seoDescription = description || DEFAULT_SEO.description;
+  const seoTitle = title || 'Meeno';
+  const seoDescription = description || 'Meeno';
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const seoKeywords = [...DEFAULT_SEO.keywords, ...keywords];
+  const seoKeywords = [...keywords];
 
   useEffect(() => {
     // Set page title
@@ -53,7 +52,7 @@ export function SEO({ children, title, description, keywords = [] }: SEOProps) {
 
     // Cleanup function - reset to default title when component unmounts
     return () => {
-      document.title = DEFAULT_SEO.title;
+      document.title = 'Meeno';
     };
   }, [seoTitle, seoDescription, seoKeywords]);
 
