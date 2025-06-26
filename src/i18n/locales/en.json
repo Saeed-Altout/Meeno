@@ -2,6 +2,123 @@
   "common": {
     "home": "Home",
     "menu": "Menu",
-    "qr": "QR Code"
+    "about": "About",
+    "contact": "Contact",
+    "order": "Order",
+    "viewMenu": "View Menu",
+    "language": "Language",
+    "theme": "Theme",
+    "light": "Light",
+    "dark": "Dark"
+  },
+  "nav": {
+    "home": "Home",
+    "menu": "Menu",
+    "about": "About Us",
+    "contact": "Contact"
+  },
+  "hero": {
+    "title": "Welcome to La Tavola",
+    "subtitle": "Authentic Italian Flavors in the Heart of the City",
+    "description": "Experience the finest Italian cuisine with fresh ingredients and traditional recipes passed down through generations.",
+    "cta": "Explore Our Menu"
+  },
+  "menu": {
+    "title": "Our Menu",
+    "subtitle": "Discover our carefully curated selection of authentic Italian dishes",
+    "categories": {
+      "starters": "Starters",
+      "mains": "Main Courses",
+      "drinks": "Beverages",
+      "desserts": "Desserts"
+    },
+    "currency": "$"
+  },
+  "about": {
+    "title": "Our Story",
+    "subtitle": "A Journey of Authentic Italian Cuisine",
+    "content": "Founded in 1985 by Chef Giuseppe Rossi, La Tavola has been bringing authentic Italian cuisine to food lovers for over three decades. Our passion for traditional recipes, combined with the finest imported ingredients, creates an unforgettable dining experience.",
+    "experience": "Years of Excellence",
+    "chef": "Chef Giuseppe Rossi",
+    "chefTitle": "Head Chef & Owner"
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "Get in touch with us",
+    "address": "Address",
+    "phone": "Phone",
+    "email": "Email",
+    "whatsapp": "WhatsApp",
+    "followUs": "Follow Us",
+    "location": {
+      "street": "123 Italian Way",
+      "city": "Little Italy, NY 10013",
+      "country": "United States"
+    }
+  },
+  "footer": {
+    "quickLinks": "Quick Links",
+    "contactInfo": "Contact Info",
+    "workingHours": "Working Hours",
+    "newsletter": "Newsletter",
+    "newsletterText": "Subscribe to receive special offers and updates",
+    "subscribe": "Subscribe",
+    "emailPlaceholder": "Your email address",
+    "copyright": "La Tavola Restaurant. All rights reserved.",
+    "hours": {
+      "monday": "Monday - Thursday: 5:00 PM - 10:00 PM",
+      "friday": "Friday - Saturday: 5:00 PM - 11:00 PM",
+      "sunday": "Sunday: 4:00 PM - 9:00 PM"
+    }
+  },
+  "menuItems": {
+    "bruschetta": {
+      "name": "Bruschetta Classica",
+      "description": "Toasted bread with fresh tomatoes, basil, and garlic"
+    },
+    "antipasto": {
+      "name": "Antipasto Platter",
+      "description": "Selection of cured meats, cheeses, and marinated vegetables"
+    },
+    "arancini": {
+      "name": "Arancini Siciliani",
+      "description": "Crispy risotto balls filled with mozzarella and peas"
+    },
+    "ossoBuco": {
+      "name": "Osso Buco alla Milanese",
+      "description": "Slow-braised veal shank with saffron risotto"
+    },
+    "linguine": {
+      "name": "Linguine alle Vongole",
+      "description": "Fresh linguine with clams in white wine sauce"
+    },
+    "branzino": {
+      "name": "Branzino in Crosta",
+      "description": "Sea bass baked in salt crust with herbs"
+    },
+    "tiramisu": {
+      "name": "Tiramisu della Casa",
+      "description": "Classic tiramisu with mascarpone and espresso"
+    },
+    "pannaCotta": {
+      "name": "Panna Cotta ai Frutti",
+      "description": "Vanilla panna cotta with seasonal berry compote"
+    },
+    "chianti": {
+      "name": "Chianti Classico DOCG",
+      "description": "Full-bodied red wine from Tuscany"
+    },
+    "limoncello": {
+      "name": "Limoncello della Casa",
+      "description": "Homemade lemon liqueur from Amalfi lemons"
+    },
+    "espresso": {
+      "name": "Italian Espresso",
+      "description": "Rich and bold espresso from premium Italian beans"
+    },
+    "cappuccino": {
+      "name": "Cappuccino",
+      "description": "Creamy cappuccino with perfect foam art"
+    }
   }
 }
