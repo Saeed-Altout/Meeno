@@ -113,29 +113,41 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* Desktop Navigation */}
           <div className='hidden md:flex items-center space-x-8 rtl:space-x-reverse'>
-            {navItems.map(item => (
-              <button
-                key={item.key}
-                onClick={() => handleNavClick(item.key, item.route)}
-                className={`relative px-3 py-2 text-sm font-medium transition-colors ${
-                  (item.route && location.pathname === item.route) ||
-                  activeSection === item.key
-                    ? 'text-amber-600'
-                    : 'text-gray-700 dark:text-gray-300 hover:text-amber-600 dark:hover:text-amber-400'
-                }`}
-              >
-                {item.label}
-                {((item.route && location.pathname === item.route) ||
-                  activeSection === item.key) && (
-                  <motion.div
-                    layoutId='activeSection'
-                    className='absolute bottom-0 left-0 right-0 h-0.5 bg-amber-600'
-                    initial={false}
-                    transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                  />
-                )}
-              </button>
-            ))}
+            {navItems.map(item => {
+              // For pages with routes, use route-based highlighting
+              // For home page sections, use activeSection only when on home page
+              const isRouteActive =
+                item.route && location.pathname === item.route;
+              const isSectionActive =
+                location.pathname === '/' && activeSection === item.key;
+              const isActive = isRouteActive || isSectionActive;
+
+              return (
+                <button
+                  key={item.key}
+                  onClick={() => handleNavClick(item.key, item.route)}
+                  className={`relative px-3 py-2 text-sm font-medium transition-colors ${
+                    isActive
+                      ? 'text-amber-600'
+                      : 'text-gray-700 dark:text-gray-300 hover:text-amber-600 dark:hover:text-amber-400'
+                  }`}
+                >
+                  {item.label}
+                  {isActive && (
+                    <motion.div
+                      layoutId='activeSection'
+                      className='absolute bottom-0 left-0 right-0 h-0.5 bg-amber-600'
+                      initial={false}
+                      transition={{
+                        type: 'spring',
+                        stiffness: 380,
+                        damping: 30,
+                      }}
+                    />
+                  )}
+                </button>
+              );
+            })}
           </div>
 
           {/* Controls (Cart, Language, Theme) */}
@@ -239,7 +251,14 @@ export const Navbar: React.FC<NavbarProps> = ({
                     <div className='space-y-3'>
                       {navItems.map((item, index) => {
                         const Icon = item.icon;
-                        const isActive = activeSection === item.key;
+                        // Apply same logic as desktop navigation
+                        const isRouteActive =
+                          item.route && location.pathname === item.route;
+                        const isSectionActive =
+                          location.pathname === '/' &&
+                          activeSection === item.key;
+                        const isActive = isRouteActive || isSectionActive;
+
                         return (
                           <motion.button
                             key={item.key}
@@ -248,8 +267,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                             transition={{ delay: index * 0.1, duration: 0.3 }}
                             onClick={() => handleNavClick(item.key, item.route)}
                             className={`group w-full flex items-center space-x-4 rtl:space-x-reverse px-4 py-4 rounded-2xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] ${
-                              isActive ||
-                              (item.route && location.pathname === item.route)
+                              isActive
                                 ? 'bg-amber-50 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400 shadow-sm border border-amber-100 dark:border-amber-900/50'
                                 : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:text-amber-600 dark:hover:text-amber-400 hover:shadow-sm'
                             }`}

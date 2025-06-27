@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import { Navbar } from '@/components/sections/Navbar';
 import { Footer } from '@/components/sections/Footer';
 import { useThemeStore } from '@/stores/theme-store';
 
 export default function HomeLayout() {
   const { setTheme } = useThemeStore();
+  const location = useLocation();
   const [activeSection, setActiveSection] = useState('home');
 
   // Initialize theme on mount
@@ -35,8 +36,17 @@ export default function HomeLayout() {
     }
   };
 
-  // Track active section based on scroll position
+  // Reset activeSection when not on home page
   useEffect(() => {
+    if (location.pathname !== '/') {
+      setActiveSection('');
+    }
+  }, [location.pathname]);
+
+  // Track active section based on scroll position (only on home page)
+  useEffect(() => {
+    if (location.pathname !== '/') return;
+
     const sections = ['home', 'steps', 'menu', 'about', 'contact'];
     const navbarHeight = 64;
 
@@ -61,7 +71,7 @@ export default function HomeLayout() {
     handleScroll(); // Check initial position
 
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [location.pathname]);
 
   return (
     <div className='min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300'>
