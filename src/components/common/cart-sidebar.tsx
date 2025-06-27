@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Plus, Minus, ShoppingBag, Trash2 } from 'lucide-react';
+import { Plus, Minus, ShoppingBag, Trash2 } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '../ui/sheet';
@@ -165,14 +165,6 @@ export const CartSidebar: React.FC<CartSidebarProps> = ({
                   </Badge>
                 )}
               </SheetTitle>
-              <Button
-                variant='ghost'
-                size='sm'
-                onClick={onClose}
-                className='h-8 w-8 p-0 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800'
-              >
-                <X className='h-4 w-4' />
-              </Button>
             </div>
           </SheetHeader>
         </div>

@@ -90,6 +90,43 @@
     "items": "عناصر",
     "total": "المجموع"
   },
+  "orders": {
+    "title": "طلباتي",
+    "subtitle": "تتبع طلباتك واعرض تاريخ الطلبات",
+    "searchPlaceholder": "ابحث في الطلبات بالرقم أو اسم الصنف...",
+    "filters": {
+      "all": "جميع الطلبات",
+      "pending": "قيد الانتظار",
+      "preparing": "قيد التحضير",
+      "ready": "جاهز",
+      "delivered": "تم التسليم",
+      "cancelled": "ملغي"
+    },
+    "status": {
+      "pending": "تم استلام الطلب",
+      "preparing": "قيد التحضير",
+      "ready": "جاهز للاستلام",
+      "delivered": "تم التسليم",
+      "cancelled": "ملغي"
+    },
+    "actions": {
+      "reorder": "إعادة الطلب",
+      "viewDetails": "عرض التفاصيل",
+      "rate": "قيم هذا الطلب"
+    },
+    "empty": {
+      "title": "لا توجد طلبات",
+      "description": "لم تقم بتقديم أي طلبات بعد",
+      "filtered": "حاول تعديل البحث أو معايير التصفية",
+      "action": "تصفح القائمة"
+    },
+    "orderInfo": {
+      "orderNumber": "الطلب",
+      "total": "المجموع",
+      "estimatedTime": "الوقت المقدر",
+      "note": "ملاحظة"
+    }
+  },
   "contact": {
     "title": "تواصل معنا",
     "subtitle": "تواصل معنا",

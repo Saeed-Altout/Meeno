@@ -19,6 +19,7 @@ import { Button } from '../ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '../ui/sheet';
 import { Badge } from '../ui/badge';
 import { ThemeToggle } from '../common/theme-toggle';
+import { CartSidebar } from '../common/cart-sidebar';
 import { useCartTotals } from '../../stores/cart-store';
 
 interface NavbarProps {
@@ -35,6 +36,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   const location = useLocation();
   const { itemCount } = useCartTotals();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
   const currentLanguage = i18n.language;
@@ -148,7 +150,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <Button
               variant='ghost'
               size='sm'
-              onClick={() => navigate('/cart')}
+              onClick={() => setIsCartOpen(true)}
               className='relative'
               aria-label={t('nav.cart')}
             >
@@ -180,6 +182,22 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* Mobile Menu Button */}
           <div className='md:hidden flex items-center space-x-2 rtl:space-x-reverse'>
+            {/* Mobile Cart Button */}
+            <Button
+              variant='ghost'
+              size='sm'
+              onClick={() => setIsCartOpen(true)}
+              className='relative'
+              aria-label={t('nav.cart')}
+            >
+              <ShoppingCart className='h-4 w-4' />
+              {itemCount > 0 && (
+                <Badge className='absolute -top-1 -right-1 h-4 w-4 p-0 text-xs bg-amber-600 hover:bg-amber-600 flex items-center justify-center'>
+                  {itemCount}
+                </Badge>
+              )}
+            </Button>
+
             {/* Mobile Language Toggle */}
             <Button
               variant='ghost'
@@ -332,6 +350,9 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
         </div>
       </div>
+
+      {/* Cart Sidebar */}
+      <CartSidebar isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
     </motion.nav>
   );
 };

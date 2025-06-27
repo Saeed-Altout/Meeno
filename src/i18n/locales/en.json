@@ -90,6 +90,43 @@
     "items": "items",
     "total": "Total"
   },
+  "orders": {
+    "title": "My Orders",
+    "subtitle": "Track your orders and view order history",
+    "searchPlaceholder": "Search orders by number or item name...",
+    "filters": {
+      "all": "All Orders",
+      "pending": "Pending",
+      "preparing": "Preparing",
+      "ready": "Ready",
+      "delivered": "Delivered",
+      "cancelled": "Cancelled"
+    },
+    "status": {
+      "pending": "Order Received",
+      "preparing": "Preparing",
+      "ready": "Ready for Pickup",
+      "delivered": "Delivered",
+      "cancelled": "Cancelled"
+    },
+    "actions": {
+      "reorder": "Reorder",
+      "viewDetails": "View Details",
+      "rate": "Rate this order"
+    },
+    "empty": {
+      "title": "No orders found",
+      "description": "You haven't placed any orders yet",
+      "filtered": "Try adjusting your search or filter criteria",
+      "action": "Browse Menu"
+    },
+    "orderInfo": {
+      "orderNumber": "Order",
+      "total": "Total",
+      "estimatedTime": "Estimated time",
+      "note": "Note"
+    }
+  },
   "contact": {
     "title": "Contact Us",
     "subtitle": "Get in touch with us",
