@@ -9,8 +9,6 @@ export interface CartItem extends MenuItem {
 
 interface CartState {
   items: CartItem[];
-  total: number;
-  itemCount: number;
   addToCart: (item: MenuItem, quantity?: number) => void;
   removeFromCart: (itemId: string) => void;
   updateQuantity: (itemId: string, quantity: number) => void;
@@ -19,59 +17,43 @@ interface CartState {
   addNote: (itemId: string, notes: string) => void;
 }
 
+// Helper function to calculate totals
+const calculateTotals = (items: CartItem[]) => {
+  const total = items.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
+  const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
+  return { total, itemCount };
+};
+
 export const useCartStore = create<CartState>()(
   persist(
     (set, get) => ({
       items: [],
-      total: 0,
-      itemCount: 0,
 
       addToCart: (item: MenuItem, quantity = 1) => {
         const { items } = get();
         const existingItem = items.find(cartItem => cartItem.id === item.id);
 
+        let updatedItems: CartItem[];
         if (existingItem) {
-          set(state => ({
-            items: state.items.map(cartItem =>
-              cartItem.id === item.id
-                ? { ...cartItem, quantity: cartItem.quantity + quantity }
-                : cartItem
-            ),
-          }));
+          updatedItems = items.map(cartItem =>
+            cartItem.id === item.id
+              ? { ...cartItem, quantity: cartItem.quantity + quantity }
+              : cartItem
+          );
         } else {
-          set(state => ({
-            items: [...state.items, { ...item, quantity }],
-          }));
+          updatedItems = [...items, { ...item, quantity }];
         }
 
-        // Recalculate totals
-        const { items: updatedItems } = get();
-        const total = updatedItems.reduce(
-          (sum, item) => sum + item.price * item.quantity,
-          0
-        );
-        const itemCount = updatedItems.reduce(
-          (sum, item) => sum + item.quantity,
-          0
-        );
-
-        set({ total, itemCount });
+        set({ items: updatedItems });
       },
 
       removeFromCart: (itemId: string) => {
-        set(state => ({
-          items: state.items.filter(item => item.id !== itemId),
-        }));
-
-        // Recalculate totals
         const { items } = get();
-        const total = items.reduce(
-          (sum, item) => sum + item.price * item.quantity,
-          0
-        );
-        const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
-
-        set({ total, itemCount });
+        const updatedItems = items.filter(item => item.id !== itemId);
+        set({ items: updatedItems });
       },
 
       updateQuantity: (itemId: string, quantity: number) => {
@@ -80,21 +62,11 @@ export const useCartStore = create<CartState>()(
           return;
         }
 
-        set(state => ({
-          items: state.items.map(item =>
-            item.id === itemId ? { ...item, quantity } : item
-          ),
-        }));
-
-        // Recalculate totals
         const { items } = get();
-        const total = items.reduce(
-          (sum, item) => sum + item.price * item.quantity,
-          0
+        const updatedItems = items.map(item =>
+          item.id === itemId ? { ...item, quantity } : item
         );
-        const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
-
-        set({ total, itemCount });
+        set({ items: updatedItems });
       },
 
       getItemQuantity: (itemId: string) => {
@@ -104,15 +76,15 @@ export const useCartStore = create<CartState>()(
       },
 
       addNote: (itemId: string, notes: string) => {
-        set(state => ({
-          items: state.items.map(item =>
-            item.id === itemId ? { ...item, notes } : item
-          ),
-        }));
+        const { items } = get();
+        const updatedItems = items.map(item =>
+          item.id === itemId ? { ...item, notes } : item
+        );
+        set({ items: updatedItems });
       },
 
       clearCart: () => {
-        set({ items: [], total: 0, itemCount: 0 });
+        set({ items: [] });
       },
     }),
     {
@@ -120,3 +92,9 @@ export const useCartStore = create<CartState>()(
     }
   )
 );
+
+// Custom hook to get calculated totals
+export const useCartTotals = () => {
+  const items = useCartStore(state => state.items);
+  return calculateTotals(items);
+};

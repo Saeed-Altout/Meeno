@@ -14,7 +14,7 @@ import {
   MagneticCursor,
 } from '@/components/common/magnetic-cursor';
 import { useScroll } from '@/hooks/use-scroll';
-import { useCartStore } from '@/stores/cart-store';
+import { useCartTotals } from '@/stores/cart-store';
 import { cn } from '@/lib/utils';
 
 export const Navbar = () => {
@@ -22,7 +22,7 @@ export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const { isScrolled } = useScroll();
-  const { itemCount } = useCartStore();
+  const { itemCount } = useCartTotals();
 
   return (
     <div
