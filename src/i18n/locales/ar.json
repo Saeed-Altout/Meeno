@@ -22,6 +22,7 @@
     "home": "الرئيسية",
     "steps": "كيفية الطلب",
     "menu": "القائمة",
+    "products": "جميع المنتجات",
     "orders": "طلباتي",
     "cart": "السلة",
     "favorites": "المفضلة",
@@ -100,6 +101,29 @@
       "title": "سلة التسوق فارغة",
       "description": "أضف بعض الأصناف اللذيذة للبدء!",
       "action": "متابعة التسوق"
+    }
+  },
+  "products": {
+    "title": "جميع المنتجات",
+    "searchPlaceholder": "البحث في المنتجات...",
+    "noProductsFound": "لم يتم العثور على منتجات",
+    "adjustFilters": "حاول تعديل البحث أو معايير التصفية",
+    "clearFilters": "مسح جميع المرشحات",
+    "viewDetails": "عرض التفاصيل",
+    "addToCart": "أضف إلى السلة",
+    "quickAdd": "إضافة سريعة",
+    "productsFound": "منتج تم العثور عليه",
+    "filters": {
+      "category": "الفئة",
+      "sort": "ترتيب",
+      "allCategories": "جميع الفئات"
+    },
+    "sortOptions": {
+      "name": "الاسم (أ-ي)",
+      "priceLow": "السعر (منخفض إلى مرتفع)",
+      "priceHigh": "السعر (مرتفع إلى منخفض)",
+      "popular": "الأكثر شعبية",
+      "newest": "الأحدث أولاً"
     }
   },
   "orders": {

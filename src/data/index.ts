@@ -191,3 +191,8 @@ export const getAllItems = (): MenuItem[] => {
 export const getFeaturedItems = (): MenuItem[] => {
   return getAllItems().filter(item => item.featured);
 };
+
+// Helper function to get item by ID
+export const getItemById = (id: string): MenuItem | undefined => {
+  return getAllItems().find(item => item.id === id);
+};

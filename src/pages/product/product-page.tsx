@@ -20,7 +20,7 @@ import { Textarea } from '../../components/ui/textarea';
 import { Label } from '../../components/ui/label';
 import { useCartStore } from '../../stores/cart-store';
 import { useFavoritesStore } from '../../stores/favorites-store';
-import type { MenuItem } from '../../data';
+import { getItemById, getAllItems } from '../../data';
 
 export default function ProductPage() {
   const { id } = useParams<{ id: string }>();
@@ -32,52 +32,9 @@ export default function ProductPage() {
   const { addToFavorites, removeFromFavorites, isFavorite } =
     useFavoritesStore();
 
-  // Mock data - in a real app this would come from an API or store
-  const menuItems: MenuItem[] = [
-    {
-      id: 'spaghetti',
-      nameKey: 'Spaghetti',
-      descriptionKey:
-        'Classic Italian pasta with rich tomato sauce and fresh herbs. Made with premium durum wheat pasta and slow-cooked tomato sauce.',
-      price: 7.29,
-      image:
-        'https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=800&h=600&fit=crop&auto=format',
-      category: 'mains',
-    },
-    {
-      id: 'veggie-pizza',
-      nameKey: 'Vegetable Pizza',
-      descriptionKey:
-        'Fresh vegetables on crispy pizza base with mozzarella cheese, bell peppers, mushrooms, and olives.',
-      price: 5.49,
-      image:
-        'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=800&h=600&fit=crop&auto=format',
-      category: 'mains',
-    },
-    {
-      id: 'mushroom-pizza',
-      nameKey: 'Mushroom Pizza',
-      descriptionKey:
-        'Delicious mushroom pizza with cheese, featuring fresh mushrooms, garlic, and herbs on our signature pizza base.',
-      price: 7.49,
-      image:
-        'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=800&h=600&fit=crop&auto=format',
-      category: 'mains',
-      featured: true,
-    },
-    {
-      id: 'sweet-dessert',
-      nameKey: 'Sweets',
-      descriptionKey:
-        'Delicious sweet dessert with chocolate and vanilla cream.',
-      price: 6.49,
-      image:
-        'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=800&h=600&fit=crop&auto=format',
-      category: 'desserts',
-    },
-  ];
-
-  const item = menuItems.find(item => item.id === id);
+  // Get the item from real data
+  const item = getItemById(id!);
+  const allMenuItems = getAllItems();
 
   if (!item) {
     return (
@@ -126,7 +83,7 @@ export default function ProductPage() {
     ));
   };
 
-  const relatedItems = menuItems
+  const relatedItems = allMenuItems
     .filter(i => i.id !== item.id && i.category === item.category)
     .slice(0, 4);
 
@@ -192,7 +149,7 @@ export default function ProductPage() {
             {/* Header */}
             <div>
               <h1 className='text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-4'>
-                {item.nameKey}
+                {t(item.nameKey)}
               </h1>
 
               {/* Rating and Info */}
@@ -223,7 +180,7 @@ export default function ProductPage() {
                 Description
               </h3>
               <p className='text-gray-600 dark:text-gray-400 leading-relaxed text-lg'>
-                {item.descriptionKey}
+                {t(item.descriptionKey)}
               </p>
             </div>
 
@@ -374,10 +331,10 @@ export default function ProductPage() {
                   />
                   <div className='p-4'>
                     <h3 className='font-semibold text-gray-900 dark:text-white mb-2 line-clamp-1'>
-                      {relatedItem.nameKey}
+                      {t(relatedItem.nameKey)}
                     </h3>
                     <p className='text-sm text-gray-600 dark:text-gray-400 mb-3 line-clamp-2'>
-                      {relatedItem.descriptionKey}
+                      {t(relatedItem.descriptionKey)}
                     </p>
                     <div className='flex items-center justify-between'>
                       <span className='font-bold text-orange-600 text-lg'>

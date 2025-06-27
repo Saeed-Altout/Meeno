@@ -22,6 +22,7 @@
     "home": "Home",
     "steps": "How to Order",
     "menu": "Menu",
+    "products": "All Products",
     "orders": "My Orders",
     "cart": "Cart",
     "favorites": "Favorites",
@@ -100,6 +101,29 @@
       "title": "Your cart is empty",
       "description": "Add some delicious items to get started!",
       "action": "Continue Shopping"
+    }
+  },
+  "products": {
+    "title": "All Products",
+    "searchPlaceholder": "Search products...",
+    "noProductsFound": "No products found",
+    "adjustFilters": "Try adjusting your search or filter criteria",
+    "clearFilters": "Clear all filters",
+    "viewDetails": "View Details",
+    "addToCart": "Add to Cart",
+    "quickAdd": "Quick Add",
+    "productsFound": "products found",
+    "filters": {
+      "category": "Category",
+      "sort": "Sort",
+      "allCategories": "All Categories"
+    },
+    "sortOptions": {
+      "name": "Name (A-Z)",
+      "priceLow": "Price (Low to High)",
+      "priceHigh": "Price (High to Low)",
+      "popular": "Most Popular",
+      "newest": "Newest First"
     }
   },
   "orders": {

@@ -77,6 +77,12 @@ export const Navbar: React.FC<NavbarProps> = ({
       route: '/menu',
     },
     {
+      key: 'products',
+      label: t('nav.products'),
+      icon: UtensilsCrossed,
+      route: '/products',
+    },
+    {
       key: 'orders',
       label: t('nav.orders'),
       icon: ClipboardList,
