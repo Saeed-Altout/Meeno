@@ -1,22 +1,25 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import { useNavigate, useLocation } from 'react-router-dom';
 import {
   ChefHat,
   Menu as MenuIcon,
   Globe,
-  Sun,
-  Moon,
   Home,
   UtensilsCrossed,
-  Heart,
   Users,
   MessageCircle,
   ArrowRight,
+  List,
+  ShoppingCart,
+  ClipboardList,
 } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '../ui/sheet';
-import { useThemeStore } from '../../stores/theme-store';
+import { Badge } from '../ui/badge';
+import { ThemeToggle } from '../common/theme-toggle';
+import { useCartTotals } from '../../stores/cart-store';
 
 interface NavbarProps {
   activeSection: string;
@@ -28,7 +31,9 @@ export const Navbar: React.FC<NavbarProps> = ({
   onNavClick,
 }) => {
   const { t, i18n } = useTranslation();
-  const { isDarkMode, toggleTheme } = useThemeStore();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { itemCount } = useCartTotals();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -55,15 +60,30 @@ export const Navbar: React.FC<NavbarProps> = ({
     i18n.changeLanguage(newLang);
   };
 
-  const handleNavClick = (sectionId: string) => {
-    onNavClick(sectionId);
+  const handleNavClick = (sectionId: string, route?: string) => {
+    if (route) {
+      navigate(route);
+    } else {
+      onNavClick(sectionId);
+    }
     setIsMenuOpen(false);
   };
 
   const navItems = [
-    { key: 'home', label: t('nav.home'), icon: Home },
-    { key: 'menu', label: t('nav.menu'), icon: UtensilsCrossed },
-    { key: 'favorites', label: t('nav.favorites'), icon: Heart },
+    { key: 'home', label: t('nav.home'), icon: Home, route: '/' },
+    { key: 'steps', label: t('nav.steps'), icon: List },
+    {
+      key: 'menu',
+      label: t('nav.menu'),
+      icon: UtensilsCrossed,
+      route: '/menu',
+    },
+    {
+      key: 'orders',
+      label: t('nav.orders'),
+      icon: ClipboardList,
+      route: '/orders',
+    },
     { key: 'about', label: t('nav.about'), icon: Users },
     { key: 'contact', label: t('nav.contact'), icon: MessageCircle },
   ];
@@ -100,15 +120,17 @@ export const Navbar: React.FC<NavbarProps> = ({
             {navItems.map(item => (
               <button
                 key={item.key}
-                onClick={() => handleNavClick(item.key)}
+                onClick={() => handleNavClick(item.key, item.route)}
                 className={`relative px-3 py-2 text-sm font-medium transition-colors ${
+                  (item.route && location.pathname === item.route) ||
                   activeSection === item.key
                     ? 'text-amber-600'
                     : 'text-gray-700 dark:text-gray-300 hover:text-amber-600 dark:hover:text-amber-400'
                 }`}
               >
                 {item.label}
-                {activeSection === item.key && (
+                {((item.route && location.pathname === item.route) ||
+                  activeSection === item.key) && (
                   <motion.div
                     layoutId='activeSection'
                     className='absolute bottom-0 left-0 right-0 h-0.5 bg-amber-600'
@@ -120,8 +142,24 @@ export const Navbar: React.FC<NavbarProps> = ({
             ))}
           </div>
 
-          {/* Controls (Language, Theme) */}
+          {/* Controls (Cart, Language, Theme) */}
           <div className='hidden md:flex items-center space-x-4 rtl:space-x-reverse'>
+            {/* Cart Button */}
+            <Button
+              variant='ghost'
+              size='sm'
+              onClick={() => navigate('/cart')}
+              className='relative'
+              aria-label={t('nav.cart')}
+            >
+              <ShoppingCart className='h-4 w-4' />
+              {itemCount > 0 && (
+                <Badge className='absolute -top-1 -right-1 h-5 w-5 p-0 text-xs bg-amber-600 hover:bg-amber-600'>
+                  {itemCount}
+                </Badge>
+              )}
+            </Button>
+
             {/* Language Toggle */}
             <Button
               variant='ghost'
@@ -137,18 +175,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             </Button>
 
             {/* Theme Toggle */}
-            <Button
-              variant='ghost'
-              size='sm'
-              onClick={toggleTheme}
-              aria-label={t('common.theme')}
-            >
-              {isDarkMode ? (
-                <Sun className='h-4 w-4' />
-              ) : (
-                <Moon className='h-4 w-4' />
-              )}
-            </Button>
+            <ThemeToggle />
           </div>
 
           {/* Mobile Menu Button */}
@@ -164,18 +191,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             </Button>
 
             {/* Mobile Theme Toggle */}
-            <Button
-              variant='ghost'
-              size='sm'
-              onClick={toggleTheme}
-              aria-label={t('common.theme')}
-            >
-              {isDarkMode ? (
-                <Sun className='h-4 w-4' />
-              ) : (
-                <Moon className='h-4 w-4' />
-              )}
-            </Button>
+            <ThemeToggle />
 
             {/* Mobile Menu Sheet */}
             <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
@@ -218,9 +234,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: index * 0.1, duration: 0.3 }}
-                            onClick={() => handleNavClick(item.key)}
+                            onClick={() => handleNavClick(item.key, item.route)}
                             className={`group w-full flex items-center space-x-4 rtl:space-x-reverse px-4 py-4 rounded-2xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] ${
-                              isActive
+                              isActive ||
+                              (item.route && location.pathname === item.route)
                                 ? 'bg-amber-50 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400 shadow-sm border border-amber-100 dark:border-amber-900/50'
                                 : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:text-amber-600 dark:hover:text-amber-400 hover:shadow-sm'
                             }`}
@@ -291,26 +308,21 @@ export const Navbar: React.FC<NavbarProps> = ({
                       >
                         <div className='flex items-center space-x-3 rtl:space-x-reverse'>
                           <div className='w-10 h-10 bg-purple-50 dark:bg-purple-950/50 rounded-xl flex items-center justify-center'>
-                            {isDarkMode ? (
-                              <Moon className='h-5 w-5 text-purple-600 dark:text-purple-400' />
-                            ) : (
-                              <Sun className='h-5 w-5 text-purple-600 dark:text-purple-400' />
-                            )}
+                            <div className='w-5 h-5 text-purple-600 dark:text-purple-400'>
+                              <svg
+                                className='w-full h-full'
+                                fill='currentColor'
+                                viewBox='0 0 24 24'
+                              >
+                                <path d='M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2Z' />
+                              </svg>
+                            </div>
                           </div>
                           <span className='font-medium text-gray-900 dark:text-white'>
                             {t('common.theme')}
                           </span>
                         </div>
-                        <Button
-                          variant='outline'
-                          size='sm'
-                          onClick={toggleTheme}
-                          className='h-9 px-4 bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600 hover:bg-purple-50 dark:hover:bg-purple-950/50 hover:border-purple-200 dark:hover:border-purple-800 text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-all duration-200'
-                        >
-                          <span className='text-sm font-medium'>
-                            {isDarkMode ? t('common.light') : t('common.dark')}
-                          </span>
-                        </Button>
+                        <ThemeToggle />
                       </motion.div>
                     </div>
                   </div>

@@ -16,6 +16,8 @@ import {
 import { Button } from '../../components/ui/button';
 import { Card } from '../../components/ui/card';
 import { Badge } from '../../components/ui/badge';
+import { Textarea } from '../../components/ui/textarea';
+import { Label } from '../../components/ui/label';
 import { useCartStore } from '../../stores/cart-store';
 import { useFavoritesStore } from '../../stores/favorites-store';
 import type { MenuItem } from '../../data';
@@ -25,7 +27,8 @@ export default function ProductPage() {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [quantity, setQuantity] = useState(1);
-  const { addToCart, getItemQuantity } = useCartStore();
+  const [notes, setNotes] = useState('');
+  const { addToCart, getItemQuantity, addNote } = useCartStore();
   const { addToFavorites, removeFromFavorites, isFavorite } =
     useFavoritesStore();
 
@@ -97,6 +100,9 @@ export default function ProductPage() {
 
   const handleAddToCart = () => {
     addToCart(item, quantity);
+    if (notes.trim()) {
+      addNote(item.id, notes.trim());
+    }
   };
 
   const handleToggleFavorite = () => {
@@ -127,11 +133,15 @@ export default function ProductPage() {
   return (
     <div className='min-h-screen bg-gray-50 dark:bg-gray-900'>
       {/* Header */}
-      <div className='bg-white dark:bg-gray-800 shadow-sm'>
+      <div className='bg-white dark:bg-gray-800 shadow-sm pt-16'>
         <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4'>
-          <Button variant='ghost' onClick={() => navigate(-1)} className='mb-4'>
-            <ArrowLeft className='h-4 w-4 mr-2' />
-            Back
+          <Button
+            variant='ghost'
+            onClick={() => navigate(-1)}
+            className='flex items-center gap-2 text-gray-700 dark:text-gray-300 hover:text-amber-600 dark:hover:text-amber-400 transition-colors'
+          >
+            <ArrowLeft className='h-4 w-4' />
+            {t('common.back')}
           </Button>
         </div>
       </div>
@@ -302,6 +312,29 @@ export default function ProductPage() {
                   >
                     <Plus className='h-4 w-4' />
                   </Button>
+                </div>
+              </div>
+
+              {/* Special Notes */}
+              <div className='space-y-2'>
+                <Label
+                  htmlFor='notes'
+                  className='text-sm font-medium text-gray-700 dark:text-gray-300'
+                >
+                  {t('cart.notes')}{' '}
+                  <span className='text-gray-500'>({t('cart.optional')})</span>
+                </Label>
+                <Textarea
+                  id='notes'
+                  placeholder={t('cart.notesPlaceholder')}
+                  value={notes}
+                  onChange={e => setNotes(e.target.value)}
+                  className='resize-none'
+                  rows={3}
+                  maxLength={200}
+                />
+                <div className='text-xs text-gray-500 dark:text-gray-400 text-right'>
+                  {notes.length}/200 {t('cart.characters')}
                 </div>
               </div>
 

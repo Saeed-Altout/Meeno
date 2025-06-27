@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 // Import section components
 import { Navbar } from './components/sections/Navbar';
 import { Hero } from './components/sections/Hero';
+import { StepsToOrder } from './components/sections/StepsToOrder';
 import { Menu } from './components/sections/Menu';
 import { About } from './components/sections/About';
 import { Contact } from './components/sections/Contact';
@@ -48,7 +49,7 @@ function App() {
 
   // Track active section based on scroll position
   useEffect(() => {
-    const sections = ['home', 'menu', 'favorites', 'about', 'contact'];
+    const sections = ['home', 'steps', 'menu', 'favorites', 'about', 'contact'];
     const navbarHeight = 64;
 
     const handleScroll = () => {
@@ -91,6 +92,9 @@ function App() {
       <main>
         {/* Hero Section */}
         <Hero onScrollToMenu={scrollToMenu} />
+
+        {/* Steps to Order Section */}
+        <StepsToOrder />
 
         {/* Menu Section */}
         <Menu />

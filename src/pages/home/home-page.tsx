@@ -1,5 +1,6 @@
 import React from 'react';
 import { Hero } from '@/components/sections/Hero';
+import { StepsToOrder } from '@/components/sections/StepsToOrder';
 import { About } from '@/components/sections/About';
 import { Menu } from '@/components/sections/Menu';
 import { OrderAgain } from '@/components/sections/OrderAgain';
@@ -16,6 +17,7 @@ export default function HomePage() {
   return (
     <div>
       <Hero onScrollToMenu={scrollToMenu} />
+      <StepsToOrder />
       <About />
       <Menu />
       <OrderAgain />

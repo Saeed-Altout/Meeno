@@ -4,6 +4,7 @@ import { ChefHat, Instagram, Facebook } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { restaurantInfo } from '../../data';
+import { ThemeToggle } from '../common/theme-toggle';
 
 interface FooterProps {
   onNavClick: (sectionId: string) => void;
@@ -14,6 +15,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavClick }) => {
 
   const quickLinks = [
     { key: 'home', label: t('nav.home') },
+    { key: 'steps', label: t('nav.steps') },
     { key: 'menu', label: t('nav.menu') },
     { key: 'about', label: t('nav.about') },
     { key: 'contact', label: t('nav.contact') },
@@ -145,8 +147,8 @@ export const Footer: React.FC<FooterProps> = ({ onNavClick }) => {
             © {new Date().getFullYear()} {t('footer.copyright')}
           </p>
 
-          {/* Social Media Icons */}
-          <div className='flex space-x-4 rtl:space-x-reverse mt-4 md:mt-0'>
+          {/* Social Media and Theme Toggle */}
+          <div className='flex items-center space-x-4 rtl:space-x-reverse mt-4 md:mt-0'>
             <motion.a
               href={restaurantInfo.social.instagram}
               target='_blank'
@@ -169,6 +171,11 @@ export const Footer: React.FC<FooterProps> = ({ onNavClick }) => {
             >
               <Facebook className='h-5 w-5' />
             </motion.a>
+
+            {/* Theme Toggle */}
+            <div className='border-l border-gray-600 pl-4'>
+              <ThemeToggle />
+            </div>
           </div>
         </motion.div>
       </div>

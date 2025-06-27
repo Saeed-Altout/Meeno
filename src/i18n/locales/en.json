@@ -9,11 +9,21 @@
     "language": "Language",
     "theme": "Theme",
     "light": "Light",
-    "dark": "Dark"
+    "dark": "Dark",
+    "cancel": "Cancel",
+    "back": "Back"
+  },
+  "theme": {
+    "light": "Light Mode",
+    "dark": "Dark Mode",
+    "system": "System"
   },
   "nav": {
     "home": "Home",
+    "steps": "How to Order",
     "menu": "Menu",
+    "orders": "My Orders",
+    "cart": "Cart",
     "favorites": "Favorites",
     "about": "About Us",
     "contact": "Contact",
@@ -43,6 +53,42 @@
     "experience": "Years of Excellence",
     "chef": "Chef Giuseppe Rossi",
     "chefTitle": "Head Chef & Owner"
+  },
+  "stepsToOrder": {
+    "title": "How to Order",
+    "subtitle": "Simple Steps to Enjoy Our Delicious Food",
+    "description": "Follow these easy steps to place your order and enjoy our authentic Italian cuisine",
+    "step1": {
+      "title": "Scan QR Code",
+      "description": "Simply scan the QR code on your table to access our digital menu"
+    },
+    "step2": {
+      "title": "Explore Menu",
+      "description": "Browse through all our delicious products and discover your favorites"
+    },
+    "step3": {
+      "title": "Add to Cart",
+      "description": "Add any items to your order and include special notes before confirming"
+    },
+    "step4": {
+      "title": "Wait & Enjoy",
+      "description": "Relax and wait just a few minutes - your fresh order will be ready soon"
+    },
+    "cta": {
+      "title": "Ready to Order?",
+      "description": "Start your culinary journey with us today!"
+    }
+  },
+  "cart": {
+    "addToCart": "Add to Cart",
+    "quantity": "Quantity",
+    "notes": "Special Notes",
+    "optional": "Optional",
+    "notesPlaceholder": "Add any special instructions...",
+    "characters": "characters",
+    "currentlyInCart": "Currently in cart",
+    "items": "items",
+    "total": "Total"
   },
   "contact": {
     "title": "Contact Us",

@@ -33,15 +33,18 @@ import {
 } from '../ui/carousel';
 import { useCartStore } from '../../stores/cart-store';
 import { useFavoritesStore } from '../../stores/favorites-store';
+import { AddToCartModal } from '../common/add-to-cart-modal';
 import type { MenuItem } from '../../data';
 
 export const Menu: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { addToCart, getItemQuantity } = useCartStore();
+  const { getItemQuantity } = useCartStore();
   const { addToFavorites, removeFromFavorites, isFavorite } =
     useFavoritesStore();
   const [activeCategory, setActiveCategory] = useState<string>('pizza');
+  const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const categories = [
     {
@@ -251,7 +254,8 @@ export const Menu: React.FC = () => {
   };
 
   const handleAddToCart = (item: MenuItem) => {
-    addToCart(item, 1);
+    setSelectedItem(item);
+    setIsModalOpen(true);
   };
 
   const handleCardClick = (item: MenuItem) => {
@@ -526,6 +530,13 @@ export const Menu: React.FC = () => {
           )}
         </div>
       </section>
+
+      {/* Add to Cart Modal */}
+      <AddToCartModal
+        item={selectedItem}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </>
   );
 };
