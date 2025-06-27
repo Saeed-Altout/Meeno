@@ -369,16 +369,6 @@ export const Favorites: React.FC = () => {
                         >
                           {itemCount}
                         </div>
-
-                        {/* Active indicator */}
-                        {isActive && (
-                          <motion.div
-                            className='absolute -bottom-1 left-1/2 w-2 h-2 bg-white rounded-full'
-                            layoutId='activeIndicator'
-                            initial={false}
-                            style={{ x: '-50%' }}
-                          />
-                        )}
                       </motion.button>
                     </div>
                   </CarouselItem>
