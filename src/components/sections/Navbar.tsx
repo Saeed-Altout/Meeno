@@ -8,10 +8,7 @@ import {
   Globe,
   Home,
   UtensilsCrossed,
-  Users,
-  MessageCircle,
   ArrowRight,
-  List,
   ShoppingCart,
   ClipboardList,
 } from 'lucide-react';
@@ -73,7 +70,6 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   const navItems = [
     { key: 'home', label: t('nav.home'), icon: Home, route: '/' },
-    { key: 'steps', label: t('nav.steps'), icon: List },
     {
       key: 'menu',
       label: t('nav.menu'),
@@ -86,8 +82,6 @@ export const Navbar: React.FC<NavbarProps> = ({
       icon: ClipboardList,
       route: '/orders',
     },
-    { key: 'about', label: t('nav.about'), icon: Users },
-    { key: 'contact', label: t('nav.contact'), icon: MessageCircle },
   ];
 
   return (
