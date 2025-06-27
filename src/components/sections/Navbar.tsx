@@ -9,6 +9,7 @@ import {
   Moon,
   Home,
   UtensilsCrossed,
+  Heart,
   Users,
   MessageCircle,
   ArrowRight,
@@ -62,6 +63,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   const navItems = [
     { key: 'home', label: t('nav.home'), icon: Home },
     { key: 'menu', label: t('nav.menu'), icon: UtensilsCrossed },
+    { key: 'favorites', label: t('nav.favorites'), icon: Heart },
     { key: 'about', label: t('nav.about'), icon: Users },
     { key: 'contact', label: t('nav.contact'), icon: MessageCircle },
   ];
