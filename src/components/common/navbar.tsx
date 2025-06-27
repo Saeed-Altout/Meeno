@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { QrCodeIcon, MenuIcon } from 'lucide-react';
+import { QrCodeIcon, MenuIcon, ShoppingCart } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 import { config } from '@/config';
@@ -8,17 +8,21 @@ import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
 import { Logo } from '@/components/common/logo';
+import { CartSidebar } from '@/components/common/cart-sidebar';
 import {
   MagneticBackground,
   MagneticCursor,
 } from '@/components/common/magnetic-cursor';
 import { useScroll } from '@/hooks/use-scroll';
+import { useCartStore } from '@/stores/cart-store';
 import { cn } from '@/lib/utils';
 
 export const Navbar = () => {
   const buttonContainerRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false);
   const { isScrolled } = useScroll();
+  const { itemCount } = useCartStore();
 
   return (
     <div
@@ -40,6 +44,21 @@ export const Navbar = () => {
             ))}
           </div>
         </div>
+
+        <Button
+          variant='ghost'
+          size='sm'
+          onClick={() => setIsCartOpen(true)}
+          className='relative'
+        >
+          <ShoppingCart className='h-5 w-5' />
+          {itemCount > 0 && (
+            <span className='absolute -top-1 -right-1 h-5 w-5 rounded-full bg-orange-500 text-white text-xs flex items-center justify-center'>
+              {itemCount}
+            </span>
+          )}
+          <span className='sr-only'>Open cart</span>
+        </Button>
 
         <Button asChild size='sm'>
           <Link to='/qr'>
@@ -80,6 +99,8 @@ export const Navbar = () => {
           </div>
         </SheetContent>
       </Sheet>
+
+      <CartSidebar isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
     </div>
   );
 };

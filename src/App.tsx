@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 // Import section components
 import { Navbar } from './components/sections/Navbar';
 import { Hero } from './components/sections/Hero';
-import { Favorites } from './components/sections/Favorites';
+import { Menu } from './components/sections/Menu';
 import { About } from './components/sections/About';
 import { Contact } from './components/sections/Contact';
 import { Footer } from './components/sections/Footer';
@@ -92,8 +92,8 @@ function App() {
         {/* Hero Section */}
         <Hero onScrollToMenu={scrollToMenu} />
 
-        {/* Favorites Section */}
-        <Favorites />
+        {/* Menu Section */}
+        <Menu />
 
         {/* About Section */}
         <About />

@@ -4,6 +4,8 @@ import { createBrowserRouter, type RouteObject } from 'react-router-dom';
 import LoadingPage from '@/pages/loading/loading-page';
 import NotFoundPage from '@/pages/not-found/not-found-page';
 import HomePage from '@/pages/home/home-page';
+import MenuPage from '@/pages/menu/menu-page';
+import ProductPage from '@/pages/product/product-page';
 import HomeLayout from '@/layouts/home-layout';
 
 /**
@@ -20,6 +22,22 @@ const routes: RouteObject[] = [
         element: (
           <Suspense fallback={<LoadingPage />}>
             <HomePage />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'menu',
+        element: (
+          <Suspense fallback={<LoadingPage />}>
+            <MenuPage />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'product/:id',
+        element: (
+          <Suspense fallback={<LoadingPage />}>
+            <ProductPage />
           </Suspense>
         ),
       },
