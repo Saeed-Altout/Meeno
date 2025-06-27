@@ -1,5 +1,7 @@
 import React, { useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Plus, Minus, ShoppingBag, Trash2 } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
@@ -9,6 +11,8 @@ import {
   useCartTotals,
   type CartItem,
 } from '../../stores/cart-store';
+import { useOrdersStore } from '../../stores/orders-store';
+import type { OrderItem } from '../../stores/orders-store';
 
 interface CartSidebarProps {
   isOpen: boolean;
@@ -108,9 +112,12 @@ export const CartSidebar: React.FC<CartSidebarProps> = ({
   isOpen,
   onClose,
 }) => {
+  const { t } = useTranslation();
+  const navigate = useNavigate();
   const items = useCartStore(state => state.items);
   const clearCart = useCartStore(state => state.clearCart);
   const { total, itemCount } = useCartTotals();
+  const { addOrder } = useOrdersStore();
 
   // Memoize calculated values to prevent unnecessary recalculations
   const deliveryFee = 3.99;
@@ -128,6 +135,42 @@ export const CartSidebar: React.FC<CartSidebarProps> = ({
   const handleClearCart = useCallback(() => {
     clearCart();
   }, [clearCart]);
+
+  const handleCheckout = useCallback(() => {
+    if (items.length === 0) return;
+
+    // Convert cart items to order items
+    const orderItems: OrderItem[] = items.map(item => ({
+      ...item,
+      notes: item.notes,
+    }));
+
+    // Calculate totals including tax and delivery
+    const deliveryFee = 3.99;
+    const taxRate = 0.08;
+    const tax = total * taxRate;
+    const finalTotal = total + deliveryFee + tax;
+
+    // Create the order
+    const newOrder = addOrder({
+      items: orderItems,
+      total: finalTotal,
+      status: 'pending',
+      estimatedTime: 15, // Default 15 minutes
+      customerInfo: {
+        table: 'Table 1', // You can make this dynamic later
+      },
+    });
+
+    // Clear cart
+    clearCart();
+
+    // Close sidebar
+    onClose();
+
+    // Navigate to order details
+    navigate(`/orders/${newOrder.id}`);
+  }, [items, total, addOrder, clearCart, onClose, navigate]);
 
   // Empty cart content memoized
   const emptyCartContent = useMemo(
@@ -158,10 +201,11 @@ export const CartSidebar: React.FC<CartSidebarProps> = ({
           <SheetHeader className='space-y-0'>
             <div className='flex items-center justify-between'>
               <SheetTitle className='text-xl font-bold'>
-                Your Cart
+                {t('cart.yourCart')}
                 {itemCount > 0 && (
                   <Badge className='ml-2 bg-orange-500 text-white text-xs px-2 py-1'>
-                    {itemCount} {itemCount === 1 ? 'item' : 'items'}
+                    {itemCount}{' '}
+                    {itemCount === 1 ? t('cart.item') : t('cart.items')}
                   </Badge>
                 )}
               </SheetTitle>
@@ -218,10 +262,11 @@ export const CartSidebar: React.FC<CartSidebarProps> = ({
             {/* Actions */}
             <div className='space-y-3'>
               <Button
+                onClick={handleCheckout}
                 className='w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-semibold py-3 h-12 text-base shadow-lg hover:shadow-xl transition-all duration-200'
                 size='lg'
               >
-                Proceed to Checkout
+                {t('cart.proceedToCheckout')}
               </Button>
               <Button
                 variant='outline'

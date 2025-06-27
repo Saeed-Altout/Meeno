@@ -88,7 +88,19 @@
     "characters": "characters",
     "currentlyInCart": "Currently in cart",
     "items": "items",
-    "total": "Total"
+    "total": "Total",
+    "yourCart": "Your Cart",
+    "item": "item",
+    "subtotal": "Subtotal",
+    "delivery": "Delivery",
+    "tax": "Tax",
+    "proceedToCheckout": "Proceed to Checkout",
+    "clearCart": "Clear Cart",
+    "emptyCart": {
+      "title": "Your cart is empty",
+      "description": "Add some delicious items to get started!",
+      "action": "Continue Shopping"
+    }
   },
   "orders": {
     "title": "My Orders",

@@ -88,7 +88,19 @@
     "characters": "حرف",
     "currentlyInCart": "حالياً في السلة",
     "items": "عناصر",
-    "total": "المجموع"
+    "total": "المجموع",
+    "yourCart": "سلة التسوق",
+    "item": "عنصر",
+    "subtotal": "المجموع الفرعي",
+    "delivery": "التوصيل",
+    "tax": "الضريبة",
+    "proceedToCheckout": "متابعة الطلب",
+    "clearCart": "إفراغ السلة",
+    "emptyCart": {
+      "title": "سلة التسوق فارغة",
+      "description": "أضف بعض الأصناف اللذيذة للبدء!",
+      "action": "متابعة التسوق"
+    }
   },
   "orders": {
     "title": "طلباتي",

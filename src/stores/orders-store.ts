@@ -25,7 +25,7 @@ export interface Order {
 
 interface OrdersState {
   orders: Order[];
-  addOrder: (order: Omit<Order, 'id' | 'orderNumber' | 'orderDate'>) => void;
+  addOrder: (order: Omit<Order, 'id' | 'orderNumber' | 'orderDate'>) => Order;
   updateOrderStatus: (orderId: string, status: Order['status']) => void;
   getOrderById: (orderId: string) => Order | undefined;
   getRecentOrders: (limit?: number) => Order[];
@@ -183,6 +183,8 @@ export const useOrdersStore = create<OrdersState>()(
         set(state => ({
           orders: [newOrder, ...state.orders],
         }));
+
+        return newOrder;
       },
 
       updateOrderStatus: (orderId, status) => {
