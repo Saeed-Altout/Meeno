@@ -11,7 +11,17 @@
     "light": "Light",
     "dark": "Dark",
     "cancel": "Cancel",
-    "back": "Back"
+    "back": "Back",
+    "loading": "Loading...",
+    "error": "Error",
+    "tryAgain": "Try Again",
+    "notFound": "Not Found",
+    "goHome": "Go Home",
+    "getStarted": "Get Started",
+    "recent": "Recent",
+    "favorite": "Favorite",
+    "instagram": "Instagram",
+    "facebook": "Facebook"
   },
   "theme": {
     "light": "Light Mode",
@@ -40,11 +50,25 @@
   "menu": {
     "title": "Our Menu",
     "subtitle": "Discover our carefully curated selection of authentic Italian dishes",
+    "viewAll": "View All",
+    "featured": "Featured",
+    "noItems": "We're working on delicious items for this category",
+    "comingSoon": "Coming Soon!",
     "categories": {
+      "pizza": "Pizza",
+      "fruits": "Fruits", 
+      "snacks": "Snacks",
+      "veggies": "Veggies",
+      "hotdog": "Hotdog",
+      "burger": "Burger",
+      "drinks": "Drinks",
+      "desserts": "Desserts",
+      "seafood": "Seafood",
+      "bakery": "Bakery", 
+      "wine": "Wine",
+      "specials": "Chef Special",
       "starters": "Starters",
-      "mains": "Main Courses",
-      "drinks": "Beverages",
-      "desserts": "Desserts"
+      "mains": "Main Courses"
     },
     "currency": "$"
   },
@@ -81,6 +105,12 @@
       "description": "Start your culinary journey with us today!"
     }
   },
+  "orderAgain": {
+    "title": "Order Again",
+    "subtitle": "Quick access to your recent orders and favorites",
+    "recentOrders": "Recent Orders",
+    "yourFavorites": "Your Favorites"
+  },
   "cart": {
     "addToCart": "Add to Cart",
     "quantity": "Quantity",
@@ -102,7 +132,8 @@
       "title": "Your cart is empty",
       "description": "Add some delicious items to get started!",
       "action": "Continue Shopping"
-    }
+    },
+    "inCart": "in cart"
   },
   "products": {
     "title": "All Products",
@@ -125,6 +156,29 @@
       "priceHigh": "Price (High to Low)",
       "popular": "Most Popular",
       "newest": "Newest First"
+    }
+  },
+  "productDetail": {
+    "description": "Description",
+    "ingredients": "Ingredients",
+    "nutrition": "Nutrition Facts",
+    "addToFavorites": "Add to Favorites",
+    "removeFromFavorites": "Remove from Favorites",
+    "featured": "Featured",
+    "rating": "Rating",
+    "reviews": "reviews",
+    "estimatedTime": "Estimated Time",
+    "servingSize": "Serving Size",
+    "calories": "Calories",
+    "allergens": "Allergens",
+    "relatedProducts": "Related Products",
+    "productNotFound": "Product Not Found",
+    "backToMenu": "Back to Menu",
+    "ingredients": {
+      "freshTomatoes": "Fresh Tomatoes",
+      "mozzarella": "Mozzarella",
+      "basil": "Basil",
+      "oliveOil": "Olive Oil"
     }
   },
   "orders": {
@@ -164,6 +218,30 @@
       "note": "Note"
     }
   },
+  "orderDetail": {
+    "orderNotFound": "Order Not Found",
+    "orderNotFoundDesc": "The order you're looking for doesn't exist or has been removed.",
+    "backToOrders": "Back to Orders",
+    "orderReceived": "Order Received",
+    "preparingFood": "Preparing Your Food",
+    "readyForPickup": "Ready for Pickup",
+    "orderComplete": "Order Complete",
+    "inProgress": "In progress...",
+    "readyNow": "Ready now!",
+    "orderDetails": "Order Details",
+    "customerInfo": "Customer Information",
+    "paymentInfo": "Payment Information",
+    "orderTracking": "Order Tracking",
+    "rating": "Rating",
+    "writeReview": "Write a Review",
+    "submitReview": "Submit Review",
+    "thankYou": "Thank you for your review!",
+    "shareOrder": "Share Order",
+    "downloadReceipt": "Download Receipt",
+    "minutesAgo": "minutes ago",
+    "hoursAgo": "hour(s) ago",
+    "daysAgo": "day(s) ago"
+  },
   "contact": {
     "title": "Contact Us",
     "subtitle": "Get in touch with us",
@@ -183,11 +261,25 @@
     "subtitle": "Experience the complete digital ordering flow - from QR code generation to order completion",
     "qrGenerator": {
       "title": "QR Code Generator",
+      "titleWithTable": "QR Code Generator - Table",
       "generate": "Generate QR Code",
-      "regenerate": "Regenerate",
+      "regenerate": "Regenerate QR Code",
       "download": "Download",
       "print": "Print",
-      "scanText": "Scan this QR code to access the menu or click \"Visit Demo\" below"
+      "scanText": "Scan this QR code to access the menu or click \"Visit Demo\" below",
+      "tableNumber": "Table Number",
+      "selectTable": "Select Table (1-20)",
+      "qrCodeUrl": "QR Code URL",
+      "adminMode": "🔧 Admin Mode",
+      "userMode": "👤 User Mode",
+      "securityNote": "Contains JWT token for secure table identification",
+      "userDescription": "Generate QR codes for customer tables to access the digital menu",
+      "adminDescription": "Generate QR code for table access with secure authentication",
+      "adminSetTable": "Admin - Set Table Number:",
+      "secureAccess": "🔐 Secure access for Table",
+      "failedGenerate": "Failed to generate QR code",
+      "printTitle": "Meeno Menu QR Code",
+      "printSubtitle": "Scan to explore our delicious menu!"
     },
     "howItWorks": {
       "title": "How It Works",
@@ -204,6 +296,11 @@
         "description": "Explore the menu, add items to cart, and complete the order"
       }
     },
+    "actions": {
+      "simulateQrScan": "Simulate QR Scan",
+      "visitDemo": "Visit Demo - Explore Menu",
+      "experience": "Experience the full ordering flow as a customer would"
+    },
     "features": {
       "title": "Demo Features",
       "qrGeneration": {
@@ -218,9 +315,29 @@
         "title": "Complete Ordering",
         "description": "Full cart management and checkout process"
       }
-    },
-    "visitDemo": "Visit Demo - Explore Menu",
-    "experience": "Experience the full ordering flow as a customer would"
+    }
+  },
+  "loading": {
+    "title": "Loading",
+    "subtitle": "Please wait while we prepare your content",
+    "message": "This shouldn't take long..."
+  },
+  "notFound": {
+    "title": "Page Not Found",
+    "subtitle": "The page you're looking for doesn't exist",
+    "description": "Sorry, we couldn't find the page you're looking for. Please check the URL or navigate back to our homepage.",
+    "backToHome": "Back to Home",
+    "suggestions": "Here are some helpful links:",
+    "browseMenu": "Browse Menu",
+    "viewOrders": "View Orders",
+    "contactUs": "Contact Us",
+    "searchSuggestion": "Try searching for what you need or browse our menu",
+    "descriptions": {
+      "exploreMenu": "Explore our delicious menu items",
+      "browseProducts": "Browse all available products",
+      "checkOrders": "Check your order history",
+      "getTouchTeam": "Get in touch with our team"
+    }
   },
   "footer": {
     "quickLinks": "Quick Links",
@@ -285,6 +402,71 @@
     "cappuccino": {
       "name": "Cappuccino",
       "description": "Creamy cappuccino with perfect foam art"
+    },
+    "spaghetti": {
+      "name": "Spaghetti",
+      "description": "Classic Italian pasta with rich tomato sauce"
+    },
+    "vegetablePizza": {
+      "name": "Vegetable Pizza", 
+      "description": "Fresh vegetables on crispy pizza base"
+    },
+    "mushroomPizza": {
+      "name": "Mushroom Pizza",
+      "description": "Delicious mushroom pizza with cheese"
+    },
+    "sweets": {
+      "name": "Sweets",
+      "description": "Delicious sweet dessert"
+    },
+    "freshFruitSalad": {
+      "name": "Fresh Fruit Salad",
+      "description": "Mixed seasonal fruits"
+    },
+    "berryBowl": {
+      "name": "Berry Bowl",
+      "description": "Fresh berries with yogurt"
+    },
+    "caesarSalad": {
+      "name": "Caesar Salad",
+      "description": "Fresh romaine with parmesan"
+    },
+    "italianSausage": {
+      "name": "Italian Sausage",
+      "description": "Grilled Italian sausage with peppers"
+    },
+    "classicBurger": {
+      "name": "Classic Burger",
+      "description": "Beef patty with lettuce and tomato"
+    },
+    "italianCoffee": {
+      "name": "Italian Coffee",
+      "description": "Authentic Italian espresso"
+    }
+  },
+  "forms": {
+    "enterYourName": "Enter your name",
+    "enterYourEmail": "Enter your email",
+    "writeYourMessage": "Write your message here...",
+    "submitMessage": "Send Message"
+  },
+  "qrScanner": {
+    "title": "QR Scanner",
+    "scanning": {
+      "title": "Scanning for QR code...",
+      "subtitle": "Point your camera at a QR code"
+    },
+    "detected": {
+      "title": "QR Code Detected!",
+      "subtitle": "Processing..."
+    },
+    "success": {
+      "title": "Success!",
+      "subtitle": "Opening menu..."
+    },
+    "mobile": {
+      "title": "Mobile Simulation",
+      "description": "This simulates scanning the QR code with a mobile device"
     }
   }
 }

@@ -18,8 +18,8 @@ export const OrderAgain: React.FC = () => {
   const recentOrders: MenuItem[] = [
     {
       id: 'spaghetti',
-      nameKey: 'Spaghetti',
-      descriptionKey: 'Classic Italian pasta with rich tomato sauce',
+      nameKey: 'menuItems.spaghetti.name',
+      descriptionKey: 'menuItems.spaghetti.description',
       price: 7.29,
       image:
         'https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=400&h=300&fit=crop&auto=format',
@@ -27,8 +27,8 @@ export const OrderAgain: React.FC = () => {
     },
     {
       id: 'mushroom-pizza',
-      nameKey: 'Mushroom Pizza',
-      descriptionKey: 'Delicious mushroom pizza with cheese',
+      nameKey: 'menuItems.mushroomPizza.name',
+      descriptionKey: 'menuItems.mushroomPizza.description',
       price: 7.49,
       image:
         'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&h=300&fit=crop&auto=format',
@@ -37,8 +37,8 @@ export const OrderAgain: React.FC = () => {
     },
     {
       id: 'caesar-salad',
-      nameKey: 'Caesar Salad',
-      descriptionKey: 'Fresh romaine with parmesan',
+      nameKey: 'menuItems.caesarSalad.name',
+      descriptionKey: 'menuItems.caesarSalad.description',
       price: 8.99,
       image:
         'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=300&fit=crop&auto=format',
@@ -65,12 +65,12 @@ export const OrderAgain: React.FC = () => {
           {source === 'recent' ? (
             <Badge className='bg-blue-500 text-white text-xs'>
               <Clock className='h-3 w-3 mr-1' />
-              Recent
+              {t('common.recent')}
             </Badge>
           ) : (
             <Badge className='bg-red-500 text-white text-xs'>
               <Star className='h-3 w-3 mr-1' />
-              Favorite
+              {t('common.favorite')}
             </Badge>
           )}
         </div>
@@ -78,10 +78,10 @@ export const OrderAgain: React.FC = () => {
 
       <div className='flex-1'>
         <h3 className='font-semibold text-gray-900 dark:text-white mb-2 text-sm'>
-          {item.nameKey}
+          {t(item.nameKey)}
         </h3>
         <p className='text-xs text-gray-600 dark:text-gray-400 mb-3 line-clamp-2'>
-          {item.descriptionKey}
+          {t(item.descriptionKey)}
         </p>
       </div>
 
@@ -118,10 +118,7 @@ export const OrderAgain: React.FC = () => {
             {t('orderAgain.title', 'Order Again')}
           </h2>
           <p className='text-gray-600 dark:text-gray-400'>
-            {t(
-              'orderAgain.subtitle',
-              'Quick access to your recent orders and favorites'
-            )}
+            {t('orderAgain.subtitle')}
           </p>
         </motion.div>
 
@@ -135,7 +132,7 @@ export const OrderAgain: React.FC = () => {
               transition={{ delay: 0.1 }}
             >
               <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
-                Recent Orders
+                {t('orderAgain.recentOrders')}
               </h3>
               <div className='grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3'>
                 {recentOrders
@@ -154,7 +151,7 @@ export const OrderAgain: React.FC = () => {
               transition={{ delay: 0.2 }}
             >
               <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
-                Your Favorites
+                {t('orderAgain.yourFavorites')}
               </h3>
               <div className='grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3'>
                 {favorites

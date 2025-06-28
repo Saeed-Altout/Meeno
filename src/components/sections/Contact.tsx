@@ -129,14 +129,14 @@ export const Contact: React.FC = () => {
     {
       icon: Instagram,
       url: restaurantInfo.social.instagram,
-      label: 'Instagram',
+      label: t('common.instagram'),
       color: 'from-pink-500 to-rose-500',
       bgColor: 'bg-pink-50 dark:bg-pink-950/20',
     },
     {
       icon: Facebook,
       url: restaurantInfo.social.facebook,
-      label: 'Facebook',
+      label: t('common.facebook'),
       color: 'from-blue-600 to-blue-700',
       bgColor: 'bg-blue-50 dark:bg-blue-950/20',
     },
@@ -325,7 +325,7 @@ export const Contact: React.FC = () => {
                       name='name'
                       value={formData.name}
                       onChange={handleInputChange}
-                      placeholder='Enter your name'
+                      placeholder={t('forms.enterYourName')}
                       required
                       className='border-gray-200 dark:border-gray-700 focus:border-amber-500 dark:focus:border-amber-400'
                     />
@@ -339,7 +339,7 @@ export const Contact: React.FC = () => {
                       type='email'
                       value={formData.email}
                       onChange={handleInputChange}
-                      placeholder='Enter your email'
+                      placeholder={t('forms.enterYourEmail')}
                       required
                       className='border-gray-200 dark:border-gray-700 focus:border-amber-500 dark:focus:border-amber-400'
                     />

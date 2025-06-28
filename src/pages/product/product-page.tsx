@@ -191,17 +191,20 @@ export default function ProductPage() {
                 Ingredients
               </h3>
               <div className='flex flex-wrap gap-2'>
-                {['Fresh Tomatoes', 'Mozzarella', 'Basil', 'Olive Oil'].map(
-                  ingredient => (
-                    <Badge
-                      key={ingredient}
-                      variant='outline'
-                      className='text-sm px-3 py-1'
-                    >
-                      {ingredient}
-                    </Badge>
-                  )
-                )}
+                {[
+                  t('productDetail.ingredients.freshTomatoes'),
+                  t('productDetail.ingredients.mozzarella'),
+                  t('productDetail.ingredients.basil'),
+                  t('productDetail.ingredients.oliveOil'),
+                ].map(ingredient => (
+                  <Badge
+                    key={ingredient}
+                    variant='outline'
+                    className='text-sm px-3 py-1'
+                  >
+                    {ingredient}
+                  </Badge>
+                ))}
               </div>
             </div>
 

@@ -180,13 +180,13 @@ export const CartSidebar: React.FC<CartSidebarProps> = ({
           <ShoppingBag className='h-8 w-8 text-gray-400' />
         </div>
         <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-2'>
-          Your cart is empty
+          {t('cart.emptyCart.title')}
         </h3>
         <p className='text-gray-600 dark:text-gray-400 mb-4'>
-          Add some delicious items to get started!
+          {t('cart.emptyCart.description')}
         </p>
         <Button onClick={onClose} variant='outline' className='px-6 py-2'>
-          Continue Shopping
+          {t('cart.emptyCart.action')}
         </Button>
       </div>
     ),

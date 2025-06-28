@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Camera, X, CheckCircle, Smartphone, QrCode } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Dialog, DialogContent } from '../ui/dialog';
@@ -14,6 +15,7 @@ export const QRScannerDemo: React.FC<QRScannerDemoProps> = ({
   isOpen,
   onClose,
 }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [scanningStep, setScanningStep] = useState<
     'scanning' | 'detected' | 'success'
@@ -75,7 +77,9 @@ export const QRScannerDemo: React.FC<QRScannerDemoProps> = ({
           <div className='absolute top-4 left-4 z-40 text-white'>
             <div className='flex items-center gap-2'>
               <Camera className='h-5 w-5' />
-              <span className='text-sm font-medium'>QR Scanner</span>
+              <span className='text-sm font-medium'>
+                {t('qrScanner.title')}
+              </span>
             </div>
           </div>
 
@@ -163,25 +167,31 @@ export const QRScannerDemo: React.FC<QRScannerDemoProps> = ({
               {scanningStep === 'scanning' && (
                 <>
                   <p className='text-white font-medium'>
-                    Scanning for QR code...
+                    {t('qrScanner.scanning.title')}
                   </p>
                   <p className='text-white/70 text-sm'>
-                    Point your camera at a QR code
+                    {t('qrScanner.scanning.subtitle')}
                   </p>
                 </>
               )}
               {scanningStep === 'detected' && (
                 <>
                   <p className='text-green-400 font-medium'>
-                    QR Code Detected!
+                    {t('qrScanner.detected.title')}
                   </p>
-                  <p className='text-white/70 text-sm'>Processing...</p>
+                  <p className='text-white/70 text-sm'>
+                    {t('qrScanner.detected.subtitle')}
+                  </p>
                 </>
               )}
               {scanningStep === 'success' && (
                 <>
-                  <p className='text-green-400 font-medium'>Success!</p>
-                  <p className='text-white/70 text-sm'>Opening menu...</p>
+                  <p className='text-green-400 font-medium'>
+                    {t('qrScanner.success.title')}
+                  </p>
+                  <p className='text-white/70 text-sm'>
+                    {t('qrScanner.success.subtitle')}
+                  </p>
                 </>
               )}
             </motion.div>
@@ -222,10 +232,12 @@ export const QRScannerDemo: React.FC<QRScannerDemoProps> = ({
         <div className='p-4 bg-gray-900/50 text-center'>
           <div className='flex items-center justify-center gap-2 mb-2'>
             <Smartphone className='h-4 w-4 text-amber-400' />
-            <span className='text-sm font-medium'>Mobile Simulation</span>
+            <span className='text-sm font-medium'>
+              {t('qrScanner.mobile.title')}
+            </span>
           </div>
           <p className='text-xs text-gray-300'>
-            This simulates scanning the QR code with a mobile device
+            {t('qrScanner.mobile.description')}
           </p>
         </div>
       </DialogContent>

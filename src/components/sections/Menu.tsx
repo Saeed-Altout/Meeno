@@ -49,73 +49,73 @@ export const Menu: React.FC = () => {
   const categories = [
     {
       id: 'pizza',
-      name: 'Pizza',
+      nameKey: 'menu.categories.pizza',
       icon: Pizza,
       color: 'from-orange-500 to-red-500',
     },
     {
       id: 'fruits',
-      name: 'Fruits',
+      nameKey: 'menu.categories.fruits',
       icon: Apple,
       color: 'from-green-400 to-emerald-500',
     },
     {
       id: 'snacks',
-      name: 'Snacks',
+      nameKey: 'menu.categories.snacks',
       icon: Cookie,
       color: 'from-yellow-400 to-orange-400',
     },
     {
       id: 'veggies',
-      name: 'Veggies',
+      nameKey: 'menu.categories.veggies',
       icon: Salad,
       color: 'from-emerald-400 to-green-500',
     },
     {
       id: 'hotdog',
-      name: 'Hotdog',
+      nameKey: 'menu.categories.hotdog',
       icon: Beef,
       color: 'from-red-500 to-pink-500',
     },
     {
       id: 'burger',
-      name: 'Burger',
+      nameKey: 'menu.categories.burger',
       icon: Sandwich,
       color: 'from-purple-500 to-indigo-500',
     },
     {
       id: 'drink',
-      name: 'Drinks',
+      nameKey: 'menu.categories.drinks',
       icon: Coffee,
       color: 'from-blue-500 to-cyan-500',
     },
     {
       id: 'desserts',
-      name: 'Desserts',
+      nameKey: 'menu.categories.desserts',
       icon: IceCream,
       color: 'from-pink-500 to-rose-500',
     },
     {
       id: 'seafood',
-      name: 'Seafood',
+      nameKey: 'menu.categories.seafood',
       icon: Fish,
       color: 'from-cyan-500 to-teal-500',
     },
     {
       id: 'bakery',
-      name: 'Bakery',
+      nameKey: 'menu.categories.bakery',
       icon: Cake,
       color: 'from-amber-500 to-yellow-500',
     },
     {
       id: 'wine',
-      name: 'Wine',
+      nameKey: 'menu.categories.wine',
       icon: Wine,
       color: 'from-purple-600 to-violet-600',
     },
     {
       id: 'specials',
-      name: 'Chef Special',
+      nameKey: 'menu.categories.specials',
       icon: ChefHat,
       color: 'from-gray-700 to-gray-900',
     },
@@ -125,8 +125,8 @@ export const Menu: React.FC = () => {
     pizza: [
       {
         id: 'spaghetti',
-        nameKey: 'Spaghetti',
-        descriptionKey: 'Classic Italian pasta with rich tomato sauce',
+        nameKey: 'menuItems.spaghetti.name',
+        descriptionKey: 'menuItems.spaghetti.description',
         price: 7.29,
         image:
           'https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=400&h=300&fit=crop&auto=format',
@@ -134,8 +134,8 @@ export const Menu: React.FC = () => {
       },
       {
         id: 'veggie-pizza',
-        nameKey: 'Vegetable Pizza',
-        descriptionKey: 'Fresh vegetables on crispy pizza base',
+        nameKey: 'menuItems.vegetablePizza.name',
+        descriptionKey: 'menuItems.vegetablePizza.description',
         price: 5.49,
         image:
           'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=400&h=300&fit=crop&auto=format',
@@ -143,8 +143,8 @@ export const Menu: React.FC = () => {
       },
       {
         id: 'mushroom-pizza',
-        nameKey: 'Mushroom Pizza',
-        descriptionKey: 'Delicious mushroom pizza with cheese',
+        nameKey: 'menuItems.mushroomPizza.name',
+        descriptionKey: 'menuItems.mushroomPizza.description',
         price: 7.49,
         image:
           'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&h=300&fit=crop&auto=format',
@@ -153,8 +153,8 @@ export const Menu: React.FC = () => {
       },
       {
         id: 'sweet-dessert',
-        nameKey: 'Sweets',
-        descriptionKey: 'Delicious sweet dessert',
+        nameKey: 'menuItems.sweets.name',
+        descriptionKey: 'menuItems.sweets.description',
         price: 6.49,
         image:
           'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&h=300&fit=crop&auto=format',
@@ -164,8 +164,8 @@ export const Menu: React.FC = () => {
     fruits: [
       {
         id: 'fruit-salad',
-        nameKey: 'Fresh Fruit Salad',
-        descriptionKey: 'Mixed seasonal fruits',
+        nameKey: 'menuItems.freshFruitSalad.name',
+        descriptionKey: 'menuItems.freshFruitSalad.description',
         price: 4.99,
         image:
           'https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?w=400&h=300&fit=crop&auto=format',
@@ -173,8 +173,8 @@ export const Menu: React.FC = () => {
       },
       {
         id: 'berry-bowl',
-        nameKey: 'Berry Bowl',
-        descriptionKey: 'Fresh berries with yogurt',
+        nameKey: 'menuItems.berryBowl.name',
+        descriptionKey: 'menuItems.berryBowl.description',
         price: 5.99,
         image:
           'https://images.unsplash.com/photo-1511690743698-d9d85f2fbf38?w=400&h=300&fit=crop&auto=format',
@@ -184,8 +184,8 @@ export const Menu: React.FC = () => {
     snacks: [
       {
         id: 'bruschetta',
-        nameKey: 'Bruschetta',
-        descriptionKey: 'Toasted bread with tomatoes and basil',
+        nameKey: 'menuItems.bruschetta.name',
+        descriptionKey: 'menuItems.bruschetta.description',
         price: 6.99,
         image:
           'https://images.unsplash.com/photo-1506280754576-f6fa8a873550?w=400&h=300&fit=crop&auto=format',
@@ -195,8 +195,8 @@ export const Menu: React.FC = () => {
     veggies: [
       {
         id: 'caesar-salad',
-        nameKey: 'Caesar Salad',
-        descriptionKey: 'Fresh romaine with parmesan',
+        nameKey: 'menuItems.caesarSalad.name',
+        descriptionKey: 'menuItems.caesarSalad.description',
         price: 8.99,
         image:
           'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=300&fit=crop&auto=format',
@@ -206,8 +206,8 @@ export const Menu: React.FC = () => {
     hotdog: [
       {
         id: 'italian-sausage',
-        nameKey: 'Italian Sausage',
-        descriptionKey: 'Grilled Italian sausage with peppers',
+        nameKey: 'menuItems.italianSausage.name',
+        descriptionKey: 'menuItems.italianSausage.description',
         price: 9.99,
         image:
           'https://images.unsplash.com/photo-1551058045-6942c0e0ce2f?w=400&h=300&fit=crop&auto=format',
@@ -217,8 +217,8 @@ export const Menu: React.FC = () => {
     burger: [
       {
         id: 'classic-burger',
-        nameKey: 'Classic Burger',
-        descriptionKey: 'Beef patty with lettuce and tomato',
+        nameKey: 'menuItems.classicBurger.name',
+        descriptionKey: 'menuItems.classicBurger.description',
         price: 12.99,
         image:
           'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&h=300&fit=crop&auto=format',
@@ -228,8 +228,8 @@ export const Menu: React.FC = () => {
     drink: [
       {
         id: 'italian-coffee',
-        nameKey: 'Italian Coffee',
-        descriptionKey: 'Authentic Italian espresso',
+        nameKey: 'menuItems.italianCoffee.name',
+        descriptionKey: 'menuItems.italianCoffee.description',
         price: 3.99,
         image:
           'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&h=300&fit=crop&auto=format',
@@ -308,7 +308,7 @@ export const Menu: React.FC = () => {
                 viewport={{ once: true }}
                 transition={{ delay: 0.1 }}
               >
-                Discover our delicious selection across all categories
+                {t('menu.subtitle')}
               </motion.p>
             </div>
             <Button
@@ -365,7 +365,7 @@ export const Menu: React.FC = () => {
                             />
                           </div>
                           <span className='text-xs md:text-sm font-semibold mb-1'>
-                            {category.name}
+                            {t(category.nameKey)}
                           </span>
                           <div
                             className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 ${
@@ -448,7 +448,7 @@ export const Menu: React.FC = () => {
 
                         {cartQuantity > 0 && (
                           <Badge className='absolute bottom-3 left-3 bg-green-500 text-white border-0 shadow-lg font-semibold'>
-                            {cartQuantity} in cart
+                            {cartQuantity} {t('cart.inCart', 'in cart')}
                           </Badge>
                         )}
                       </div>
@@ -456,10 +456,10 @@ export const Menu: React.FC = () => {
                       <div className='p-4 md:p-5 flex flex-col flex-1'>
                         <div className='flex-1'>
                           <h3 className='font-bold text-lg md:text-xl text-gray-900 dark:text-white mb-2 group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors duration-300'>
-                            {item.nameKey}
+                            {t(item.nameKey)}
                           </h3>
                           <p className='text-sm text-gray-600 dark:text-gray-400 mb-3 line-clamp-2 min-h-[2.5rem]'>
-                            {item.descriptionKey}
+                            {t(item.descriptionKey)}
                           </p>
                           <div className='flex items-center gap-1 mb-4'>
                             {renderStars()}
@@ -516,7 +516,7 @@ export const Menu: React.FC = () => {
                     <Pizza className='h-8 w-8 text-orange-500' />
                   </div>
                   <h3 className='text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2'>
-                    Coming Soon!
+                    {t('menu.comingSoon')}
                   </h3>
                   <p className='text-gray-500 dark:text-gray-400'>
                     {t(

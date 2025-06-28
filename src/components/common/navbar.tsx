@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { QrCodeIcon, MenuIcon, ShoppingCart } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import { config } from '@/config';
 
@@ -18,6 +19,7 @@ import { useCartTotals } from '@/stores/cart-store';
 import { cn } from '@/lib/utils';
 
 export const Navbar = () => {
+  const { t } = useTranslation();
   const buttonContainerRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -62,7 +64,7 @@ export const Navbar = () => {
 
         <Button asChild size='sm'>
           <Link to='/qr'>
-            Get Started <QrCodeIcon className='size-4' />
+            {t('common.getStarted')} <QrCodeIcon className='size-4' />
           </Link>
         </Button>
       </div>
@@ -93,7 +95,7 @@ export const Navbar = () => {
               className='mt-4 bg-primary hover:bg-primary/90 flex items-center gap-2'
             >
               <Link to='/qr' onClick={() => setIsOpen(false)}>
-                Get Started <QrCodeIcon className='ml-1 h-4 w-4' />
+                {t('common.getStarted')} <QrCodeIcon className='ml-1 h-4 w-4' />
               </Link>
             </Button>
           </div>

@@ -92,7 +92,7 @@ export default function DemoPage() {
           <!DOCTYPE html>
           <html>
             <head>
-              <title>Meeno Menu QR Code</title>
+              <title>${t('demo.qrGenerator.printTitle')}</title>
               <style>
                 body {
                   display: flex;
@@ -118,8 +118,10 @@ export default function DemoPage() {
             </head>
             <body>
               <div class="qr-container">
-                <h1>🍝 Meeno Menu - Table ${tableNumber}</h1>
-                <p>Scan to explore our delicious menu!</p>
+                <h1>🍝 ${t('demo.qrGenerator.printTitle')} - ${t(
+          'demo.qrGenerator.tableNumber'
+        )} ${tableNumber}</h1>
+                <p>${t('demo.qrGenerator.printSubtitle')}</p>
                 <img src="${qrCodeDataUrl}" alt="QR Code" />
                 <p class="url">${menuUrl}</p>
               </div>
@@ -281,7 +283,7 @@ export default function DemoPage() {
                 <div className='flex items-center justify-between'>
                   <CardTitle className='flex items-center gap-2'>
                     <QrCode className='w-5 h-5 text-blue-500' />
-                    QR Code Generator - Table {tableNumber}
+                    {t('demo.qrGenerator.titleWithTable')} {tableNumber}
                   </CardTitle>
                   <Button
                     variant='ghost'
@@ -289,18 +291,20 @@ export default function DemoPage() {
                     onClick={() => setIsAdminMode(!isAdminMode)}
                     className='text-xs px-2 py-1 h-auto'
                   >
-                    {isAdminMode ? '👤 User Mode' : '🔧 Admin Mode'}
+                    {isAdminMode
+                      ? t('demo.qrGenerator.userMode')
+                      : t('demo.qrGenerator.adminMode')}
                   </Button>
                 </div>
                 <p className='text-sm text-gray-600 dark:text-gray-400 mt-2'>
                   {isAdminMode
-                    ? 'Generate QR code for table access with secure authentication'
-                    : 'Generate QR code for customers to access the digital menu'}
+                    ? t('demo.qrGenerator.adminDescription')
+                    : t('demo.qrGenerator.userDescription')}
                 </p>
                 {isAdminMode && (
                   <div className='flex items-center gap-3 pt-3 border-t border-gray-200 dark:border-gray-700 mt-3'>
                     <label className='text-sm font-medium text-gray-700 dark:text-gray-300'>
-                      Admin - Set Table Number:
+                      {t('demo.qrGenerator.adminSetTable')}
                     </label>
                     <select
                       value={tableNumber}
@@ -309,7 +313,7 @@ export default function DemoPage() {
                     >
                       {Array.from({ length: 20 }, (_, i) => i + 1).map(num => (
                         <option key={num} value={num}>
-                          Table {num}
+                          {t('demo.qrGenerator.tableNumber')} {num}
                         </option>
                       ))}
                     </select>
@@ -332,7 +336,7 @@ export default function DemoPage() {
                       />
                     ) : (
                       <div className='w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 flex items-center justify-center text-gray-400 text-sm text-center'>
-                        Failed to generate QR code
+                        {t('demo.qrGenerator.failedGenerate')}
                       </div>
                     )}
                   </div>
@@ -350,12 +354,11 @@ export default function DemoPage() {
                   )}
                   <div className='space-y-1'>
                     <p className='text-sm text-gray-600 dark:text-gray-400'>
-                      Scan this QR code to access the menu or click "Visit Demo"
-                      below
+                      {t('demo.qrGenerator.scanText')}
                     </p>
                     {isAdminMode && (
                       <p className='text-xs text-blue-600 dark:text-blue-400 font-medium'>
-                        🔐 Secure access for Table {tableNumber}
+                        {t('demo.qrGenerator.secureAccess')} {tableNumber}
                       </p>
                     )}
                   </div>
@@ -375,7 +378,7 @@ export default function DemoPage() {
                         isGenerating ? 'animate-spin' : ''
                       }`}
                     />
-                    Regenerate QR Code
+                    {t('demo.qrGenerator.regenerate')}
                   </Button>
                   <Button
                     onClick={downloadQRCode}
@@ -385,7 +388,7 @@ export default function DemoPage() {
                     className='flex-1 sm:flex-none min-h-[44px] px-6 py-3 text-base font-medium border-2 hover:scale-105 transition-all duration-200'
                   >
                     <Download className='w-5 h-5 mr-2' />
-                    Download
+                    {t('demo.qrGenerator.download')}
                   </Button>
                   <Button
                     onClick={printQRCode}
@@ -395,7 +398,7 @@ export default function DemoPage() {
                     className='flex-1 sm:flex-none min-h-[44px] px-6 py-3 text-base font-medium border-2 hover:scale-105 transition-all duration-200'
                   >
                     <Printer className='w-5 h-5 mr-2' />
-                    Print
+                    {t('demo.qrGenerator.print')}
                   </Button>
                 </div>
               </CardContent>
@@ -412,7 +415,7 @@ export default function DemoPage() {
               <CardHeader>
                 <CardTitle className='flex items-center gap-2'>
                   <Smartphone className='w-5 h-5 text-green-500' />
-                  How It Works
+                  {t('demo.howItWorks.title')}
                 </CardTitle>
               </CardHeader>
               <CardContent className='space-y-4 sm:space-y-6'>
@@ -423,10 +426,10 @@ export default function DemoPage() {
                     </div>
                     <div className='flex-1'>
                       <h4 className='font-medium text-gray-900 dark:text-white text-sm sm:text-base'>
-                        Generate QR Code
+                        {t('demo.howItWorks.step1.title')}
                       </h4>
                       <p className='text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-1'>
-                        Create a unique QR code that links directly to your menu
+                        {t('demo.howItWorks.step1.description')}
                       </p>
                     </div>
                   </div>
@@ -437,11 +440,10 @@ export default function DemoPage() {
                     </div>
                     <div className='flex-1'>
                       <h4 className='font-medium text-gray-900 dark:text-white text-sm sm:text-base'>
-                        Customer Scans
+                        {t('demo.howItWorks.step2.title')}
                       </h4>
                       <p className='text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-1'>
-                        Customers scan the QR code with their mobile device
-                        camera
+                        {t('demo.howItWorks.step2.description')}
                       </p>
                     </div>
                   </div>
@@ -452,11 +454,10 @@ export default function DemoPage() {
                     </div>
                     <div className='flex-1'>
                       <h4 className='font-medium text-gray-900 dark:text-white text-sm sm:text-base'>
-                        Browse & Order
+                        {t('demo.howItWorks.step3.title')}
                       </h4>
                       <p className='text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-1'>
-                        Explore the menu, add items to cart, and complete the
-                        order
+                        {t('demo.howItWorks.step3.description')}
                       </p>
                     </div>
                   </div>
@@ -472,7 +473,7 @@ export default function DemoPage() {
                   >
                     <Smartphone className='w-5 h-5 mr-3' />
                     <span className='text-base font-medium'>
-                      Simulate QR Scan
+                      {t('demo.actions.simulateQrScan')}
                     </span>
                   </Button>
                   <Button
@@ -482,11 +483,11 @@ export default function DemoPage() {
                   >
                     <MousePointer className='w-5 h-5 mr-3' />
                     <span className='text-base font-medium'>
-                      Visit Demo - Explore Menu
+                      {t('demo.actions.visitDemo')}
                     </span>
                   </Button>
                   <p className='text-sm text-gray-500 dark:text-gray-400 text-center px-2 leading-relaxed'>
-                    Experience the full ordering flow as a customer would
+                    {t('demo.actions.experience')}
                   </p>
                 </div>
               </CardContent>
@@ -504,7 +505,7 @@ export default function DemoPage() {
           <Card>
             <CardHeader>
               <CardTitle className='text-center text-lg sm:text-xl'>
-                Demo Features
+                {t('demo.features.title')}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -514,10 +515,10 @@ export default function DemoPage() {
                     <QrCode className='w-5 h-5 sm:w-6 sm:h-6 text-blue-500' />
                   </div>
                   <h4 className='font-semibold text-gray-900 dark:text-white text-sm sm:text-base'>
-                    QR Code Generation
+                    {t('demo.features.qrGeneration.title')}
                   </h4>
                   <p className='text-xs sm:text-sm text-gray-600 dark:text-gray-400'>
-                    Instantly generate QR codes that link to your menu
+                    {t('demo.features.qrGeneration.description')}
                   </p>
                 </div>
 
@@ -526,10 +527,10 @@ export default function DemoPage() {
                     <Smartphone className='w-5 h-5 sm:w-6 sm:h-6 text-green-500' />
                   </div>
                   <h4 className='font-semibold text-gray-900 dark:text-white text-sm sm:text-base'>
-                    Mobile Optimized
+                    {t('demo.features.mobileOptimized.title')}
                   </h4>
                   <p className='text-xs sm:text-sm text-gray-600 dark:text-gray-400'>
-                    Perfect experience on all mobile devices
+                    {t('demo.features.mobileOptimized.description')}
                   </p>
                 </div>
 
@@ -538,10 +539,10 @@ export default function DemoPage() {
                     <ShoppingCart className='w-5 h-5 sm:w-6 sm:h-6 text-amber-500' />
                   </div>
                   <h4 className='font-semibold text-gray-900 dark:text-white text-sm sm:text-base'>
-                    Complete Ordering
+                    {t('demo.features.completeOrdering.title')}
                   </h4>
                   <p className='text-xs sm:text-sm text-gray-600 dark:text-gray-400'>
-                    Full cart management and checkout process
+                    {t('demo.features.completeOrdering.description')}
                   </p>
                 </div>
               </div>
