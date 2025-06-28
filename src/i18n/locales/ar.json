@@ -156,6 +156,10 @@
       "priceHigh": "السعر (مرتفع إلى منخفض)",
       "popular": "الأكثر شعبية",
       "newest": "الأحدث أولاً"
+    },
+    "viewMode": {
+      "grid": "شبكة",
+      "list": "قائمة"
     }
   },
   "productDetail": {

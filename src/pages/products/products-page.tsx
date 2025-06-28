@@ -182,7 +182,9 @@ export default function ProductsPage() {
                 }`}
               >
                 <Grid className='h-4 w-4 mr-2' />
-                <span className='hidden sm:inline'>Grid</span>
+                <span className='hidden sm:inline'>
+                  {t('products.viewMode.grid', 'Grid')}
+                </span>
               </Button>
               <Button
                 variant='ghost'
@@ -195,7 +197,9 @@ export default function ProductsPage() {
                 }`}
               >
                 <List className='h-4 w-4 mr-2' />
-                <span className='hidden sm:inline'>List</span>
+                <span className='hidden sm:inline'>
+                  {t('products.viewMode.list', 'List')}
+                </span>
               </Button>
             </div>
           </div>
@@ -241,7 +245,10 @@ export default function ProductsPage() {
                         variant='secondary'
                         className='ml-1 bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300'
                       >
-                        {selectedCategory}
+                        {t(
+                          `menu.categories.${selectedCategory}`,
+                          selectedCategory
+                        )}
                       </Badge>
                     )}
                     <ChevronDown className='h-3 w-3 text-gray-400' />
@@ -260,7 +267,10 @@ export default function ProductsPage() {
                     >
                       {category === 'all'
                         ? t('products.filters.allCategories')
-                        : category.charAt(0).toUpperCase() + category.slice(1)}
+                        : t(
+                            `menu.categories.${category}`,
+                            category.charAt(0).toUpperCase() + category.slice(1)
+                          )}
                     </DropdownMenuItem>
                   ))}
                 </DropdownMenuContent>
@@ -409,7 +419,7 @@ const ProductGridCard: React.FC<ProductCardProps> = ({
   t,
 }) => {
   return (
-    <Card className='group overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-white dark:bg-gray-800 border-0 shadow-lg rounded-2xl'>
+    <Card className='group overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-white dark:bg-gray-800 border-0 shadow-lg rounded-2xl h-full flex flex-col'>
       <div className='relative overflow-hidden'>
         <img
           src={item.image}
@@ -431,7 +441,7 @@ const ProductGridCard: React.FC<ProductCardProps> = ({
             variant='secondary'
             className='bg-white/90 dark:bg-gray-800/90 text-gray-700 dark:text-gray-300 text-xs font-medium px-2 py-1 rounded-full shadow-lg backdrop-blur-sm'
           >
-            {item.category}
+            {t(`menu.categories.${item.category}`) || item.category}
           </Badge>
         </div>
 
@@ -439,16 +449,16 @@ const ProductGridCard: React.FC<ProductCardProps> = ({
         <div className='absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300' />
       </div>
 
-      <div className='p-5'>
-        <h3 className='font-bold text-lg text-gray-900 dark:text-white mb-2 line-clamp-1 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors duration-200'>
+      <div className='p-5 flex flex-col flex-1'>
+        <h3 className='font-bold text-lg text-gray-900 dark:text-white mb-2 line-clamp-2 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors duration-200 min-h-[3.5rem]'>
           {t(item.nameKey)}
         </h3>
-        <p className='text-sm text-gray-600 dark:text-gray-400 mb-4 line-clamp-2 leading-relaxed'>
+        <p className='text-sm text-gray-600 dark:text-gray-400 mb-4 line-clamp-3 leading-relaxed flex-1 min-h-[4.5rem]'>
           {t(item.descriptionKey)}
         </p>
 
         {/* Price */}
-        <div className='flex items-center justify-between mb-4'>
+        <div className='flex items-center justify-between mb-4 mt-auto'>
           <span className='text-2xl font-bold bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent'>
             ${item.price.toFixed(2)}
           </span>
@@ -515,7 +525,7 @@ const ProductListCard: React.FC<ProductCardProps> = ({
                   variant='outline'
                   className='text-xs bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600'
                 >
-                  {item.category}
+                  {t(`menu.categories.${item.category}`) || item.category}
                 </Badge>
               </div>
             </div>

@@ -156,6 +156,10 @@
       "priceHigh": "Price (High to Low)",
       "popular": "Most Popular",
       "newest": "Newest First"
+    },
+    "viewMode": {
+      "grid": "Grid",
+      "list": "List"
     }
   },
   "productDetail": {
