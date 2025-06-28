@@ -11,6 +11,7 @@ import {
   ArrowRight,
   ShoppingCart,
   ClipboardList,
+  QrCode,
 } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '../ui/sheet';
@@ -70,6 +71,12 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   const navItems = [
     { key: 'home', label: t('nav.home'), icon: Home, route: '/' },
+    {
+      key: 'demo',
+      label: 'Demo',
+      icon: QrCode,
+      route: '/demo',
+    },
     {
       key: 'menu',
       label: t('nav.menu'),

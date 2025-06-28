@@ -34,7 +34,8 @@
     "title": "Welcome to La Tavola",
     "subtitle": "Authentic Italian Flavors in the Heart of the City",
     "description": "Experience the finest Italian cuisine with fresh ingredients and traditional recipes passed down through generations.",
-    "cta": "Explore Our Menu"
+    "cta": "Explore Our Menu",
+    "demo": "Try Demo"
   },
   "menu": {
     "title": "Our Menu",
@@ -176,6 +177,50 @@
       "city": "Little Italy, NY 10013",
       "country": "United States"
     }
+  },
+  "demo": {
+    "title": "Meeno Menu Demo",
+    "subtitle": "Experience the complete digital ordering flow - from QR code generation to order completion",
+    "qrGenerator": {
+      "title": "QR Code Generator",
+      "generate": "Generate QR Code",
+      "regenerate": "Regenerate",
+      "download": "Download",
+      "print": "Print",
+      "scanText": "Scan this QR code to access the menu or click \"Visit Demo\" below"
+    },
+    "howItWorks": {
+      "title": "How It Works",
+      "step1": {
+        "title": "Generate QR Code",
+        "description": "Create a unique QR code that links directly to your menu"
+      },
+      "step2": {
+        "title": "Customer Scans",
+        "description": "Customers scan the QR code with their mobile device camera"
+      },
+      "step3": {
+        "title": "Browse & Order",
+        "description": "Explore the menu, add items to cart, and complete the order"
+      }
+    },
+    "features": {
+      "title": "Demo Features",
+      "qrGeneration": {
+        "title": "QR Code Generation",
+        "description": "Instantly generate QR codes that link to your menu"
+      },
+      "mobileOptimized": {
+        "title": "Mobile Optimized",
+        "description": "Perfect experience on all mobile devices"
+      },
+      "completeOrdering": {
+        "title": "Complete Ordering",
+        "description": "Full cart management and checkout process"
+      }
+    },
+    "visitDemo": "Visit Demo - Explore Menu",
+    "experience": "Experience the full ordering flow as a customer would"
   },
   "footer": {
     "quickLinks": "Quick Links",

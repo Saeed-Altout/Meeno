@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { ChevronDown } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { ChevronDown, QrCode } from 'lucide-react';
 import { Button } from '../ui/button';
 import { restaurantInfo } from '../../data';
 
@@ -10,6 +11,7 @@ interface HeroProps {
 
 export const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -101,13 +103,25 @@ export const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
           {t('hero.description')}
         </motion.p>
 
-        <motion.div variants={itemVariants} className='space-y-4'>
+        <motion.div
+          variants={itemVariants}
+          className='flex flex-col sm:flex-row gap-4 justify-center items-center'
+        >
           <Button
             size='lg'
             onClick={onScrollToMenu}
             className='bg-amber-600 hover:bg-amber-700 text-white text-lg px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105'
           >
             {t('hero.cta')}
+          </Button>
+          <Button
+            size='lg'
+            variant='outline'
+            onClick={() => navigate('/demo')}
+            className='border-2 border-white text-white hover:bg-white hover:text-gray-900 text-lg px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105'
+          >
+            <QrCode className='w-5 h-5 mr-2' />
+            {t('hero.demo')}
           </Button>
         </motion.div>
       </motion.div>

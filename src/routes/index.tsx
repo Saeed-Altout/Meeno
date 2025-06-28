@@ -9,6 +9,7 @@ import ProductPage from '@/pages/product/product-page';
 import OrdersPage from '@/pages/orders/orders-page';
 import OrderDetailPage from '@/pages/orders/order-detail-page';
 import ProductsPage from '@/pages/products/products-page';
+import DemoPage from '@/pages/demo/demo-page';
 import HomeLayout from '@/layouts/home-layout';
 
 /**
@@ -29,7 +30,23 @@ const routes: RouteObject[] = [
         ),
       },
       {
+        path: 'demo',
+        element: (
+          <Suspense fallback={<LoadingPage />}>
+            <DemoPage />
+          </Suspense>
+        ),
+      },
+      {
         path: 'menu',
+        element: (
+          <Suspense fallback={<LoadingPage />}>
+            <MenuPage />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'explore',
         element: (
           <Suspense fallback={<LoadingPage />}>
             <MenuPage />
