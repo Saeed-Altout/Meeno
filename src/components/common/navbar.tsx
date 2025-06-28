@@ -41,7 +41,7 @@ export const Navbar = () => {
           <div className='flex'>
             {config.navigationLinks.map(link => (
               <MagneticCursor key={link.href}>
-                <Link to={link.href}>{link.name}</Link>
+                <Link to={link.href}>{t(link.nameKey)}</Link>
               </MagneticCursor>
             ))}
           </div>
@@ -86,7 +86,7 @@ export const Navbar = () => {
                 onClick={() => setIsOpen(false)}
               >
                 <link.icon className='h-5 w-5' />
-                {link.name}
+                {t(link.nameKey)}
               </Link>
             ))}
 

@@ -1,4 +1,10 @@
-import { HomeIcon, UtensilsIcon } from 'lucide-react';
+import {
+  HomeIcon,
+  UtensilsIcon,
+  ShoppingBagIcon,
+  MonitorPlayIcon,
+  ClipboardListIcon,
+} from 'lucide-react';
 
 export const config = {
   api: {
@@ -11,7 +17,14 @@ export const config = {
     qr: '/qr',
   },
   navigationLinks: [
-    { name: 'Home', href: '/', icon: HomeIcon },
-    { name: 'Menu', href: '/menu', icon: UtensilsIcon },
+    { nameKey: 'navigation.home', href: '/', icon: HomeIcon },
+    {
+      nameKey: 'navigation.products',
+      href: '/products',
+      icon: ShoppingBagIcon,
+    },
+    { nameKey: 'navigation.menu', href: '/menu', icon: UtensilsIcon },
+    { nameKey: 'navigation.demo', href: '/demo', icon: MonitorPlayIcon },
+    { nameKey: 'navigation.orders', href: '/orders', icon: ClipboardListIcon },
   ],
 };

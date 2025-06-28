@@ -70,28 +70,28 @@ export const Navbar: React.FC<NavbarProps> = ({
   };
 
   const navItems = [
-    { key: 'home', label: t('nav.home'), icon: Home, route: '/' },
+    { key: 'home', label: t('navigation.home'), icon: Home, route: '/' },
     {
       key: 'demo',
-      label: 'Demo',
+      label: t('navigation.demo'),
       icon: QrCode,
       route: '/demo',
     },
     {
       key: 'menu',
-      label: t('nav.menu'),
+      label: t('navigation.menu'),
       icon: UtensilsCrossed,
       route: '/menu',
     },
     {
       key: 'products',
-      label: t('nav.products'),
+      label: t('navigation.products'),
       icon: UtensilsCrossed,
       route: '/products',
     },
     {
       key: 'orders',
-      label: t('nav.orders'),
+      label: t('navigation.orders'),
       icon: ClipboardList,
       route: '/orders',
     },

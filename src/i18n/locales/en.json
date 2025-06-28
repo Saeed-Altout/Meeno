@@ -40,6 +40,13 @@
     "contact": "Contact",
     "welcome": "Authentic Italian Cuisine"
   },
+  "navigation": {
+    "home": "Home",
+    "products": "All Products",
+    "menu": "Menu",
+    "demo": "Demo",
+    "orders": "My Orders"
+  },
   "hero": {
     "title": "Welcome to La Tavola",
     "subtitle": "Authentic Italian Flavors in the Heart of the City",
