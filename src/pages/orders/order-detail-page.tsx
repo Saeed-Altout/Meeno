@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -9,7 +9,6 @@ import {
   Package,
   Truck,
   AlertCircle,
-  Calendar,
   MapPin,
   User,
   Phone,
@@ -33,7 +32,7 @@ export default function OrderDetailPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
-  const { getOrderById, updateOrderStatus } = useOrdersStore();
+  const { getOrderById } = useOrdersStore();
   const [rating, setRating] = useState(0);
   const [review, setReview] = useState('');
   const [isSubmittingReview, setIsSubmittingReview] = useState(false);
