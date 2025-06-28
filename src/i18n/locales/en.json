@@ -250,6 +250,12 @@
     "email": "Email",
     "whatsapp": "WhatsApp",
     "followUs": "Follow Us",
+    "sendMessage": "Send us a Message",
+    "messageSent": "Message sent successfully! We'll get back to you soon.",
+    "yourName": "Your Name",
+    "emailAddress": "Email Address",
+    "message": "Message",
+    "sending": "Sending...",
     "location": {
       "street": "123 Italian Way",
       "city": "Little Italy, NY 10013",

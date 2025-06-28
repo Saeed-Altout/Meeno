@@ -298,7 +298,7 @@ export const Contact: React.FC = () => {
                   <Send className='h-5 w-5 text-white' />
                 </div>
                 <h3 className='text-2xl font-bold text-gray-900 dark:text-white'>
-                  Send us a Message
+                  {t('contact.sendMessage', 'Send us a Message')}
                 </h3>
               </div>
 
@@ -310,7 +310,10 @@ export const Contact: React.FC = () => {
                 >
                   <CheckCircle className='h-5 w-5 text-green-600' />
                   <span className='text-green-700 dark:text-green-300 font-medium'>
-                    Message sent successfully! We'll get back to you soon.
+                    {t(
+                      'contact.messageSent',
+                      "Message sent successfully! We'll get back to you soon."
+                    )}
                   </span>
                 </motion.div>
               )}
@@ -319,7 +322,7 @@ export const Contact: React.FC = () => {
                 <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
                   <div>
                     <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'>
-                      Your Name
+                      {t('contact.yourName', 'Your Name')}
                     </label>
                     <Input
                       name='name'
@@ -332,7 +335,7 @@ export const Contact: React.FC = () => {
                   </div>
                   <div>
                     <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'>
-                      Email Address
+                      {t('contact.emailAddress', 'Email Address')}
                     </label>
                     <Input
                       name='email'
@@ -348,13 +351,13 @@ export const Contact: React.FC = () => {
 
                 <div>
                   <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'>
-                    Message
+                    {t('contact.message', 'Message')}
                   </label>
                   <Textarea
                     name='message'
                     value={formData.message}
                     onChange={handleInputChange}
-                    placeholder='Tell us how we can help you...'
+                    placeholder={t('forms.writeYourMessage')}
                     rows={4}
                     required
                     className='border-gray-200 dark:border-gray-700 focus:border-amber-500 dark:focus:border-amber-400 resize-none'
@@ -369,12 +372,12 @@ export const Contact: React.FC = () => {
                   {isSubmitting ? (
                     <div className='flex items-center justify-center space-x-2'>
                       <div className='w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin' />
-                      <span>Sending...</span>
+                      <span>{t('contact.sending', 'Sending...')}</span>
                     </div>
                   ) : (
                     <div className='flex items-center justify-center space-x-2'>
                       <Send className='h-4 w-4' />
-                      <span>Send Message</span>
+                      <span>{t('forms.submitMessage')}</span>
                     </div>
                   )}
                 </Button>
