@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import { RotateCcw, Star, Plus, Clock } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Card } from '../ui/card';
@@ -11,6 +12,7 @@ import type { MenuItem } from '../../data';
 
 export const OrderAgain: React.FC = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const { addToCart } = useCartStore();
   const { favorites } = useFavoritesStore();
 
@@ -50,10 +52,15 @@ export const OrderAgain: React.FC = () => {
     addToCart(item, 1);
   };
 
+  const handleCardClick = (item: MenuItem) => {
+    navigate(`/product/${item.id}`);
+  };
+
   const renderItemCard = (item: MenuItem, source: 'recent' | 'favorite') => (
     <Card
       key={`${source}-${item.id}`}
-      className='group p-4 h-full flex flex-col bg-white dark:bg-gray-800 hover:shadow-lg transition-all duration-300 border border-gray-100 dark:border-gray-700'
+      className='group p-4 h-full flex flex-col bg-white dark:bg-gray-800 hover:shadow-lg transition-all duration-300 border border-gray-100 dark:border-gray-700 cursor-pointer'
+      onClick={() => handleCardClick(item)}
     >
       <div className='relative mb-3'>
         <img
@@ -91,7 +98,10 @@ export const OrderAgain: React.FC = () => {
         </span>
         <Button
           size='sm'
-          onClick={() => handleAddToCart(item)}
+          onClick={e => {
+            e.stopPropagation();
+            handleAddToCart(item);
+          }}
           className='bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white rounded-full p-0 h-8 w-8 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110'
         >
           <Plus className='h-4 w-4' />
