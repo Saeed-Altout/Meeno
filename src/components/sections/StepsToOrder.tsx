@@ -3,7 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { QrCode, Search, ShoppingCart, Clock } from 'lucide-react';
 
 export const StepsToOrder: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.language === 'ar';
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -122,7 +123,7 @@ export const StepsToOrder: React.FC = () => {
                 <motion.div
                   whileHover={{ y: -5 }}
                   transition={{ duration: 0.3 }}
-                  className='bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-700 h-full'
+                  className='group bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-700 h-full'
                 >
                   {/* Step Number */}
                   <motion.div
@@ -138,8 +139,8 @@ export const StepsToOrder: React.FC = () => {
                     transition={{ delay: 0.1 }}
                     className='flex justify-center mb-6'
                   >
-                    <div className='w-12 h-12 text-gray-600 dark:text-gray-400'>
-                      <IconComponent className='w-full h-full' />
+                    <div className='w-12 h-12 text-gray-600 dark:text-gray-400 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-all duration-300'>
+                      <IconComponent className='w-full h-full group-hover:scale-125 group-hover:rotate-12 transition-transform duration-300' />
                     </div>
                   </motion.div>
 
@@ -177,14 +178,26 @@ export const StepsToOrder: React.FC = () => {
                 {/* Connecting Arrow (except for last item) */}
                 {index < steps.length - 1 && (
                   <motion.div
-                    initial={{ opacity: 0, x: -20 }}
+                    initial={{ opacity: 0, x: isRTL ? 20 : -20 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.5 + index * 0.2, duration: 0.6 }}
-                    className='hidden lg:block absolute top-1/2 -right-4 transform -translate-y-1/2 z-10'
+                    className={`hidden lg:block absolute top-1/2 transform -translate-y-1/2 z-10 ${
+                      isRTL ? '-left-4' : '-right-4'
+                    }`}
                   >
-                    <div className='w-8 h-0.5 bg-gradient-to-r from-amber-400 to-amber-600'></div>
-                    <div className='absolute -right-1 -top-1 w-2 h-2 bg-amber-500 rounded-full'></div>
+                    <div
+                      className={`w-8 h-0.5 ${
+                        isRTL
+                          ? 'bg-gradient-to-l from-amber-400 to-amber-600'
+                          : 'bg-gradient-to-r from-amber-400 to-amber-600'
+                      }`}
+                    ></div>
+                    <div
+                      className={`absolute -top-1 w-2 h-2 bg-amber-500 rounded-full ${
+                        isRTL ? '-left-1' : '-right-1'
+                      }`}
+                    ></div>
                   </motion.div>
                 )}
               </motion.div>
