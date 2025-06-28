@@ -52,7 +52,12 @@
     "subtitle": "Authentic Italian Flavors in the Heart of the City",
     "description": "Experience the finest Italian cuisine with fresh ingredients and traditional recipes passed down through generations.",
     "cta": "Explore Our Menu",
-    "demo": "Try Demo"
+    "demo": "Try Demo",
+    "stats": {
+      "customers": "Happy Customers",
+      "dishes": "Delicious Dishes",
+      "rating": "Average Rating"
+    }
   },
   "menu": {
     "title": "Our Menu",
