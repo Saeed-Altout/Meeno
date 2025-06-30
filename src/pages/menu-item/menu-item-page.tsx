@@ -60,7 +60,7 @@ const MenuItemPage: React.FC = () => {
   const item: MenuItem | undefined = getItemById(id!);
 
   const handleGoBack = (): void => {
-    navigate(-1);
+    navigate('/');
   };
 
   const handleGoHome = (): void => {

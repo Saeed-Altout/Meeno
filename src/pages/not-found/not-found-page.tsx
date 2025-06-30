@@ -1,14 +1,7 @@
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import {
-  Home,
-  Search,
-  ShoppingBag,
-  FileText,
-  Phone,
-  ArrowLeft,
-} from 'lucide-react';
+import { Home, Search, FileText, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 
@@ -25,13 +18,6 @@ export default function NotFoundPage() {
       color: 'from-amber-500 to-orange-500',
     },
     {
-      icon: ShoppingBag,
-      title: t('products.title'),
-      description: t('notFound.descriptions.browseProducts'),
-      path: '/products',
-      color: 'from-blue-500 to-cyan-500',
-    },
-    {
       icon: FileText,
       title: t('notFound.viewOrders'),
       description: t('notFound.descriptions.checkOrders'),
@@ -39,11 +25,11 @@ export default function NotFoundPage() {
       color: 'from-green-500 to-emerald-500',
     },
     {
-      icon: Phone,
-      title: t('notFound.contactUs'),
-      description: t('notFound.descriptions.getTouchTeam'),
-      path: '/contact',
-      color: 'from-purple-500 to-pink-500',
+      icon: Home,
+      title: t('notFound.backToHome'),
+      description: t('notFound.descriptions.goHome'),
+      path: '/',
+      color: 'from-blue-500 to-cyan-500',
     },
   ];
 
@@ -66,7 +52,7 @@ export default function NotFoundPage() {
         <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4'>
           <Button
             variant='ghost'
-            onClick={() => navigate(-1)}
+            onClick={() => navigate('/')}
             className='flex items-center gap-2 text-gray-700 dark:text-gray-300 hover:text-amber-600 dark:hover:text-amber-400 transition-colors'
           >
             <ArrowLeft className='h-4 w-4' />
@@ -140,34 +126,36 @@ export default function NotFoundPage() {
             {t('notFound.suggestions')}
           </h3>
 
-          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
-            {suggestions.map((suggestion, index) => (
-              <motion.div
-                key={suggestion.path}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6 + index * 0.1 }}
-              >
-                <Card
-                  className='p-6 h-full cursor-pointer group hover:shadow-lg transition-all duration-300 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 hover:border-amber-200 dark:hover:border-amber-800'
-                  onClick={() => navigate(suggestion.path)}
+          <div className='flex justify-center'>
+            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
+              {suggestions.map((suggestion, index) => (
+                <motion.div
+                  key={suggestion.path}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.6 + index * 0.1 }}
                 >
-                  <div className='text-center'>
-                    <div
-                      className={`inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-r ${suggestion.color} mb-4 group-hover:scale-110 transition-transform duration-300`}
-                    >
-                      <suggestion.icon className='h-6 w-6 text-white' />
+                  <Card
+                    className='p-6 h-full cursor-pointer group hover:shadow-lg transition-all duration-300 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 hover:border-amber-200 dark:hover:border-amber-800'
+                    onClick={() => navigate(suggestion.path)}
+                  >
+                    <div className='text-center'>
+                      <div
+                        className={`inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-r ${suggestion.color} mb-4 group-hover:scale-110 transition-transform duration-300`}
+                      >
+                        <suggestion.icon className='h-6 w-6 text-white' />
+                      </div>
+                      <h4 className='font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors'>
+                        {suggestion.title}
+                      </h4>
+                      <p className='text-sm text-gray-600 dark:text-gray-400'>
+                        {suggestion.description}
+                      </p>
                     </div>
-                    <h4 className='font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors'>
-                      {suggestion.title}
-                    </h4>
-                    <p className='text-sm text-gray-600 dark:text-gray-400'>
-                      {suggestion.description}
-                    </p>
-                  </div>
-                </Card>
-              </motion.div>
-            ))}
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </motion.div>
 

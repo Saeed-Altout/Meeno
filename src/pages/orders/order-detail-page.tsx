@@ -52,7 +52,7 @@ export default function OrderDetailPage() {
           <p className='text-gray-600 dark:text-gray-400 mb-6'>
             The order you're looking for doesn't exist or has been removed.
           </p>
-          <Button onClick={() => navigate('/orders')}>
+          <Button onClick={() => navigate('/')}>
             <ArrowLeft className='h-4 w-4 mr-2' />
             Back to Orders
           </Button>
@@ -195,12 +195,8 @@ export default function OrderDetailPage() {
       {/* Back Button Header */}
       <div className='relative bg-white/80 dark:bg-gray-800/80 shadow-sm pt-16 backdrop-blur-sm'>
         <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4'>
-          <Button
-            variant='ghost'
-            onClick={() => navigate('/orders')}
-            className='flex items-center gap-2 text-gray-700 dark:text-gray-300 hover:text-amber-600 dark:hover:text-amber-400 transition-colors'
-          >
-            <ArrowLeft className='h-4 w-4' />
+          <Button onClick={() => navigate('/')}>
+            <ArrowLeft className='h-4 w-4 mr-2' />
             Back to Orders
           </Button>
         </div>
