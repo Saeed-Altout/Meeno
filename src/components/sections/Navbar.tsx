@@ -289,4 +289,5 @@ function Navbar() {
   );
 }
 
+Navbar.displayName = 'Navbar';
 export { Navbar };
