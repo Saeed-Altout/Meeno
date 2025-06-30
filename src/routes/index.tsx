@@ -8,6 +8,8 @@ import MenuPage from '@/pages/menu/menu-page';
 import ProductPage from '@/pages/product/product-page';
 import DemoPage from '@/pages/demo/demo-page';
 import HomeLayout from '@/layouts/home-layout';
+import OrdersPage from '@/pages/orders/orders-page';
+import OrderDetailPage from '@/pages/orders/order-detail-page';
 
 /**
  * Application route configuration
@@ -59,6 +61,22 @@ const routes: RouteObject[] = [
         ),
       },
     ],
+  },
+  {
+    path: 'orders',
+    element: (
+      <Suspense fallback={<LoadingPage />}>
+        <OrdersPage />
+      </Suspense>
+    ),
+  },
+  {
+    path: 'orders/:id',
+    element: (
+      <Suspense fallback={<LoadingPage />}>
+        <OrderDetailPage />
+      </Suspense>
+    ),
   },
   {
     path: '*',
