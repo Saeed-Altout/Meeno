@@ -1,12 +1,46 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useEffect } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Menu } from '@/components/sections/menu';
 
+// Simple JWT token validation
+const validateTableToken = (token: string): boolean => {
+  try {
+    const parts = token.split('.');
+    if (parts.length !== 3) return false;
+
+    const payload = JSON.parse(atob(parts[1]));
+    const currentTime = Math.floor(Date.now() / 1000);
+
+    // Check if token is expired
+    if (payload.exp && payload.exp < currentTime) return false;
+
+    // Check if token has table information
+    if (!payload.table) return false;
+
+    return true;
+  } catch {
+    return false;
+  }
+};
+
 export default function MenuPage() {
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const [searchParams] = useSearchParams();
+
+  useEffect(() => {
+    const token = searchParams.get('token');
+    const tableNumber = searchParams.get('table');
+
+    // Redirect to home if no token or invalid token
+    if (!token || !tableNumber || !validateTableToken(token)) {
+      navigate('/', { replace: true });
+      return;
+    }
+  }, [navigate, searchParams]);
 
   return (
     <div className='min-h-screen'>

@@ -6,10 +6,8 @@ import {
   Menu as MenuIcon,
   Globe,
   Home,
-  UtensilsCrossed,
   ArrowRight,
   ShoppingCart,
-  ClipboardList,
   QrCode,
   X,
   Sun,
@@ -64,24 +62,6 @@ function Navbar() {
       label: t('navigation.demo'),
       icon: QrCode,
       route: '/demo',
-    },
-    {
-      key: 'menu',
-      label: t('navigation.menu'),
-      icon: UtensilsCrossed,
-      route: '/menu',
-    },
-    {
-      key: 'products',
-      label: t('navigation.products'),
-      icon: UtensilsCrossed,
-      route: '/products',
-    },
-    {
-      key: 'orders',
-      label: t('navigation.orders'),
-      icon: ClipboardList,
-      route: '/orders',
     },
   ];
 

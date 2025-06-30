@@ -7,6 +7,8 @@ export interface MenuItem {
   image: string;
   category: 'starters' | 'mains' | 'drinks' | 'desserts';
   featured?: boolean;
+  rating?: number;
+  preparationTime?: number; // in minutes
 }
 
 export interface MenuCategory {
@@ -15,142 +17,108 @@ export interface MenuCategory {
   items: MenuItem[];
 }
 
-// Static Menu Data
-export const menuData: MenuCategory[] = [
-  {
-    id: 'starters',
-    nameKey: 'menu.categories.starters',
-    items: [
-      {
-        id: 'bruschetta',
-        nameKey: 'menuItems.bruschetta.name',
-        descriptionKey: 'menuItems.bruschetta.description',
-        price: 12,
-        image:
-          'https://images.unsplash.com/photo-1572695157366-5e585ab2b69f?w=400&h=300&fit=crop',
-        category: 'starters',
-      },
-      {
-        id: 'antipasto',
-        nameKey: 'menuItems.antipasto.name',
-        descriptionKey: 'menuItems.antipasto.description',
-        price: 18,
-        image:
-          'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=300&fit=crop',
-        category: 'starters',
-      },
-      {
-        id: 'arancini',
-        nameKey: 'menuItems.arancini.name',
-        descriptionKey: 'menuItems.arancini.description',
-        price: 14,
-        image:
-          'https://images.unsplash.com/photo-1587740908075-9e245070dfaa?w=400&h=300&fit=crop',
-        category: 'starters',
-      },
-    ],
-  },
-  {
-    id: 'mains',
-    nameKey: 'menu.categories.mains',
-    items: [
-      {
-        id: 'ossoBuco',
-        nameKey: 'menuItems.ossoBuco.name',
-        descriptionKey: 'menuItems.ossoBuco.description',
-        price: 35,
-        image:
-          'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=300&fit=crop',
-        category: 'mains',
-        featured: true,
-      },
-      {
-        id: 'linguine',
-        nameKey: 'menuItems.linguine.name',
-        descriptionKey: 'menuItems.linguine.description',
-        price: 28,
-        image:
-          'https://images.unsplash.com/photo-1621996346565-e3dbc353d2e5?w=400&h=300&fit=crop',
-        category: 'mains',
-      },
-      {
-        id: 'branzino',
-        nameKey: 'menuItems.branzino.name',
-        descriptionKey: 'menuItems.branzino.description',
-        price: 32,
-        image:
-          'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&h=300&fit=crop',
-        category: 'mains',
-      },
-    ],
-  },
-  {
-    id: 'drinks',
-    nameKey: 'menu.categories.drinks',
-    items: [
-      {
-        id: 'chianti',
-        nameKey: 'menuItems.chianti.name',
-        descriptionKey: 'menuItems.chianti.description',
-        price: 45,
-        image:
-          'https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?w=400&h=300&fit=crop',
-        category: 'drinks',
-      },
-      {
-        id: 'limoncello',
-        nameKey: 'menuItems.limoncello.name',
-        descriptionKey: 'menuItems.limoncello.description',
-        price: 8,
-        image:
-          'https://images.unsplash.com/photo-1544145945-f90425340c7e?w=400&h=300&fit=crop',
-        category: 'drinks',
-      },
-      {
-        id: 'espresso',
-        nameKey: 'menuItems.espresso.name',
-        descriptionKey: 'menuItems.espresso.description',
-        price: 4,
-        image:
-          'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&h=300&fit=crop',
-        category: 'drinks',
-      },
-      {
-        id: 'cappuccino',
-        nameKey: 'menuItems.cappuccino.name',
-        descriptionKey: 'menuItems.cappuccino.description',
-        price: 5,
-        image:
-          'https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=400&h=300&fit=crop',
-        category: 'drinks',
-      },
-    ],
-  },
-  {
-    id: 'desserts',
-    nameKey: 'menu.categories.desserts',
-    items: [
-      {
-        id: 'tiramisu',
-        nameKey: 'menuItems.tiramisu.name',
-        descriptionKey: 'menuItems.tiramisu.description',
-        price: 9,
-        image:
-          'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=400&h=300&fit=crop',
-        category: 'desserts',
-      },
-      {
-        id: 'pannaCotta',
-        nameKey: 'menuItems.pannaCotta.name',
-        descriptionKey: 'menuItems.pannaCotta.description',
-        price: 8,
-        image:
-          'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&h=300&fit=crop',
-        category: 'desserts',
-      },
-    ],
-  },
-];
+// Re-export from extended-menu-data.ts
+export {
+  extendedMenuData,
+  getItemsPage,
+  simulateLoadingDelay,
+} from './extended-menu-data';
+
+// Original menu data (legacy support)
+export const menuData: Record<string, MenuItem[]> = {
+  starters: [
+    {
+      id: 'bruschetta',
+      nameKey: 'menuItems.bruschetta.name',
+      descriptionKey: 'menuItems.bruschetta.description',
+      price: 8.99,
+      image:
+        'https://images.unsplash.com/photo-1572441712603-2932b0c2e8a3?w=400&h=300&fit=crop',
+      category: 'starters',
+      featured: true,
+      rating: 4.5,
+    },
+    {
+      id: 'mozzarella-sticks',
+      nameKey: 'menuItems.mozzarellaSticks.name',
+      descriptionKey: 'menuItems.mozzarellaSticks.description',
+      price: 7.99,
+      image:
+        'https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?w=400&h=300&fit=crop',
+      category: 'starters',
+      rating: 4.3,
+    },
+  ],
+  mains: [
+    {
+      id: 'spaghetti-carbonara',
+      nameKey: 'menuItems.spaghettiCarbonara.name',
+      descriptionKey: 'menuItems.spaghettiCarbonara.description',
+      price: 16.99,
+      image:
+        'https://images.unsplash.com/photo-1621996346565-e3dbc353d2e5?w=400&h=300&fit=crop',
+      category: 'mains',
+      featured: true,
+      rating: 4.8,
+    },
+    {
+      id: 'lasagna',
+      nameKey: 'menuItems.lasagna.name',
+      descriptionKey: 'menuItems.lasagna.description',
+      price: 18.99,
+      image:
+        'https://images.unsplash.com/photo-1619899686584-67728f5e55a4?w=400&h=300&fit=crop',
+      category: 'mains',
+      rating: 4.6,
+    },
+  ],
+  drinks: [
+    {
+      id: 'coca-cola',
+      nameKey: 'menuItems.cocaCola.name',
+      descriptionKey: 'menuItems.cocaCola.description',
+      price: 2.99,
+      image:
+        'https://images.unsplash.com/photo-1581098365948-6a5a912b3a2f?w=400&h=300&fit=crop',
+      category: 'drinks',
+      rating: 4.2,
+    },
+    {
+      id: 'italian-coffee',
+      nameKey: 'menuItems.italianCoffee.name',
+      descriptionKey: 'menuItems.italianCoffee.description',
+      price: 3.99,
+      image:
+        'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&h=300&fit=crop',
+      category: 'drinks',
+      featured: true,
+      rating: 4.7,
+    },
+  ],
+  desserts: [
+    {
+      id: 'tiramisu',
+      nameKey: 'menuItems.tiramisu.name',
+      descriptionKey: 'menuItems.tiramisu.description',
+      price: 6.99,
+      image:
+        'https://images.unsplash.com/photo-1571115764595-644a1f56a55c?w=400&h=300&fit=crop',
+      category: 'desserts',
+      featured: true,
+      rating: 4.9,
+    },
+    {
+      id: 'gelato',
+      nameKey: 'menuItems.gelato.name',
+      descriptionKey: 'menuItems.gelato.description',
+      price: 4.99,
+      image:
+        'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&h=300&fit=crop',
+      category: 'desserts',
+      rating: 4.4,
+    },
+  ],
+};
 
 // Restaurant Information
 export const restaurantInfo = {
@@ -176,23 +144,19 @@ export const restaurantInfo = {
   },
 };
 
-// Helper function to get items by category
+// Utility functions
 export const getItemsByCategory = (category: string): MenuItem[] => {
-  const categoryData = menuData.find(cat => cat.id === category);
-  return categoryData ? categoryData.items : [];
+  return menuData[category] || [];
 };
 
-// Helper function to get all items
 export const getAllItems = (): MenuItem[] => {
-  return menuData.flatMap(category => category.items);
+  return Object.values(menuData).flat();
 };
 
-// Helper function to get featured items
 export const getFeaturedItems = (): MenuItem[] => {
   return getAllItems().filter(item => item.featured);
 };
 
-// Helper function to get item by ID
 export const getItemById = (id: string): MenuItem | undefined => {
   return getAllItems().find(item => item.id === id);
 };

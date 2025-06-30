@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -20,6 +20,7 @@ import {
   Wine,
   ChefHat,
   ShoppingCart,
+  Loader2,
 } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Card } from '../ui/card';
@@ -34,7 +35,13 @@ import {
 import { useCartStore } from '../../stores/cart-store';
 import { useFavoritesStore } from '../../stores/favorites-store';
 import { AddToCartModal } from '../common/add-to-cart-modal';
+
 import type { MenuItem } from '../../data';
+import {
+  extendedMenuData,
+  getItemsPage,
+  simulateLoadingDelay,
+} from '../../data/extended-menu-data';
 
 export const Menu: React.FC = () => {
   const { t } = useTranslation();
@@ -42,9 +49,23 @@ export const Menu: React.FC = () => {
   const { getItemQuantity } = useCartStore();
   const { addToFavorites, removeFromFavorites, isFavorite } =
     useFavoritesStore();
+
+  // Debug data availability
+  console.log('Extended menu data keys:', Object.keys(extendedMenuData));
+  console.log('Pizza items count:', extendedMenuData.pizza?.length || 0);
+
   const [activeCategory, setActiveCategory] = useState<string>('pizza');
   const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Infinite scroll state
+  const [displayedItems, setDisplayedItems] = useState<MenuItem[]>([]);
+  const [currentPage, setCurrentPage] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [hasMore, setHasMore] = useState<boolean>(true);
+  const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true);
+
+  const observerRef = useRef<IntersectionObserver | null>(null);
 
   const categories = [
     {
@@ -121,129 +142,83 @@ export const Menu: React.FC = () => {
     },
   ];
 
-  const menuItems: Record<string, MenuItem[]> = {
-    pizza: [
-      {
-        id: 'spaghetti',
-        nameKey: 'menuItems.spaghetti.name',
-        descriptionKey: 'menuItems.spaghetti.description',
-        price: 7.29,
-        image:
-          'https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=400&h=300&fit=crop&auto=format',
-        category: 'mains',
-      },
-      {
-        id: 'veggie-pizza',
-        nameKey: 'menuItems.vegetablePizza.name',
-        descriptionKey: 'menuItems.vegetablePizza.description',
-        price: 5.49,
-        image:
-          'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=400&h=300&fit=crop&auto=format',
-        category: 'mains',
-      },
-      {
-        id: 'mushroom-pizza',
-        nameKey: 'menuItems.mushroomPizza.name',
-        descriptionKey: 'menuItems.mushroomPizza.description',
-        price: 7.49,
-        image:
-          'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&h=300&fit=crop&auto=format',
-        category: 'mains',
-        featured: true,
-      },
-      {
-        id: 'sweet-dessert',
-        nameKey: 'menuItems.sweets.name',
-        descriptionKey: 'menuItems.sweets.description',
-        price: 6.49,
-        image:
-          'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&h=300&fit=crop&auto=format',
-        category: 'desserts',
-      },
-    ],
-    fruits: [
-      {
-        id: 'fruit-salad',
-        nameKey: 'menuItems.freshFruitSalad.name',
-        descriptionKey: 'menuItems.freshFruitSalad.description',
-        price: 4.99,
-        image:
-          'https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?w=400&h=300&fit=crop&auto=format',
-        category: 'starters',
-      },
-      {
-        id: 'berry-bowl',
-        nameKey: 'menuItems.berryBowl.name',
-        descriptionKey: 'menuItems.berryBowl.description',
-        price: 5.99,
-        image:
-          'https://images.unsplash.com/photo-1511690743698-d9d85f2fbf38?w=400&h=300&fit=crop&auto=format',
-        category: 'starters',
-      },
-    ],
-    snacks: [
-      {
-        id: 'bruschetta',
-        nameKey: 'menuItems.bruschetta.name',
-        descriptionKey: 'menuItems.bruschetta.description',
-        price: 6.99,
-        image:
-          'https://images.unsplash.com/photo-1506280754576-f6fa8a873550?w=400&h=300&fit=crop&auto=format',
-        category: 'starters',
-      },
-    ],
-    veggies: [
-      {
-        id: 'caesar-salad',
-        nameKey: 'menuItems.caesarSalad.name',
-        descriptionKey: 'menuItems.caesarSalad.description',
-        price: 8.99,
-        image:
-          'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=300&fit=crop&auto=format',
-        category: 'starters',
-      },
-    ],
-    hotdog: [
-      {
-        id: 'italian-sausage',
-        nameKey: 'menuItems.italianSausage.name',
-        descriptionKey: 'menuItems.italianSausage.description',
-        price: 9.99,
-        image:
-          'https://images.unsplash.com/photo-1551058045-6942c0e0ce2f?w=400&h=300&fit=crop&auto=format',
-        category: 'mains',
-      },
-    ],
-    burger: [
-      {
-        id: 'classic-burger',
-        nameKey: 'menuItems.classicBurger.name',
-        descriptionKey: 'menuItems.classicBurger.description',
-        price: 12.99,
-        image:
-          'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&h=300&fit=crop&auto=format',
-        category: 'mains',
-      },
-    ],
-    drink: [
-      {
-        id: 'italian-coffee',
-        nameKey: 'menuItems.italianCoffee.name',
-        descriptionKey: 'menuItems.italianCoffee.description',
-        price: 3.99,
-        image:
-          'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&h=300&fit=crop&auto=format',
-        category: 'drinks',
-      },
-    ],
-    desserts: [],
-    seafood: [],
-    bakery: [],
-    wine: [],
-    specials: [],
-  };
+  const loadMoreItems = useCallback(async () => {
+    if (isLoading || !hasMore) return;
 
-  const currentItems = menuItems[activeCategory] || [];
+    setIsLoading(true);
+
+    // Simulate loading delay
+    await simulateLoadingDelay(1200);
+
+    const { items: newItems, hasMore: moreAvailable } = getItemsPage(
+      activeCategory,
+      currentPage,
+      8
+    );
+
+    setDisplayedItems(prev => [...prev, ...newItems]);
+    setHasMore(moreAvailable);
+    setCurrentPage(prev => prev + 1);
+    setIsLoading(false);
+  }, [activeCategory, currentPage, isLoading, hasMore]);
+
+  const lastItemRef = useCallback(
+    (node: HTMLDivElement | null) => {
+      if (isLoading || !node) return;
+      if (observerRef.current) observerRef.current.disconnect();
+      observerRef.current = new IntersectionObserver(entries => {
+        if (entries[0].isIntersecting && hasMore) {
+          loadMoreItems();
+        }
+      });
+      observerRef.current.observe(node);
+    },
+    [isLoading, hasMore, loadMoreItems]
+  );
+
+  const loadInitialItems = useCallback(async () => {
+    setIsLoading(true);
+
+    try {
+      // Skip loading delay for debugging
+      // if (isInitialLoad) {
+      //   await simulateLoadingDelay(800);
+      //   setIsInitialLoad(false);
+      // }
+
+      const { items, hasMore: moreAvailable } = getItemsPage(
+        activeCategory,
+        0,
+        8
+      );
+
+      console.log(
+        `Loading category: ${activeCategory}, found ${items.length} items`
+      );
+      console.log('Items:', items.slice(0, 2)); // Log first 2 items
+
+      setDisplayedItems(items);
+      setHasMore(moreAvailable);
+      setCurrentPage(1);
+      setIsInitialLoad(false);
+    } catch (error) {
+      console.error('Error loading initial items:', error);
+      // Set empty array on error
+      setDisplayedItems([]);
+      setHasMore(false);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [activeCategory, isInitialLoad]);
+
+  // Load initial items when category changes
+  useEffect(() => {
+    setDisplayedItems([]);
+    setCurrentPage(0);
+    setHasMore(true);
+    setIsInitialLoad(true);
+    loadInitialItems();
+  }, [activeCategory, loadInitialItems]);
 
   const handleToggleFavorite = (item: MenuItem) => {
     if (isFavorite(item.id)) {
@@ -267,7 +242,9 @@ export const Menu: React.FC = () => {
       <Star
         key={i}
         className={`h-3.5 w-3.5 ${
-          i < rating ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'
+          i < Math.floor(rating)
+            ? 'text-yellow-400 fill-yellow-400'
+            : 'text-gray-300'
         }`}
       />
     ));
@@ -282,6 +259,10 @@ export const Menu: React.FC = () => {
     },
     []
   );
+
+  const handleCategoryChange = (categoryId: string) => {
+    setActiveCategory(categoryId);
+  };
 
   return (
     <>
@@ -308,7 +289,10 @@ export const Menu: React.FC = () => {
                 viewport={{ once: true }}
                 transition={{ delay: 0.1 }}
               >
-                {t('menu.subtitle')}
+                {t(
+                  'menu.subtitle',
+                  'Discover our delicious selection of authentic Italian cuisine'
+                )}
               </motion.p>
             </div>
             <Button
@@ -327,7 +311,7 @@ export const Menu: React.FC = () => {
                 {categories.map((category, index) => {
                   const Icon = category.icon;
                   const isActive = activeCategory === category.id;
-                  const itemCount = menuItems[category.id]?.length || 0;
+                  const itemCount = extendedMenuData[category.id]?.length || 0;
 
                   return (
                     <CarouselItem
@@ -336,7 +320,7 @@ export const Menu: React.FC = () => {
                     >
                       <div className='p-2'>
                         <motion.button
-                          onClick={() => setActiveCategory(category.id)}
+                          onClick={() => handleCategoryChange(category.id)}
                           className={`relative flex flex-col items-center p-4 md:p-6 rounded-2xl min-w-[100px] md:min-w-[120px] transition-all duration-300 group ${
                             isActive
                               ? `bg-gradient-to-br ${category.color} text-white shadow-xl shadow-orange-500/25`
@@ -397,15 +381,17 @@ export const Menu: React.FC = () => {
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3 }}
             >
-              {currentItems.map((item, index) => {
+              {displayedItems.map((item, index) => {
                 const cartQuantity = getItemQuantity(item.id);
+                const isLastItem = index === displayedItems.length - 1;
 
                 return (
                   <motion.div
                     key={item.id}
+                    ref={isLastItem ? lastItemRef : null}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1 }}
+                    transition={{ delay: index * 0.05 }}
                   >
                     <Card
                       className={`group pt-0 h-full flex flex-col overflow-hidden hover:shadow-2xl transition-all duration-500 cursor-pointer border-0 ${
@@ -418,7 +404,7 @@ export const Menu: React.FC = () => {
                       <div className='relative overflow-hidden'>
                         <img
                           src={item.image}
-                          alt={item.nameKey}
+                          alt={t(item.nameKey)}
                           onError={handleImageError}
                           className='w-full h-44 md:h-48 object-cover group-hover:scale-110 transition-transform duration-700'
                         />
@@ -456,15 +442,18 @@ export const Menu: React.FC = () => {
                       <div className='p-4 md:p-5 flex flex-col flex-1'>
                         <div className='flex-1'>
                           <h3 className='font-bold text-lg md:text-xl text-gray-900 dark:text-white mb-2 group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors duration-300'>
-                            {t(item.nameKey)}
+                            {t(item.nameKey, `Item ${index + 1}`)}
                           </h3>
                           <p className='text-sm text-gray-600 dark:text-gray-400 mb-3 line-clamp-2 min-h-[2.5rem]'>
-                            {t(item.descriptionKey)}
+                            {t(
+                              item.descriptionKey,
+                              'Delicious menu item made with fresh ingredients'
+                            )}
                           </p>
                           <div className='flex items-center gap-1 mb-4'>
-                            {renderStars()}
+                            {renderStars(item.rating)}
                             <span className='text-sm text-gray-500 ml-1'>
-                              (4.5)
+                              ({item.rating?.toFixed(1) || '4.5'})
                             </span>
                           </div>
                         </div>
@@ -503,8 +492,63 @@ export const Menu: React.FC = () => {
             </motion.div>
           </AnimatePresence>
 
+          {/* Loading Spinner */}
+          {isLoading && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
+              className='flex items-center justify-center py-12'
+            >
+              <div className='flex flex-col items-center space-y-4'>
+                <div className='relative'>
+                  <Loader2 className='h-12 w-12 text-orange-500 animate-spin' />
+                  <div className='absolute inset-0 h-12 w-12 rounded-full border-2 border-orange-200 border-t-transparent animate-pulse' />
+                </div>
+                <div className='text-center'>
+                  <p className='text-lg font-medium text-gray-700 dark:text-gray-300'>
+                    {t('menu.loading.title', 'Loading delicious items...')}
+                  </p>
+                  <p className='text-sm text-gray-500 dark:text-gray-400'>
+                    {t(
+                      'menu.loading.subtitle',
+                      'Please wait while we prepare your menu'
+                    )}
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {/* No More Items Message */}
+          {!hasMore && displayedItems.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className='text-center py-8'
+            >
+              <div className='bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-950/30 dark:to-orange-900/30 rounded-2xl p-8 max-w-md mx-auto'>
+                <div className='w-16 h-16 bg-gradient-to-br from-orange-200 to-orange-300 dark:from-orange-800 dark:to-orange-700 rounded-full flex items-center justify-center mx-auto mb-4'>
+                  <ChefHat className='h-8 w-8 text-orange-600 dark:text-orange-400' />
+                </div>
+                <h3 className='text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2'>
+                  {t(
+                    'menu.endOfList.title',
+                    "You've seen all our delicious items!"
+                  )}
+                </h3>
+                <p className='text-gray-600 dark:text-gray-400 text-sm'>
+                  {t(
+                    'menu.endOfList.subtitle',
+                    'Try exploring other categories for more amazing dishes'
+                  )}
+                </p>
+              </div>
+            </motion.div>
+          )}
+
           {/* Empty State */}
-          {currentItems.length === 0 && (
+          {displayedItems.length === 0 && !isLoading && (
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -516,7 +560,7 @@ export const Menu: React.FC = () => {
                     <Pizza className='h-8 w-8 text-orange-500' />
                   </div>
                   <h3 className='text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2'>
-                    {t('menu.comingSoon')}
+                    {t('menu.comingSoon', 'Coming Soon!')}
                   </h3>
                   <p className='text-gray-500 dark:text-gray-400'>
                     {t(

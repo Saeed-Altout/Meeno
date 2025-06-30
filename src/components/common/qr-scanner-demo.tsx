@@ -37,10 +37,22 @@ export const QRScannerDemo: React.FC<QRScannerDemoProps> = ({
           setScanningStep('success');
           setIsProcessing(false);
 
-          // Navigate to menu after success animation
+          // Navigate to menu after success animation with demo token
           const navigateTimer = setTimeout(() => {
             onClose();
-            navigate('/explore');
+            // Generate a demo token for testing
+            const demoToken = btoa(
+              JSON.stringify({
+                table: 1,
+                iat: Math.floor(Date.now() / 1000),
+                exp: Math.floor(Date.now() / 1000) + 24 * 60 * 60, // 24 hours
+              })
+            );
+            navigate(
+              `/menu?token=${btoa(
+                JSON.stringify({ alg: 'HS256', typ: 'JWT' })
+              )}.${demoToken}.${btoa('demo_signature')}&table=1`
+            );
           }, 1500);
 
           return () => clearTimeout(navigateTimer);

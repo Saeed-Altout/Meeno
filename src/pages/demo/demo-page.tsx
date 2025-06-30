@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import QRCode from 'qrcode';
@@ -19,7 +18,6 @@ import { QRScannerDemo } from '@/components/common/qr-scanner-demo';
 
 export default function DemoPage() {
   const { t } = useTranslation();
-  const navigate = useNavigate();
   const [qrCodeDataUrl, setQrCodeDataUrl] = useState<string>('');
   const [demoStep] = useState<'generate' | 'scan' | 'order'>('generate');
   const [isGenerating, setIsGenerating] = useState(false);
@@ -42,9 +40,9 @@ export default function DemoPage() {
     return `${header}.${payload}.${signature}`;
   };
 
-  // Get the current URL for the explore menu with JWT token and table number
-  const getExploreMenuUrl = () => {
-    const baseUrl = `${window.location.origin}/explore`;
+  // Get the current URL for the menu with JWT token and table number
+  const getMenuUrl = () => {
+    const baseUrl = `${window.location.origin}/menu`;
     const token = generateJWTToken(tableNumber);
     return `${baseUrl}?token=${token}&table=${tableNumber}`;
   };
@@ -56,7 +54,7 @@ export default function DemoPage() {
   const generateQRCode = async () => {
     setIsGenerating(true);
     try {
-      const menuUrl = getExploreMenuUrl();
+      const menuUrl = getMenuUrl();
       const dataUrl = await QRCode.toDataURL(menuUrl, {
         width: 256,
         margin: 2,
@@ -87,7 +85,7 @@ export default function DemoPage() {
     if (qrCodeDataUrl) {
       const printWindow = window.open('', '_blank');
       if (printWindow) {
-        const menuUrl = getExploreMenuUrl();
+        const menuUrl = getMenuUrl();
         printWindow.document.write(`
           <!DOCTYPE html>
           <html>
@@ -135,7 +133,8 @@ export default function DemoPage() {
   };
 
   const handleVisitDemo = () => {
-    navigate('/explore');
+    const menuUrl = getMenuUrl();
+    window.open(menuUrl, '_blank');
   };
 
   const demoSteps = [
@@ -349,7 +348,7 @@ export default function DemoPage() {
                       variant='outline'
                       className='text-xs break-all max-w-full'
                     >
-                      {getExploreMenuUrl()}
+                      {getMenuUrl()}
                     </Badge>
                   )}
                   <div className='space-y-1'>

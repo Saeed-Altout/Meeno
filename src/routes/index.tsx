@@ -6,9 +6,6 @@ import NotFoundPage from '@/pages/not-found/not-found-page';
 import HomePage from '@/pages/home/home-page';
 import MenuPage from '@/pages/menu/menu-page';
 import ProductPage from '@/pages/product/product-page';
-import OrdersPage from '@/pages/orders/orders-page';
-import OrderDetailPage from '@/pages/orders/order-detail-page';
-import ProductsPage from '@/pages/products/products-page';
 import DemoPage from '@/pages/demo/demo-page';
 import HomeLayout from '@/layouts/home-layout';
 
@@ -46,42 +43,10 @@ const routes: RouteObject[] = [
         ),
       },
       {
-        path: 'explore',
-        element: (
-          <Suspense fallback={<LoadingPage />}>
-            <MenuPage />
-          </Suspense>
-        ),
-      },
-      {
         path: 'product/:id',
         element: (
           <Suspense fallback={<LoadingPage />}>
             <ProductPage />
-          </Suspense>
-        ),
-      },
-      {
-        path: 'products',
-        element: (
-          <Suspense fallback={<LoadingPage />}>
-            <ProductsPage />
-          </Suspense>
-        ),
-      },
-      {
-        path: 'orders',
-        element: (
-          <Suspense fallback={<LoadingPage />}>
-            <OrdersPage />
-          </Suspense>
-        ),
-      },
-      {
-        path: 'orders/:id',
-        element: (
-          <Suspense fallback={<LoadingPage />}>
-            <OrderDetailPage />
           </Suspense>
         ),
       },
