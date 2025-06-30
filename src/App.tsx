@@ -1,17 +1,15 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
-// Import section components
-import { Navbar } from './components/sections/Navbar';
-import { Hero } from './components/sections/Hero';
-import { StepsToOrder } from './components/sections/StepsToOrder';
-import { Menu } from './components/sections/Menu';
-import { About } from './components/sections/About';
-import { Contact } from './components/sections/Contact';
-import { Footer } from './components/sections/Footer';
+import { Navbar } from '@/components/sections/Navbar';
+import { Hero } from '@/components/sections/Hero';
+import { StepsToOrder } from '@/components/sections/StepsToOrder';
+import { Menu } from '@/components/sections/Menu';
+import { About } from '@/components/sections/About';
+import { Contact } from '@/components/sections/Contact';
+import { Footer } from '@/components/sections/Footer';
 
-// Import stores
-import { useThemeStore } from './stores/theme-store';
+import { useThemeStore } from '@/stores/theme-store';
 
 function App() {
   const { setTheme } = useThemeStore();

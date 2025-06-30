@@ -19,6 +19,7 @@ import { Badge } from '../ui/badge';
 import { ThemeToggle } from '../common/theme-toggle';
 import { CartSidebar } from '../common/cart-sidebar';
 import { useCartTotals } from '../../stores/cart-store';
+import { Logo } from '../common/logo';
 
 interface NavbarProps {
   activeSection: string;
@@ -109,20 +110,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     >
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
         <div className='flex justify-between items-center h-16'>
-          {/* Logo */}
-          <motion.div
-            className='flex-shrink-0 cursor-pointer'
-            onClick={() => handleNavClick('home')}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <div className='flex items-center space-x-2 rtl:space-x-reverse'>
-              <ChefHat className='h-8 w-8 text-amber-600' />
-              <span className='text-2xl font-bold text-gray-900 dark:text-white'>
-                La Tavola
-              </span>
-            </div>
-          </motion.div>
+          <Logo />
 
           {/* Desktop Navigation */}
           <div className='hidden md:flex items-center space-x-8 rtl:space-x-reverse'>
