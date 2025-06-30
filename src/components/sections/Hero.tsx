@@ -8,16 +8,55 @@ import {
   Users,
   ChefHat,
   Star,
+  type LucideIcon,
 } from 'lucide-react';
-import { Button } from '../ui/button';
+import { Button } from '@/components/ui/button';
+
+import { UI_CONSTANTS } from '@/constants/ui';
 
 interface HeroProps {
   onScrollToMenu: () => void;
 }
 
-export const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
+interface HeroStat {
+  number: string;
+  labelKey: string;
+  icon: LucideIcon;
+}
+
+const HERO_STATS: HeroStat[] = [
+  { number: '500+', labelKey: 'hero.stats.customers', icon: Users },
+  { number: '50+', labelKey: 'hero.stats.dishes', icon: ChefHat },
+  { number: '5★', labelKey: 'hero.stats.rating', icon: Star },
+];
+
+const ANIMATION_DELAYS = {
+  BADGE: 0.2,
+  TITLE: 0.4,
+  SUBTITLE: 0.6,
+  DESCRIPTION: 0.8,
+  CTA_BUTTONS: 1,
+  STATS: 1.2,
+  STAT_BASE: 1.4,
+  STAT_NUMBER_BASE: 1.6,
+  STAT_LABEL_BASE: 1.8,
+} as const;
+
+const ANIMATION_DURATIONS = {
+  STANDARD: 0.8,
+  FAST: 0.6,
+  NORMAL: 0.3,
+  SLOW: 2,
+  VERY_SLOW: 3,
+} as const;
+
+const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+
+  const handleDemoClick = (): void => {
+    navigate('/demo');
+  };
 
   return (
     <section
@@ -45,7 +84,10 @@ export const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.6 }}
+          transition={{
+            delay: ANIMATION_DELAYS.BADGE,
+            duration: ANIMATION_DURATIONS.FAST,
+          }}
           className='inline-flex items-center gap-2 px-4 py-2 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full border border-amber-200/50 dark:border-amber-800/50 shadow-lg mb-8'
         >
           <Sparkles className='w-4 h-4 text-amber-600 dark:text-amber-400' />
@@ -58,7 +100,10 @@ export const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.8 }}
+          transition={{
+            delay: ANIMATION_DELAYS.TITLE,
+            duration: ANIMATION_DURATIONS.STANDARD,
+          }}
           className='text-5xl sm:text-6xl lg:text-8xl font-bold mb-6 leading-tight'
         >
           <span className='bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 dark:from-white dark:via-gray-100 dark:to-white bg-clip-text text-transparent'>
@@ -70,7 +115,10 @@ export const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
         <motion.p
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6, duration: 0.8 }}
+          transition={{
+            delay: ANIMATION_DELAYS.SUBTITLE,
+            duration: ANIMATION_DURATIONS.STANDARD,
+          }}
           className='text-xl sm:text-2xl lg:text-3xl mb-6 font-light text-gray-600 dark:text-gray-300 max-w-4xl mx-auto leading-relaxed'
         >
           {t('hero.subtitle')}
@@ -80,7 +128,10 @@ export const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
         <motion.p
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8, duration: 0.8 }}
+          transition={{
+            delay: ANIMATION_DELAYS.DESCRIPTION,
+            duration: ANIMATION_DURATIONS.STANDARD,
+          }}
           className='text-lg sm:text-xl mb-12 text-gray-500 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed'
         >
           {t('hero.description')}
@@ -90,13 +141,17 @@ export const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1, duration: 0.8 }}
+          transition={{
+            delay: ANIMATION_DELAYS.CTA_BUTTONS,
+            duration: ANIMATION_DURATIONS.STANDARD,
+          }}
           className='flex flex-col sm:flex-row gap-4 justify-center items-center mb-16'
         >
           <Button
             size='lg'
             onClick={onScrollToMenu}
-            className='group bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white text-lg px-8 py-4 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 border-0 min-h-[56px]'
+            className='group bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white text-lg px-8 py-4 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 border-0'
+            style={{ minHeight: UI_CONSTANTS.BUTTON_MIN_HEIGHT }}
           >
             <span className='flex items-center gap-2'>
               {t('hero.cta')}
@@ -107,8 +162,9 @@ export const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
           <Button
             size='lg'
             variant='outline'
-            onClick={() => navigate('/demo')}
-            className='group border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 hover:border-amber-400 dark:hover:border-amber-500 text-lg px-8 py-4 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm min-h-[56px]'
+            onClick={handleDemoClick}
+            className='group border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 hover:border-amber-400 dark:hover:border-amber-500 text-lg px-8 py-4 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm'
+            style={{ minHeight: UI_CONSTANTS.BUTTON_MIN_HEIGHT }}
           >
             <span className='flex items-center gap-2'>
               <QrCode className='w-5 h-5 group-hover:rotate-12 transition-transform' />
@@ -121,21 +177,20 @@ export const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.2, duration: 0.8 }}
+          transition={{
+            delay: ANIMATION_DELAYS.STATS,
+            duration: ANIMATION_DURATIONS.STANDARD,
+          }}
           className='grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-4xl mx-auto mb-20'
         >
-          {[
-            { number: '500+', labelKey: 'hero.stats.customers', icon: Users },
-            { number: '50+', labelKey: 'hero.stats.dishes', icon: ChefHat },
-            { number: '5★', labelKey: 'hero.stats.rating', icon: Star },
-          ].map((stat, index) => (
+          {HERO_STATS.map((stat, index) => (
             <motion.div
-              key={index}
+              key={stat.labelKey}
               initial={{ opacity: 0, y: 20, scale: 0.9 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               transition={{
-                delay: 1.4 + index * 0.15,
-                duration: 0.6,
+                delay: ANIMATION_DELAYS.STAT_BASE + index * 0.15,
+                duration: ANIMATION_DURATIONS.FAST,
                 type: 'spring',
                 stiffness: 100,
               }}
@@ -143,7 +198,7 @@ export const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
                 y: -8,
                 scale: 1.05,
                 rotate: [0, -1, 1, 0],
-                transition: { duration: 0.3 },
+                transition: { duration: ANIMATION_DURATIONS.NORMAL },
               }}
               whileTap={{ scale: 0.95 }}
               className='group text-center p-6 bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm rounded-2xl border border-white/30 dark:border-gray-700/30 shadow-lg hover:shadow-2xl transition-all duration-500 cursor-pointer overflow-hidden relative'
@@ -154,7 +209,7 @@ export const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
                 initial={false}
                 animate={{ scale: [1, 1.1, 1] }}
                 transition={{
-                  duration: 2,
+                  duration: ANIMATION_DURATIONS.SLOW,
                   repeat: Infinity,
                   ease: 'easeInOut',
                 }}
@@ -181,7 +236,10 @@ export const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
                 <motion.span
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 1.6 + index * 0.1, duration: 0.8 }}
+                  transition={{
+                    delay: ANIMATION_DELAYS.STAT_NUMBER_BASE + index * 0.1,
+                    duration: ANIMATION_DURATIONS.STANDARD,
+                  }}
                 >
                   {stat.number}
                 </motion.span>
@@ -192,7 +250,10 @@ export const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
                 className='text-sm text-gray-600 dark:text-gray-400 font-medium relative z-10 group-hover:text-gray-700 dark:group-hover:text-gray-300 transition-colors duration-300'
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 1.8 + index * 0.1, duration: 0.6 }}
+                transition={{
+                  delay: ANIMATION_DELAYS.STAT_LABEL_BASE + index * 0.1,
+                  duration: ANIMATION_DURATIONS.FAST,
+                }}
               >
                 {t(stat.labelKey)}
               </motion.div>
@@ -205,7 +266,7 @@ export const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
                   opacity: [0.3, 0.8, 0.3],
                 }}
                 transition={{
-                  duration: 2 + index * 0.5,
+                  duration: ANIMATION_DURATIONS.SLOW + index * 0.5,
                   repeat: Infinity,
                   ease: 'easeInOut',
                 }}
@@ -217,7 +278,7 @@ export const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
                   opacity: [0.2, 0.6, 0.2],
                 }}
                 transition={{
-                  duration: 3 + index * 0.3,
+                  duration: ANIMATION_DURATIONS.VERY_SLOW + index * 0.3,
                   repeat: Infinity,
                   ease: 'easeInOut',
                   delay: 1,
@@ -230,3 +291,7 @@ export const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
     </section>
   );
 };
+
+Hero.displayName = 'Hero';
+
+export { Hero };

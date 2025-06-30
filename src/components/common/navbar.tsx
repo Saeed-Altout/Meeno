@@ -3,8 +3,6 @@ import { QrCodeIcon, MenuIcon, ShoppingCart } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
-import { config } from '@/config';
-
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
@@ -14,17 +12,32 @@ import {
   MagneticBackground,
   MagneticCursor,
 } from '@/components/common/magnetic-cursor';
+
 import { useScroll } from '@/hooks/use-scroll';
 import { useCartTotals } from '@/stores/cart-store';
+import { config } from '@/config';
 import { cn } from '@/lib/utils';
+import { DEFAULT_MESSAGES } from '@/constants/messages';
 
-export const Navbar = () => {
+const Navbar: React.FC = () => {
   const { t } = useTranslation();
   const buttonContainerRef = useRef<HTMLDivElement>(null);
-  const [isOpen, setIsOpen] = useState(false);
-  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
   const { isScrolled } = useScroll();
   const { itemCount } = useCartTotals();
+
+  const handleMenuClose = (): void => {
+    setIsOpen(false);
+  };
+
+  const handleCartOpen = (): void => {
+    setIsCartOpen(true);
+  };
+
+  const handleCartClose = (): void => {
+    setIsCartOpen(false);
+  };
 
   return (
     <div
@@ -41,7 +54,12 @@ export const Navbar = () => {
           <div className='flex'>
             {config.navigationLinks.map(link => (
               <MagneticCursor key={link.href}>
-                <Link to={link.href}>{t(link.nameKey)}</Link>
+                <Link
+                  to={link.href}
+                  className='transition-colors hover:text-primary'
+                >
+                  {t(link.nameKey)}
+                </Link>
               </MagneticCursor>
             ))}
           </div>
@@ -50,16 +68,20 @@ export const Navbar = () => {
         <Button
           variant='ghost'
           size='sm'
-          onClick={() => setIsCartOpen(true)}
+          onClick={handleCartOpen}
           className='relative'
+          aria-label={t('common.cart') || DEFAULT_MESSAGES.ACCESSIBILITY.CART}
         >
           <ShoppingCart className='h-5 w-5' />
           {itemCount > 0 && (
-            <span className='absolute -top-1 -right-1 h-5 w-5 rounded-full bg-orange-500 text-white text-xs flex items-center justify-center'>
+            <span
+              className='absolute -top-1 -right-1 h-5 w-5 rounded-full bg-orange-500 text-white text-xs flex items-center justify-center'
+              aria-label={`${itemCount} items in cart`}
+            >
               {itemCount}
             </span>
           )}
-          <span className='sr-only'>Open cart</span>
+          <span className='sr-only'>{DEFAULT_MESSAGES.ACCESSIBILITY.CART}</span>
         </Button>
 
         <Button asChild size='sm'>
@@ -71,9 +93,16 @@ export const Navbar = () => {
 
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <SheetTrigger asChild className='md:hidden'>
-          <Button variant='ghost' size='icon'>
+          <Button
+            variant='ghost'
+            size='icon'
+            aria-label={t('common.menu') || DEFAULT_MESSAGES.ACCESSIBILITY.MENU}
+          >
             <MenuIcon className='h-5 w-5' />
-            <span className='sr-only'>Toggle menu</span>
+            <span className='sr-only'>
+              {DEFAULT_MESSAGES.ACCESSIBILITY.TOGGLE}{' '}
+              {DEFAULT_MESSAGES.ACCESSIBILITY.MENU}
+            </span>
           </Button>
         </SheetTrigger>
         <SheetContent side='right' className='flex flex-col'>
@@ -82,8 +111,8 @@ export const Navbar = () => {
               <Link
                 key={link.href}
                 to={link.href}
-                className='flex items-center gap-2 text-lg font-medium'
-                onClick={() => setIsOpen(false)}
+                className='flex items-center gap-2 text-lg font-medium transition-colors hover:text-primary'
+                onClick={handleMenuClose}
               >
                 <link.icon className='h-5 w-5' />
                 {t(link.nameKey)}
@@ -94,7 +123,7 @@ export const Navbar = () => {
               asChild
               className='mt-4 bg-primary hover:bg-primary/90 flex items-center gap-2'
             >
-              <Link to='/qr' onClick={() => setIsOpen(false)}>
+              <Link to='/qr' onClick={handleMenuClose}>
                 {t('common.getStarted')} <QrCodeIcon className='ml-1 h-4 w-4' />
               </Link>
             </Button>
@@ -102,7 +131,11 @@ export const Navbar = () => {
         </SheetContent>
       </Sheet>
 
-      <CartSidebar isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
+      <CartSidebar isOpen={isCartOpen} onClose={handleCartClose} />
     </div>
   );
 };
+
+Navbar.displayName = 'Navbar';
+
+export { Navbar };

@@ -1,24 +1,30 @@
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Sun, Moon, Monitor, Check } from 'lucide-react';
-import { Button } from '../ui/button';
+
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '../ui/dropdown-menu';
-import { useThemeStore, type ThemeMode } from '../../stores/theme-store';
+} from '@/components/ui/dropdown-menu';
 
-export const ThemeToggle: React.FC = () => {
+import { useThemeStore, type ThemeMode } from '@/stores/theme-store';
+import { DEFAULT_MESSAGES } from '@/constants/messages';
+import { UI_CONSTANTS } from '@/constants/ui';
+
+interface ThemeOption {
+  mode: ThemeMode;
+  icon: React.ReactNode;
+  label: string;
+}
+
+const ThemeToggle: React.FC = () => {
   const { t } = useTranslation();
   const { mode, setMode } = useThemeStore();
 
-  const themeOptions: {
-    mode: ThemeMode;
-    icon: React.ReactNode;
-    label: string;
-  }[] = [
+  const themeOptions: ThemeOption[] = [
     {
       mode: 'light',
       icon: <Sun className='h-4 w-4' />,
@@ -36,7 +42,7 @@ export const ThemeToggle: React.FC = () => {
     },
   ];
 
-  const getCurrentIcon = () => {
+  const getCurrentIcon = (): React.ReactNode => {
     switch (mode) {
       case 'light':
         return <Sun className='h-4 w-4' />;
@@ -49,6 +55,10 @@ export const ThemeToggle: React.FC = () => {
     }
   };
 
+  const handleThemeChange = (selectedMode: ThemeMode): void => {
+    setMode(selectedMode);
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -56,13 +66,15 @@ export const ThemeToggle: React.FC = () => {
           variant='ghost'
           size='sm'
           className='flex items-center space-x-2 rtl:space-x-reverse'
-          aria-label={t('common.theme')}
+          aria-label={
+            t('common.theme') || DEFAULT_MESSAGES.ACCESSIBILITY.TOGGLE
+          }
         >
           <motion.div
             key={mode}
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.2 }}
+            transition={{ duration: UI_CONSTANTS.ANIMATION.FAST / 1000 }}
           >
             {getCurrentIcon()}
           </motion.div>
@@ -75,7 +87,7 @@ export const ThemeToggle: React.FC = () => {
         {themeOptions.map(option => (
           <DropdownMenuItem
             key={option.mode}
-            onClick={() => setMode(option.mode)}
+            onClick={() => handleThemeChange(option.mode)}
             className={`flex items-center justify-between px-3 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors ${
               mode === option.mode
                 ? 'bg-amber-50 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400'
@@ -100,7 +112,7 @@ export const ThemeToggle: React.FC = () => {
               <motion.div
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
-                transition={{ duration: 0.2 }}
+                transition={{ duration: UI_CONSTANTS.ANIMATION.FAST / 1000 }}
               >
                 <Check className='h-4 w-4 text-amber-600 dark:text-amber-400' />
               </motion.div>
@@ -111,3 +123,7 @@ export const ThemeToggle: React.FC = () => {
     </DropdownMenu>
   );
 };
+
+ThemeToggle.displayName = 'ThemeToggle';
+
+export { ThemeToggle };

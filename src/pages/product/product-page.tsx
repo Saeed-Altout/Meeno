@@ -13,39 +13,58 @@ import {
   Users,
   ChefHat,
 } from 'lucide-react';
-import { Button } from '../../components/ui/button';
-import { Card } from '../../components/ui/card';
-import { Badge } from '../../components/ui/badge';
-import { Textarea } from '../../components/ui/textarea';
-import { Label } from '../../components/ui/label';
-import { useCartStore } from '../../stores/cart-store';
-import { useFavoritesStore } from '../../stores/favorites-store';
-import { getItemById, getAllItems } from '../../data';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
+import { useCartStore } from '@/stores/cart-store';
+import { useFavoritesStore } from '@/stores/favorites-store';
+import { getItemById, getAllItems, type MenuItem } from '@/data';
+import { DEFAULT_MESSAGES } from '@/constants/messages';
 
-export default function ProductPage() {
-  const { id } = useParams<{ id: string }>();
+interface ProductPageParams extends Record<string, string | undefined> {
+  id: string;
+}
+
+const DEFAULT_RATING = 4.5;
+const DEFAULT_REVIEWS_COUNT = 24;
+const PREP_TIME = '15-20 min';
+const SERVING_SIZE = '1-2 people';
+const RELATED_ITEMS_LIMIT = 4;
+
+const ProductPage: React.FC = () => {
+  const { id } = useParams<ProductPageParams>();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const [quantity, setQuantity] = useState(1);
-  const [notes, setNotes] = useState('');
+  const [quantity, setQuantity] = useState<number>(1);
+  const [notes, setNotes] = useState<string>('');
   const { addToCart, getItemQuantity, addNote } = useCartStore();
   const { addToFavorites, removeFromFavorites, isFavorite } =
     useFavoritesStore();
 
   // Get the item from real data
-  const item = getItemById(id!);
+  const item: MenuItem | undefined = getItemById(id!);
   const allMenuItems = getAllItems();
+
+  const handleGoBack = (): void => {
+    navigate(-1);
+  };
+
+  const handleGoHome = (): void => {
+    navigate('/');
+  };
 
   if (!item) {
     return (
       <div className='min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center'>
         <div className='text-center'>
           <h1 className='text-2xl font-bold text-gray-900 dark:text-white mb-4'>
-            Product Not Found
+            {t('productDetail.notFound') || 'Product Not Found'}
           </h1>
-          <Button onClick={() => navigate('/')}>
+          <Button onClick={handleGoHome}>
             <ArrowLeft className='h-4 w-4 mr-2' />
-            Back to Menu
+            {t('common.backToMenu') || 'Back to Menu'}
           </Button>
         </div>
       </div>
@@ -55,14 +74,14 @@ export default function ProductPage() {
   const currentCartQuantity = getItemQuantity(item.id);
   const isInFavorites = isFavorite(item.id);
 
-  const handleAddToCart = () => {
+  const handleAddToCart = (): void => {
     addToCart(item, quantity);
     if (notes.trim()) {
       addNote(item.id, notes.trim());
     }
   };
 
-  const handleToggleFavorite = () => {
+  const handleToggleFavorite = (): void => {
     if (isInFavorites) {
       removeFromFavorites(item.id);
     } else {
@@ -70,7 +89,17 @@ export default function ProductPage() {
     }
   };
 
-  const renderStars = (rating: number = 4.5) => {
+  const handleQuantityChange = (delta: number): void => {
+    setQuantity(prev => Math.max(1, prev + delta));
+  };
+
+  const handleNotesChange = (
+    event: React.ChangeEvent<HTMLTextAreaElement>
+  ): void => {
+    setNotes(event.target.value);
+  };
+
+  const renderStars = (rating: number = DEFAULT_RATING): React.ReactNode => {
     return Array.from({ length: 5 }, (_, i) => (
       <Star
         key={i}
@@ -85,7 +114,7 @@ export default function ProductPage() {
 
   const relatedItems = allMenuItems
     .filter(i => i.id !== item.id && i.category === item.category)
-    .slice(0, 4);
+    .slice(0, RELATED_ITEMS_LIMIT);
 
   return (
     <div className='min-h-screen bg-gray-50 dark:bg-gray-900'>
@@ -94,11 +123,11 @@ export default function ProductPage() {
         <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4'>
           <Button
             variant='ghost'
-            onClick={() => navigate(-1)}
+            onClick={handleGoBack}
             className='flex items-center gap-2 text-gray-700 dark:text-gray-300 hover:text-amber-600 dark:hover:text-amber-400 transition-colors'
           >
             <ArrowLeft className='h-4 w-4' />
-            {t('common.back')}
+            {t('common.back') || DEFAULT_MESSAGES.ACCESSIBILITY.CLOSE}
           </Button>
         </div>
       </div>
@@ -114,7 +143,7 @@ export default function ProductPage() {
             <div className='aspect-square rounded-2xl overflow-hidden bg-white dark:bg-gray-800 shadow-lg'>
               <img
                 src={item.image}
-                alt={item.nameKey}
+                alt={t(item.nameKey)}
                 className='w-full h-full object-cover'
               />
             </div>
@@ -125,6 +154,11 @@ export default function ProductPage() {
               size='sm'
               onClick={handleToggleFavorite}
               className='absolute top-4 right-4 bg-white/95 hover:bg-white text-gray-900 rounded-full p-3 shadow-lg'
+              aria-label={
+                isInFavorites
+                  ? DEFAULT_MESSAGES.ACCESSIBILITY.UNFAVORITE
+                  : DEFAULT_MESSAGES.ACCESSIBILITY.FAVORITE
+              }
             >
               <Heart
                 className={`h-5 w-5 ${
@@ -135,7 +169,7 @@ export default function ProductPage() {
 
             {item.featured && (
               <Badge className='absolute top-4 left-4 bg-gradient-to-r from-orange-500 to-red-500 text-white text-sm px-3 py-1'>
-                Featured
+                {t('productDetail.featured') || 'Featured'}
               </Badge>
             )}
           </motion.div>
@@ -157,7 +191,8 @@ export default function ProductPage() {
                 <div className='flex items-center gap-2'>
                   {renderStars()}
                   <span className='text-gray-600 dark:text-gray-400 ml-2'>
-                    (4.5) • 24 reviews
+                    ({DEFAULT_RATING}) • {DEFAULT_REVIEWS_COUNT}{' '}
+                    {t('productDetail.reviews') || 'reviews'}
                   </span>
                 </div>
               </div>
@@ -165,11 +200,11 @@ export default function ProductPage() {
               <div className='flex items-center gap-6 text-gray-600 dark:text-gray-400 mb-6'>
                 <div className='flex items-center gap-2'>
                   <Clock className='h-5 w-5' />
-                  <span>15-20 min</span>
+                  <span>{PREP_TIME}</span>
                 </div>
                 <div className='flex items-center gap-2'>
                   <Users className='h-5 w-5' />
-                  <span>1-2 people</span>
+                  <span>{SERVING_SIZE}</span>
                 </div>
               </div>
             </div>
@@ -177,7 +212,7 @@ export default function ProductPage() {
             {/* Description */}
             <div>
               <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-3'>
-                Description
+                {t('productDetail.description') || 'Description'}
               </h3>
               <p className='text-gray-600 dark:text-gray-400 leading-relaxed text-lg'>
                 {t(item.descriptionKey)}
@@ -188,14 +223,15 @@ export default function ProductPage() {
             <div>
               <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-3'>
                 <ChefHat className='h-5 w-5 inline mr-2' />
-                Ingredients
+                {t('productDetail.ingredients.title') || 'Ingredients'}
               </h3>
               <div className='flex flex-wrap gap-2'>
                 {[
-                  t('productDetail.ingredients.freshTomatoes'),
-                  t('productDetail.ingredients.mozzarella'),
-                  t('productDetail.ingredients.basil'),
-                  t('productDetail.ingredients.oliveOil'),
+                  t('productDetail.ingredients.freshTomatoes') ||
+                    'Fresh Tomatoes',
+                  t('productDetail.ingredients.mozzarella') || 'Mozzarella',
+                  t('productDetail.ingredients.basil') || 'Basil',
+                  t('productDetail.ingredients.oliveOil') || 'Olive Oil',
                 ].map(ingredient => (
                   <Badge
                     key={ingredient}
@@ -255,7 +291,7 @@ export default function ProductPage() {
                   <Button
                     variant='outline'
                     size='sm'
-                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                    onClick={() => handleQuantityChange(-1)}
                     disabled={quantity <= 1}
                     className='h-10 w-10 p-0'
                   >
@@ -267,7 +303,7 @@ export default function ProductPage() {
                   <Button
                     variant='outline'
                     size='sm'
-                    onClick={() => setQuantity(quantity + 1)}
+                    onClick={() => handleQuantityChange(1)}
                     className='h-10 w-10 p-0'
                   >
                     <Plus className='h-4 w-4' />
@@ -288,7 +324,7 @@ export default function ProductPage() {
                   id='notes'
                   placeholder={t('cart.notesPlaceholder')}
                   value={notes}
-                  onChange={e => setNotes(e.target.value)}
+                  onChange={handleNotesChange}
                   className='resize-none'
                   rows={3}
                   maxLength={200}
@@ -363,4 +399,8 @@ export default function ProductPage() {
       </div>
     </div>
   );
-}
+};
+
+ProductPage.displayName = 'ProductPage';
+
+export default ProductPage;

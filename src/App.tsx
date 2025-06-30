@@ -1,39 +1,51 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
-import { Navbar } from '@/components/sections/Navbar';
-import { Hero } from '@/components/sections/Hero';
-import { StepsToOrder } from '@/components/sections/StepsToOrder';
-import { Menu } from '@/components/sections/Menu';
-import { About } from '@/components/sections/About';
-import { Contact } from '@/components/sections/Contact';
-import { Footer } from '@/components/sections/Footer';
+import { Navbar } from '@/components/sections/navbar';
+import { Hero } from '@/components/sections/hero';
+import { StepsToOrder } from '@/components/sections/steps-to-order';
+import { Menu } from '@/components/sections/menu';
+import { About } from '@/components/sections/about';
+import { Contact } from '@/components/sections/contact';
+import { Footer } from '@/components/sections/footer';
 
 import { useThemeStore } from '@/stores/theme-store';
+import { UI_CONSTANTS } from '@/constants/ui';
 
-function App() {
+type ActiveSection =
+  | 'home'
+  | 'steps'
+  | 'menu'
+  | 'favorites'
+  | 'about'
+  | 'contact';
+
+const App: React.FC = () => {
   const { setTheme } = useThemeStore();
-  const [activeSection, setActiveSection] = useState('home');
+  const [activeSection, setActiveSection] = useState<ActiveSection>('home');
 
   // Initialize theme on mount
   useEffect(() => {
-    const isDarkMode = localStorage.getItem('theme-storage');
-    if (isDarkMode) {
-      try {
-        const themeData = JSON.parse(isDarkMode);
-        setTheme(themeData.state?.isDarkMode || false);
-      } catch {
-        console.warn('Failed to parse theme from localStorage');
+    const initializeTheme = (): void => {
+      const storedTheme = localStorage.getItem('theme-storage');
+      if (storedTheme) {
+        try {
+          const themeData = JSON.parse(storedTheme);
+          setTheme(themeData.state?.isDarkMode || false);
+        } catch (error) {
+          console.warn('Failed to parse theme from localStorage:', error);
+        }
       }
-    }
+    };
+
+    initializeTheme();
   }, [setTheme]);
 
   // Smooth scroll function
-  const scrollToSection = (sectionId: string) => {
+  const scrollToSection = (sectionId: string): void => {
     const element = document.getElementById(sectionId);
     if (element) {
-      const navbarHeight = 64; // Height of fixed navbar
-      const elementPosition = element.offsetTop - navbarHeight;
+      const elementPosition = element.offsetTop - UI_CONSTANTS.NAVBAR_HEIGHT;
 
       window.scrollTo({
         top: elementPosition,
@@ -43,15 +55,24 @@ function App() {
   };
 
   // Scroll to menu helper
-  const scrollToMenu = () => scrollToSection('menu');
+  const scrollToMenu = (): void => scrollToSection('menu');
 
   // Track active section based on scroll position
   useEffect(() => {
-    const sections = ['home', 'steps', 'menu', 'favorites', 'about', 'contact'];
-    const navbarHeight = 64;
+    const sections: ActiveSection[] = [
+      'home',
+      'steps',
+      'menu',
+      'favorites',
+      'about',
+      'contact',
+    ];
 
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY + navbarHeight + 100;
+    const handleScroll = (): void => {
+      const scrollPosition =
+        window.scrollY +
+        UI_CONSTANTS.NAVBAR_HEIGHT +
+        UI_CONSTANTS.NAVBAR_SCROLL_OFFSET;
 
       for (const sectionId of sections) {
         const element = document.getElementById(sectionId);
@@ -75,7 +96,12 @@ function App() {
 
   // Handle smooth scroll behavior with CSS
   useEffect(() => {
-    document.documentElement.style.scrollBehavior = 'smooth';
+    const enableSmoothScroll = (): void => {
+      document.documentElement.style.scrollBehavior = 'smooth';
+    };
+
+    enableSmoothScroll();
+
     return () => {
       document.documentElement.style.scrollBehavior = 'auto';
     };
@@ -111,8 +137,12 @@ function App() {
       <motion.div
         initial={{ opacity: 1 }}
         animate={{ opacity: 0 }}
-        transition={{ delay: 0.5, duration: 0.5 }}
+        transition={{
+          delay: UI_CONSTANTS.LOADING_ANIMATION_DELAY / 1000,
+          duration: UI_CONSTANTS.LOADING_ANIMATION_DURATION / 1000,
+        }}
         className='fixed inset-0 bg-white dark:bg-gray-900 z-50 flex items-center justify-center pointer-events-none'
+        style={{ zIndex: UI_CONSTANTS.Z_INDEX.LOADING_OVERLAY }}
       >
         <motion.div
           animate={{
@@ -124,12 +154,16 @@ function App() {
             repeat: Infinity,
           }}
           className='text-amber-600 text-4xl'
+          role='img'
+          aria-label='Loading animation'
         >
           🍝
         </motion.div>
       </motion.div>
     </div>
   );
-}
+};
+
+App.displayName = 'App';
 
 export default App;

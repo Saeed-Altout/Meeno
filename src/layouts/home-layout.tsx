@@ -1,33 +1,49 @@
 import { useState, useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
-import { Navbar } from '@/components/sections/Navbar';
-import { Footer } from '@/components/sections/Footer';
-import { useThemeStore } from '@/stores/theme-store';
 
-export default function HomeLayout() {
+import { Navbar } from '@/components/sections/navbar';
+import { Footer } from '@/components/sections/footer';
+
+import { useThemeStore } from '@/stores/theme-store';
+import { UI_CONSTANTS } from '@/constants/ui';
+
+type ActiveSection = 'home' | 'steps' | 'menu' | 'about' | 'contact' | '';
+
+const HOME_SECTIONS: Array<Exclude<ActiveSection, ''>> = [
+  'home',
+  'steps',
+  'menu',
+  'about',
+  'contact',
+];
+
+const HomeLayout: React.FC = () => {
   const { setTheme } = useThemeStore();
   const location = useLocation();
-  const [activeSection, setActiveSection] = useState('home');
+  const [activeSection, setActiveSection] = useState<ActiveSection>('home');
 
   // Initialize theme on mount
   useEffect(() => {
-    const isDarkMode = localStorage.getItem('theme-storage');
-    if (isDarkMode) {
-      try {
-        const themeData = JSON.parse(isDarkMode);
-        setTheme(themeData.state?.isDarkMode || false);
-      } catch {
-        console.warn('Failed to parse theme from localStorage');
+    const initializeTheme = (): void => {
+      const storedTheme = localStorage.getItem('theme-storage');
+      if (storedTheme) {
+        try {
+          const themeData = JSON.parse(storedTheme);
+          setTheme(themeData.state?.isDarkMode || false);
+        } catch (error) {
+          console.warn('Failed to parse theme from localStorage:', error);
+        }
       }
-    }
+    };
+
+    initializeTheme();
   }, [setTheme]);
 
   // Smooth scroll function
-  const scrollToSection = (sectionId: string) => {
+  const scrollToSection = (sectionId: string): void => {
     const element = document.getElementById(sectionId);
     if (element) {
-      const navbarHeight = 64; // Height of fixed navbar
-      const elementPosition = element.offsetTop - navbarHeight;
+      const elementPosition = element.offsetTop - UI_CONSTANTS.NAVBAR_HEIGHT;
 
       window.scrollTo({
         top: elementPosition,
@@ -47,13 +63,13 @@ export default function HomeLayout() {
   useEffect(() => {
     if (location.pathname !== '/') return;
 
-    const sections = ['home', 'steps', 'menu', 'about', 'contact'];
-    const navbarHeight = 64;
+    const handleScroll = (): void => {
+      const scrollPosition =
+        window.scrollY +
+        UI_CONSTANTS.NAVBAR_HEIGHT +
+        UI_CONSTANTS.NAVBAR_SCROLL_OFFSET;
 
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY + navbarHeight + 100;
-
-      for (const sectionId of sections) {
+      for (const sectionId of HOME_SECTIONS) {
         const element = document.getElementById(sectionId);
         if (element) {
           const sectionTop = element.offsetTop;
@@ -82,4 +98,8 @@ export default function HomeLayout() {
       <Footer onNavClick={scrollToSection} />
     </div>
   );
-}
+};
+
+HomeLayout.displayName = 'HomeLayout';
+
+export default HomeLayout;

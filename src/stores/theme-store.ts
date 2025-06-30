@@ -11,20 +11,23 @@ interface ThemeState {
   setTheme: (isDark: boolean) => void;
 }
 
+const THEME_STORAGE_KEY = 'theme-storage' as const;
+const DARK_CLASS = 'dark' as const;
+const DARK_MEDIA_QUERY = '(prefers-color-scheme: dark)' as const;
+
 const getSystemTheme = (): boolean => {
-  if (typeof window !== 'undefined') {
-    return window.matchMedia('(prefers-color-scheme: dark)').matches;
-  }
-  return false;
+  if (typeof window === 'undefined') return false;
+  return window.matchMedia(DARK_MEDIA_QUERY).matches;
 };
 
-const applyTheme = (isDark: boolean) => {
-  if (typeof document !== 'undefined') {
-    if (isDark) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
+const applyTheme = (isDark: boolean): void => {
+  if (typeof document === 'undefined') return;
+
+  const { documentElement } = document;
+  if (isDark) {
+    documentElement.classList.add(DARK_CLASS);
+  } else {
+    documentElement.classList.remove(DARK_CLASS);
   }
 };
 
@@ -41,36 +44,45 @@ const getEffectiveTheme = (mode: ThemeMode): boolean => {
   }
 };
 
+const handleSystemThemeChange = (): void => {
+  const store = useThemeStore.getState();
+  if (store.mode === 'system') {
+    const systemIsDark = getSystemTheme();
+    applyTheme(systemIsDark);
+    useThemeStore.setState({ isDarkMode: systemIsDark });
+  }
+};
+
 export const useThemeStore = create<ThemeState>()(
   persist(
     set => ({
       mode: 'system',
       isDarkMode: getSystemTheme(),
 
-      setMode: (mode: ThemeMode) =>
+      setMode: (mode: ThemeMode): void =>
         set(() => {
           const isDark = getEffectiveTheme(mode);
           applyTheme(isDark);
           return { mode, isDarkMode: isDark };
         }),
 
-      toggleTheme: () =>
+      toggleTheme: (): void =>
         set(state => {
-          const newMode = state.mode === 'light' ? 'dark' : 'light';
+          const newMode: ThemeMode = state.mode === 'light' ? 'dark' : 'light';
           const isDark = getEffectiveTheme(newMode);
           applyTheme(isDark);
           return { mode: newMode, isDarkMode: isDark };
         }),
 
-      setTheme: (isDark: boolean) =>
+      setTheme: (isDark: boolean): void =>
         set(() => {
-          const mode = isDark ? 'dark' : 'light';
+          const mode: ThemeMode = isDark ? 'dark' : 'light';
           applyTheme(isDark);
           return { mode, isDarkMode: isDark };
         }),
     }),
     {
-      name: 'theme-storage',
+      name: THEME_STORAGE_KEY,
       onRehydrateStorage: () => state => {
         if (state) {
           const isDark = getEffectiveTheme(state.mode);
@@ -80,10 +92,8 @@ export const useThemeStore = create<ThemeState>()(
 
           // Listen for system theme changes when in system mode
           if (typeof window !== 'undefined' && state.mode === 'system') {
-            const mediaQuery = window.matchMedia(
-              '(prefers-color-scheme: dark)'
-            );
-            const handleChange = () => {
+            const mediaQuery = window.matchMedia(DARK_MEDIA_QUERY);
+            const handleChange = (): void => {
               const store = useThemeStore.getState();
               if (store.mode === 'system') {
                 const systemIsDark = mediaQuery.matches;
@@ -101,14 +111,6 @@ export const useThemeStore = create<ThemeState>()(
 
 // Listen for system theme changes
 if (typeof window !== 'undefined') {
-  const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-  const handleSystemThemeChange = () => {
-    const store = useThemeStore.getState();
-    if (store.mode === 'system') {
-      const systemIsDark = mediaQuery.matches;
-      applyTheme(systemIsDark);
-      useThemeStore.setState({ isDarkMode: systemIsDark });
-    }
-  };
+  const mediaQuery = window.matchMedia(DARK_MEDIA_QUERY);
   mediaQuery.addEventListener('change', handleSystemThemeChange);
 }
