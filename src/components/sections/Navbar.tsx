@@ -70,8 +70,8 @@ function Navbar() {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       className={cn(
-        'fixed top-0 w-full z-50 transition-all duration-300',
-        isScrolled && 'bg-white dark:bg-gray-900/80 backdrop-blur-md shadow-lg'
+        'bg-white dark:bg-gray-900/80 fixed top-0 w-full z-50 transition-all duration-300',
+        isScrolled && 'backdrop-blur-md shadow-lg'
       )}
     >
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>

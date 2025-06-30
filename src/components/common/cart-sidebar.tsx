@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -19,8 +19,29 @@ interface CartSidebarProps {
   onClose: () => void;
 }
 
+// Helper to humanize translation keys
+function humanizeKey(key: string): string {
+  if (!key) return '';
+  const last = key.split('.').pop() || key;
+  return last
+    .replace(/([A-Z])/g, ' $1')
+    .replace(/([0-9]+)/g, ' $1')
+    .replace(/([a-z])([A-Z])/g, '$1 $2')
+    .replace(/([A-Z]+)([A-Z][a-z])/g, '$1 $2')
+    .replace(/([a-zA-Z])([0-9])/g, '$1 $2')
+    .replace(/([0-9])([a-zA-Z])/g, '$1 $2')
+    .replace(/_/g, ' ')
+    .replace(/-/g, ' ')
+    .replace(/\s+/g, ' ')
+    .replace(/^./, s => s.toUpperCase())
+    .trim();
+}
+
 // Memoized cart item component to prevent unnecessary re-renders
-const CartItemComponent = React.memo<{ item: CartItem }>(({ item }) => {
+const CartItemComponent = React.memo<{
+  item: CartItem;
+  t: (key: string) => string;
+}>(({ item, t }) => {
   const { updateQuantity, removeFromCart } = useCartStore();
 
   const handleQuantityChange = useCallback(
@@ -43,6 +64,11 @@ const CartItemComponent = React.memo<{ item: CartItem }>(({ item }) => {
     [item.price, item.quantity]
   );
 
+  // Translation fallback for item name
+  const itemName = t(item.nameKey);
+  const itemNameDisplay =
+    itemName === item.nameKey ? humanizeKey(item.nameKey) : itemName;
+
   return (
     <motion.div
       initial={{ opacity: 0, x: 20 }}
@@ -52,13 +78,13 @@ const CartItemComponent = React.memo<{ item: CartItem }>(({ item }) => {
     >
       <img
         src={item.image}
-        alt={item.nameKey}
+        alt={itemNameDisplay}
         className='w-16 h-16 object-cover rounded-lg'
       />
 
       <div className='flex-1'>
         <h4 className='font-semibold text-gray-900 dark:text-white text-sm mb-1'>
-          {item.nameKey}
+          {itemNameDisplay}
         </h4>
         <p className='text-xs text-gray-600 dark:text-gray-400 mb-2'>
           ${item.price.toFixed(2)} each
@@ -118,6 +144,7 @@ export const CartSidebar: React.FC<CartSidebarProps> = ({
   const clearCart = useCartStore(state => state.clearCart);
   const { total, itemCount } = useCartTotals();
   const { addOrder } = useOrdersStore();
+  const [orderPlaced, setOrderPlaced] = useState(false);
 
   // Memoize calculated values to prevent unnecessary recalculations
   const deliveryFee = 3.99;
@@ -134,6 +161,7 @@ export const CartSidebar: React.FC<CartSidebarProps> = ({
 
   const handleClearCart = useCallback(() => {
     clearCart();
+    setOrderPlaced(false);
   }, [clearCart]);
 
   const handleCheckout = useCallback(() => {
@@ -165,12 +193,20 @@ export const CartSidebar: React.FC<CartSidebarProps> = ({
     // Clear cart
     clearCart();
 
+    // Mark order as placed
+    setOrderPlaced(true);
+
     // Close sidebar
     onClose();
 
     // Navigate to order details
     navigate(`/orders/${newOrder.id}`);
   }, [items, total, addOrder, clearCart, onClose, navigate]);
+
+  // Reset orderPlaced when sidebar is closed
+  React.useEffect(() => {
+    if (!isOpen) setOrderPlaced(false);
+  }, [isOpen]);
 
   // Empty cart content memoized
   const emptyCartContent = useMemo(
@@ -201,8 +237,10 @@ export const CartSidebar: React.FC<CartSidebarProps> = ({
           <SheetHeader className='space-y-0'>
             <div className='flex items-center justify-between'>
               <SheetTitle className='text-xl font-bold'>
-                {t('cart.yourCart')}
-                {itemCount > 0 && (
+                {orderPlaced
+                  ? t('order', 'Your Order')
+                  : t('cart.yourCart', 'Your Cart')}
+                {itemCount > 0 && !orderPlaced && (
                   <Badge className='ml-2 bg-orange-500 text-white text-xs px-2 py-1'>
                     {itemCount}{' '}
                     {itemCount === 1 ? t('cart.item') : t('cart.items')}
@@ -222,7 +260,7 @@ export const CartSidebar: React.FC<CartSidebarProps> = ({
               <div className='space-y-3 pr-2'>
                 <AnimatePresence>
                   {items.map(item => (
-                    <CartItemComponent key={item.id} item={item} />
+                    <CartItemComponent key={item.id} item={item} t={t} />
                   ))}
                 </AnimatePresence>
               </div>
