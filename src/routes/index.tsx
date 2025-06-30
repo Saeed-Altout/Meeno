@@ -5,11 +5,11 @@ import LoadingPage from '@/pages/loading/loading-page';
 import NotFoundPage from '@/pages/not-found/not-found-page';
 import HomePage from '@/pages/home/home-page';
 import MenuPage from '@/pages/menu/menu-page';
-import ProductPage from '@/pages/product/product-page';
 import DemoPage from '@/pages/demo/demo-page';
 import HomeLayout from '@/layouts/home-layout';
 import OrdersPage from '@/pages/orders/orders-page';
 import OrderDetailPage from '@/pages/orders/order-detail-page';
+import MenuItemPage from '@/pages/menu-item/menu-item-page';
 
 /**
  * Application route configuration
@@ -48,15 +48,7 @@ const routes: RouteObject[] = [
         path: 'menu/:id',
         element: (
           <Suspense fallback={<LoadingPage />}>
-            <ProductPage />
-          </Suspense>
-        ),
-      },
-      {
-        path: 'product/:id',
-        element: (
-          <Suspense fallback={<LoadingPage />}>
-            <ProductPage />
+            <MenuItemPage />
           </Suspense>
         ),
       },

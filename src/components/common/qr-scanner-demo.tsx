@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Camera, X, CheckCircle, Smartphone, QrCode } from 'lucide-react';
-import { Button } from '../ui/button';
+import { Camera, CheckCircle, Smartphone, QrCode } from 'lucide-react';
 import { Dialog, DialogContent } from '../ui/dialog';
 
 interface QRScannerDemoProps {
@@ -73,18 +72,8 @@ export const QRScannerDemo: React.FC<QRScannerDemoProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className='sm:max-w-md w-full max-w-sm mx-4 p-0 bg-black/90 border-0 text-white'>
+      <DialogContent className='sm:max-w-md w-full max-w-xs p-0 bg-black/90 border-0 text-white'>
         <div className='relative aspect-square w-full bg-black min-h-[300px] sm:min-h-[400px]'>
-          {/* Close Button */}
-          <Button
-            variant='ghost'
-            size='sm'
-            onClick={handleClose}
-            className='absolute top-4 right-4 z-50 text-white hover:bg-white/20'
-          >
-            <X className='h-5 w-5' />
-          </Button>
-
           {/* Scanner Header */}
           <div className='absolute top-4 left-4 z-40 text-white'>
             <div className='flex items-center gap-2'>

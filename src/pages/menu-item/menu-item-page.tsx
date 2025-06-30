@@ -46,7 +46,7 @@ const getAllItems = (): MenuItem[] => {
   return Object.values(extendedMenuData).flat();
 };
 
-const ProductPage: React.FC = () => {
+const MenuItemPage: React.FC = () => {
   const { id } = useParams<ProductPageParams>();
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -387,7 +387,7 @@ const ProductPage: React.FC = () => {
               {relatedItems.map(relatedItem => (
                 <Card
                   key={relatedItem.id}
-                  className='cursor-pointer hover:shadow-lg transition-shadow overflow-hidden'
+                  className='cursor-pointer hover:shadow-lg transition-shadow overflow-hidden pt-0'
                   onClick={() => navigate(`/menu/${relatedItem.id}`)}
                 >
                   <div className='relative'>
@@ -453,6 +453,6 @@ const ProductPage: React.FC = () => {
   );
 };
 
-ProductPage.displayName = 'ProductPage';
+MenuItemPage.displayName = 'MenuItemPage';
 
-export default ProductPage;
+export default MenuItemPage;
