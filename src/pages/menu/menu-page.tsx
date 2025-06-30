@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Menu } from '@/components/sections/Menu';
+import { Menu } from '@/components/sections/menu';
 
 export default function MenuPage() {
   const navigate = useNavigate();

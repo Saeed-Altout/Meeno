@@ -1,5 +1,13 @@
 import { useEffect, useState, useCallback } from 'react';
 
+type ActiveSection =
+  | 'home'
+  | 'steps'
+  | 'menu'
+  | 'favorites'
+  | 'about'
+  | 'contact';
+
 /**
  * Hook to track scroll position and direction
  * @returns Object containing scroll position and direction information
@@ -7,6 +15,7 @@ import { useEffect, useState, useCallback } from 'react';
 export const useScroll = () => {
   const [scrollY, setScrollY] = useState(0);
   const [direction, setDirection] = useState<'up' | 'down' | null>(null);
+  const [activeSection, setActiveSection] = useState<ActiveSection>('home');
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -40,6 +49,8 @@ export const useScroll = () => {
     scrollY,
     direction,
     isScrolled,
+    activeSection,
+    setActiveSection,
   };
 };
 
