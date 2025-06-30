@@ -6,7 +6,6 @@ import {
   Heart,
   Star,
   Plus,
-  ArrowRight,
   Pizza,
   Apple,
   Cookie,
@@ -45,14 +44,10 @@ import {
 
 export const Menu: React.FC = () => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
   const { getItemQuantity } = useCartStore();
   const { addToFavorites, removeFromFavorites, isFavorite } =
     useFavoritesStore();
-
-  // Debug data availability
-  console.log('Extended menu data keys:', Object.keys(extendedMenuData));
-  console.log('Pizza items count:', extendedMenuData.pizza?.length || 0);
+  const navigate = useNavigate();
 
   const [activeCategory, setActiveCategory] = useState<string>('pizza');
   const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
@@ -180,22 +175,17 @@ export const Menu: React.FC = () => {
     setIsLoading(true);
 
     try {
-      // Skip loading delay for debugging
-      // if (isInitialLoad) {
-      //   await simulateLoadingDelay(800);
-      //   setIsInitialLoad(false);
-      // }
+      // Simulate loading delay for initial load
+      if (isInitialLoad) {
+        await simulateLoadingDelay(800);
+        setIsInitialLoad(false);
+      }
 
       const { items, hasMore: moreAvailable } = getItemsPage(
         activeCategory,
         0,
         8
       );
-
-      console.log(
-        `Loading category: ${activeCategory}, found ${items.length} items`
-      );
-      console.log('Items:', items.slice(0, 2)); // Log first 2 items
 
       setDisplayedItems(items);
       setHasMore(moreAvailable);
@@ -234,7 +224,7 @@ export const Menu: React.FC = () => {
   };
 
   const handleCardClick = (item: MenuItem) => {
-    navigate(`/product/${item.id}`);
+    navigate(`/menu/${item.id}`);
   };
 
   const renderStars = (rating: number = 4) => {
@@ -295,13 +285,6 @@ export const Menu: React.FC = () => {
                 )}
               </motion.p>
             </div>
-            <Button
-              variant='ghost'
-              className='text-orange-500 hover:text-orange-600 font-medium hover:bg-orange-50 dark:hover:bg-orange-950/20 group'
-            >
-              {t('menu.viewAll', 'View All')}
-              <ArrowRight className='h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform' />
-            </Button>
           </div>
 
           {/* Category Carousel */}

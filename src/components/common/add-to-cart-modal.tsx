@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { Plus, Minus, ShoppingCart, X } from 'lucide-react';
+import { Plus, Minus, ShoppingCart } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
 import { Label } from '../ui/label';
@@ -13,6 +13,26 @@ interface AddToCartModalProps {
   item: MenuItem | null;
   isOpen: boolean;
   onClose: () => void;
+}
+
+// Helper to humanize translation keys
+function humanizeKey(key: string): string {
+  if (!key) return '';
+  // Try to extract the last part after the last dot
+  const last = key.split('.').pop() || key;
+  // Remove camelCase and numbers, replace with spaces, capitalize
+  return last
+    .replace(/([A-Z])/g, ' $1')
+    .replace(/([0-9]+)/g, ' $1')
+    .replace(/([a-z])([A-Z])/g, '$1 $2')
+    .replace(/([A-Z]+)([A-Z][a-z])/g, '$1 $2')
+    .replace(/([a-zA-Z])([0-9])/g, '$1 $2')
+    .replace(/([0-9])([a-zA-Z])/g, '$1 $2')
+    .replace(/_/g, ' ')
+    .replace(/-/g, ' ')
+    .replace(/\s+/g, ' ')
+    .replace(/^./, s => s.toUpperCase())
+    .trim();
 }
 
 export const AddToCartModal: React.FC<AddToCartModalProps> = ({
@@ -33,16 +53,10 @@ export const AddToCartModal: React.FC<AddToCartModalProps> = ({
 
   const handleAddToCart = () => {
     if (!item) return;
-
-    // Add to cart with quantity
     addToCart(item, quantity);
-
-    // Add notes if provided
     if (notes.trim()) {
       useCartStore.getState().addNote(item.id, notes.trim());
     }
-
-    // Reset form and close
     setQuantity(1);
     setNotes('');
     onClose();
@@ -58,20 +72,22 @@ export const AddToCartModal: React.FC<AddToCartModalProps> = ({
 
   const totalPrice = item.price * quantity;
 
+  // Try translation, fallback to humanized key
+  const itemName = t(item.nameKey);
+  const itemNameDisplay =
+    itemName === item.nameKey ? humanizeKey(item.nameKey) : itemName;
+  const itemDesc = t(item.descriptionKey);
+  const itemDescDisplay =
+    itemDesc === item.descriptionKey
+      ? humanizeKey(item.descriptionKey)
+      : itemDesc;
+
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className='sm:max-w-md'>
         <DialogHeader>
           <DialogTitle className='flex items-center justify-between'>
             <span>{t('cart.addToCart', 'Add to Cart')}</span>
-            <Button
-              variant='ghost'
-              size='sm'
-              onClick={handleClose}
-              className='h-6 w-6 p-0'
-            >
-              <X className='h-4 w-4' />
-            </Button>
           </DialogTitle>
         </DialogHeader>
 
@@ -80,15 +96,15 @@ export const AddToCartModal: React.FC<AddToCartModalProps> = ({
           <div className='flex gap-4'>
             <img
               src={item.image}
-              alt={item.nameKey}
+              alt={itemNameDisplay}
               className='w-20 h-20 object-cover rounded-lg'
             />
             <div className='flex-1'>
               <h3 className='font-semibold text-lg text-gray-900 dark:text-white'>
-                {item.nameKey}
+                {itemNameDisplay}
               </h3>
               <p className='text-sm text-gray-600 dark:text-gray-400 mt-1'>
-                {item.descriptionKey}
+                {itemDescDisplay}
               </p>
               <p className='text-lg font-bold text-amber-600 mt-2'>
                 ${item.price.toFixed(2)}

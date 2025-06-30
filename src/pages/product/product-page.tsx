@@ -20,7 +20,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { useCartStore } from '@/stores/cart-store';
 import { useFavoritesStore } from '@/stores/favorites-store';
-import { getItemById, getAllItems, type MenuItem } from '@/data';
+import { extendedMenuData, type MenuItem } from '@/data';
 import { DEFAULT_MESSAGES } from '@/constants/messages';
 
 interface ProductPageParams extends Record<string, string | undefined> {
@@ -31,7 +31,20 @@ const DEFAULT_RATING = 4.5;
 const DEFAULT_REVIEWS_COUNT = 24;
 const PREP_TIME = '15-20 min';
 const SERVING_SIZE = '1-2 people';
-const RELATED_ITEMS_LIMIT = 4;
+const RELATED_ITEMS_LIMIT = 8;
+
+// Helper functions for extended menu data
+const getItemById = (id: string): MenuItem | undefined => {
+  for (const category of Object.values(extendedMenuData)) {
+    const item = category.find(item => item.id === id);
+    if (item) return item;
+  }
+  return undefined;
+};
+
+const getAllItems = (): MenuItem[] => {
+  return Object.values(extendedMenuData).flat();
+};
 
 const ProductPage: React.FC = () => {
   const { id } = useParams<ProductPageParams>();
@@ -45,7 +58,6 @@ const ProductPage: React.FC = () => {
 
   // Get the item from real data
   const item: MenuItem | undefined = getItemById(id!);
-  const allMenuItems = getAllItems();
 
   const handleGoBack = (): void => {
     navigate(-1);
@@ -112,9 +124,19 @@ const ProductPage: React.FC = () => {
     ));
   };
 
-  const relatedItems = allMenuItems
+  // Get more diverse related items from the same category and other categories
+  const currentCategoryItems = getAllItems()
     .filter(i => i.id !== item.id && i.category === item.category)
-    .slice(0, RELATED_ITEMS_LIMIT);
+    .slice(0, 4);
+
+  const otherCategoryItems = getAllItems()
+    .filter(i => i.id !== item.id && i.category !== item.category)
+    .slice(0, 4);
+
+  const relatedItems = [...currentCategoryItems, ...otherCategoryItems].slice(
+    0,
+    RELATED_ITEMS_LIMIT
+  );
 
   return (
     <div className='min-h-screen bg-gray-50 dark:bg-gray-900'>
@@ -353,28 +375,58 @@ const ProductPage: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
           >
-            <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-6'>
-              You Might Also Like
-            </h2>
+            <div className='text-center mb-8'>
+              <h2 className='text-3xl font-bold bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent mb-2'>
+                You Might Also Like
+              </h2>
+              <p className='text-gray-600 dark:text-gray-400'>
+                Discover more delicious items from our menu
+              </p>
+            </div>
             <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6'>
               {relatedItems.map(relatedItem => (
                 <Card
                   key={relatedItem.id}
                   className='cursor-pointer hover:shadow-lg transition-shadow overflow-hidden'
-                  onClick={() => navigate(`/product/${relatedItem.id}`)}
+                  onClick={() => navigate(`/menu/${relatedItem.id}`)}
                 >
-                  <img
-                    src={relatedItem.image}
-                    alt={relatedItem.nameKey}
-                    className='w-full h-40 object-cover'
-                  />
+                  <div className='relative'>
+                    <img
+                      src={relatedItem.image}
+                      alt={relatedItem.nameKey}
+                      className='w-full h-48 object-cover'
+                    />
+                    {relatedItem.featured && (
+                      <Badge className='absolute top-2 left-2 bg-gradient-to-r from-orange-500 to-red-500 text-white text-xs'>
+                        Featured
+                      </Badge>
+                    )}
+                  </div>
                   <div className='p-4'>
                     <h3 className='font-semibold text-gray-900 dark:text-white mb-2 line-clamp-1'>
-                      {t(relatedItem.nameKey)}
+                      {t(relatedItem.nameKey, `Item ${relatedItem.id}`)}
                     </h3>
                     <p className='text-sm text-gray-600 dark:text-gray-400 mb-3 line-clamp-2'>
-                      {t(relatedItem.descriptionKey)}
+                      {t(relatedItem.descriptionKey, 'Delicious menu item')}
                     </p>
+
+                    {/* Rating */}
+                    <div className='flex items-center gap-1 mb-3'>
+                      {Array.from({ length: 5 }, (_, i) => (
+                        <Star
+                          key={i}
+                          className={`h-3 w-3 ${
+                            i < Math.floor(relatedItem.rating || 4.5)
+                              ? 'text-yellow-400 fill-yellow-400'
+                              : 'text-gray-300'
+                          }`}
+                        />
+                      ))}
+                      <span className='text-xs text-gray-500 ml-1'>
+                        ({(relatedItem.rating || 4.5).toFixed(1)})
+                      </span>
+                    </div>
+
                     <div className='flex items-center justify-between'>
                       <span className='font-bold text-orange-600 text-lg'>
                         ${relatedItem.price.toFixed(2)}

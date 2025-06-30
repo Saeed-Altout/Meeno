@@ -43,6 +43,14 @@ const routes: RouteObject[] = [
         ),
       },
       {
+        path: 'menu/:id',
+        element: (
+          <Suspense fallback={<LoadingPage />}>
+            <ProductPage />
+          </Suspense>
+        ),
+      },
+      {
         path: 'product/:id',
         element: (
           <Suspense fallback={<LoadingPage />}>
