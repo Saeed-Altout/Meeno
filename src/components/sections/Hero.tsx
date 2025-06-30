@@ -2,7 +2,6 @@ import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import {
-  ArrowRight,
   QrCode,
   Sparkles,
   Users,
@@ -13,10 +12,6 @@ import {
 import { Button } from '@/components/ui/button';
 
 import { UI_CONSTANTS } from '@/constants/ui';
-
-interface HeroProps {
-  onScrollToMenu: () => void;
-}
 
 interface HeroStat {
   number: string;
@@ -50,7 +45,7 @@ const ANIMATION_DURATIONS = {
   VERY_SLOW: 3,
 } as const;
 
-const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
+const Hero = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
@@ -149,21 +144,8 @@ const Hero: React.FC<HeroProps> = ({ onScrollToMenu }) => {
         >
           <Button
             size='lg'
-            onClick={onScrollToMenu}
-            className='group bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white text-lg px-8 py-4 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 border-0'
-            style={{ minHeight: UI_CONSTANTS.BUTTON_MIN_HEIGHT }}
-          >
-            <span className='flex items-center gap-2'>
-              {t('hero.cta')}
-              <ArrowRight className='w-5 h-5 group-hover:translate-x-1 transition-transform' />
-            </span>
-          </Button>
-
-          <Button
-            size='lg'
-            variant='outline'
             onClick={handleDemoClick}
-            className='group border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 hover:border-amber-400 dark:hover:border-amber-500 text-lg px-8 py-4 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm'
+            className='group bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white text-lg px-8 py-4 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 border-0'
             style={{ minHeight: UI_CONSTANTS.BUTTON_MIN_HEIGHT }}
           >
             <span className='flex items-center gap-2'>
