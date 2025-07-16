@@ -11,7 +11,6 @@ import {
   Cookie,
   Coffee,
   Sandwich,
-  Beef,
   IceCream,
   Cake,
   Fish,
@@ -87,12 +86,7 @@ export const Menu: React.FC = () => {
       icon: Salad,
       color: 'from-emerald-400 to-green-500',
     },
-    {
-      id: 'hotdog',
-      nameKey: 'menu.categories.hotdog',
-      icon: Beef,
-      color: 'from-red-500 to-pink-500',
-    },
+
     {
       id: 'burger',
       nameKey: 'menu.categories.burger',
