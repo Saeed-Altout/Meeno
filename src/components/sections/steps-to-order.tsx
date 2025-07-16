@@ -204,37 +204,6 @@ export const StepsToOrder: React.FC = () => {
             );
           })}
         </motion.div>
-
-        {/* Call to Action */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 1, duration: 0.6 }}
-          className='text-center mt-16'
-        >
-          <div className='bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg border border-gray-100 dark:border-gray-700 max-w-2xl mx-auto'>
-            <motion.div
-              animate={{
-                rotate: [0, 5, -5, 0],
-              }}
-              transition={{
-                duration: 4,
-                repeat: Infinity,
-                ease: 'easeInOut',
-              }}
-              className='text-4xl mb-4'
-            >
-              🍽️
-            </motion.div>
-            <h3 className='text-2xl font-bold text-gray-900 dark:text-white mb-3'>
-              {t('stepsToOrder.cta.title')}
-            </h3>
-            <p className='text-gray-600 dark:text-gray-300'>
-              {t('stepsToOrder.cta.description')}
-            </p>
-          </div>
-        </motion.div>
       </div>
     </section>
   );
