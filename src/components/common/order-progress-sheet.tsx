@@ -11,6 +11,7 @@ import {
   Timer,
   ChefHat,
   ArrowRight,
+  X,
 } from 'lucide-react';
 import {
   Sheet,
@@ -114,7 +115,7 @@ export const OrderProgressSheet: React.FC<OrderProgressSheetProps> = ({
       <SheetTrigger asChild>{children}</SheetTrigger>
       <SheetContent className='w-full sm:max-w-md p-0 flex flex-col h-full'>
         {/* Header */}
-        <div className='border-b border-gray-100 dark:border-gray-700 p-6 pb-4 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-950/20 dark:to-orange-950/20'>
+        <div className='border-b border-gray-100 dark:border-gray-700 p-6 pb-4'>
           <SheetHeader className='space-y-0'>
             <div className='flex items-center justify-between'>
               <SheetTitle className='text-xl font-bold flex items-center gap-3 text-gray-900 dark:text-white'>
@@ -135,6 +136,14 @@ export const OrderProgressSheet: React.FC<OrderProgressSheetProps> = ({
                   </Badge>
                 )}
               </SheetTitle>
+              <Button
+                variant='ghost'
+                size='sm'
+                onClick={() => setIsOpen(false)}
+                className='h-8 w-8 p-0 hover:bg-gray-100 dark:hover:bg-gray-800'
+              >
+                <X className='h-4 w-4' />
+              </Button>
             </div>
           </SheetHeader>
         </div>
