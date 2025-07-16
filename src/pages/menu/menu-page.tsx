@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useEffect } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Menu } from '@/components/sections/menu';
+import { Menu } from '@/components/common/menu';
 
 // Simple JWT token validation
 const validateTableToken = (token: string): boolean => {

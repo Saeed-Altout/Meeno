@@ -32,7 +32,7 @@ import {
 } from '../ui/carousel';
 import { useOrderStore } from '../../stores/order-store';
 import { useFavoritesStore } from '../../stores/favorites-store';
-import { AddToOrderModal } from '../common/add-to-order-modal';
+import { AddToOrderModal } from './add-to-order-modal';
 
 import type { MenuItem } from '../../data';
 import {
