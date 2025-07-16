@@ -2,23 +2,23 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { MenuItem } from '../data';
 
-export interface CartItem extends MenuItem {
+export interface OrderItem extends MenuItem {
   quantity: number;
   notes?: string;
 }
 
-interface CartState {
-  items: CartItem[];
-  addToCart: (item: MenuItem, quantity?: number) => void;
-  removeFromCart: (itemId: string) => void;
+interface OrderState {
+  items: OrderItem[];
+  addToOrder: (item: MenuItem, quantity?: number) => void;
+  removeFromOrder: (itemId: string) => void;
   updateQuantity: (itemId: string, quantity: number) => void;
-  clearCart: () => void;
+  clearOrder: () => void;
   getItemQuantity: (itemId: string) => number;
   addNote: (itemId: string, notes: string) => void;
 }
 
 // Helper function to calculate totals
-const calculateTotals = (items: CartItem[]) => {
+const calculateTotals = (items: OrderItem[]) => {
   const total = items.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0
@@ -27,21 +27,21 @@ const calculateTotals = (items: CartItem[]) => {
   return { total, itemCount };
 };
 
-export const useCartStore = create<CartState>()(
+export const useOrderStore = create<OrderState>()(
   persist(
     (set, get) => ({
       items: [],
 
-      addToCart: (item: MenuItem, quantity = 1) => {
+      addToOrder: (item: MenuItem, quantity = 1) => {
         const { items } = get();
-        const existingItem = items.find(cartItem => cartItem.id === item.id);
+        const existingItem = items.find(orderItem => orderItem.id === item.id);
 
-        let updatedItems: CartItem[];
+        let updatedItems: OrderItem[];
         if (existingItem) {
-          updatedItems = items.map(cartItem =>
-            cartItem.id === item.id
-              ? { ...cartItem, quantity: cartItem.quantity + quantity }
-              : cartItem
+          updatedItems = items.map(orderItem =>
+            orderItem.id === item.id
+              ? { ...orderItem, quantity: orderItem.quantity + quantity }
+              : orderItem
           );
         } else {
           updatedItems = [...items, { ...item, quantity }];
@@ -50,7 +50,7 @@ export const useCartStore = create<CartState>()(
         set({ items: updatedItems });
       },
 
-      removeFromCart: (itemId: string) => {
+      removeFromOrder: (itemId: string) => {
         const { items } = get();
         const updatedItems = items.filter(item => item.id !== itemId);
         set({ items: updatedItems });
@@ -58,7 +58,7 @@ export const useCartStore = create<CartState>()(
 
       updateQuantity: (itemId: string, quantity: number) => {
         if (quantity <= 0) {
-          get().removeFromCart(itemId);
+          get().removeFromOrder(itemId);
           return;
         }
 
@@ -71,7 +71,7 @@ export const useCartStore = create<CartState>()(
 
       getItemQuantity: (itemId: string) => {
         const { items } = get();
-        const item = items.find(cartItem => cartItem.id === itemId);
+        const item = items.find(orderItem => orderItem.id === itemId);
         return item ? item.quantity : 0;
       },
 
@@ -83,18 +83,18 @@ export const useCartStore = create<CartState>()(
         set({ items: updatedItems });
       },
 
-      clearCart: () => {
+      clearOrder: () => {
         set({ items: [] });
       },
     }),
     {
-      name: 'cart-storage',
+      name: 'order-storage',
     }
   )
 );
 
 // Custom hook to get calculated totals
-export const useCartTotals = () => {
-  const items = useCartStore(state => state.items);
+export const useOrderTotals = () => {
+  const items = useOrderStore(state => state.items);
   return calculateTotals(items);
 };

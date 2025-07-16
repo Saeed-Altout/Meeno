@@ -25,7 +25,7 @@ import { ModeToggle } from '@/components/common/mode-toggle';
 import { CartSidebar } from '@/components/common/cart-sidebar';
 import { Logo } from '@/components/common/logo';
 
-import { useCartTotals } from '@/stores/cart-store';
+import { useOrderTotals } from '@/stores/order-store';
 import { useScroll } from '@/hooks/use-scroll';
 import { cn } from '@/lib/utils';
 
@@ -33,7 +33,7 @@ function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
   const { t, i18n } = useTranslation();
-  const { itemCount } = useCartTotals();
+  const { itemCount } = useOrderTotals();
   const { isScrolled } = useScroll();
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [isCartOpen, setIsCartOpen] = useState<boolean>(false);

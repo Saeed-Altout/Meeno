@@ -1,15 +1,15 @@
-import { useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { motion } from 'framer-motion';
 import { Plus, Minus, ShoppingCart } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
 import { Label } from '../ui/label';
 import { Textarea } from '../ui/textarea';
-import { useCartStore } from '../../stores/cart-store';
+import { useOrderStore } from '../../stores/order-store';
 import type { MenuItem } from '../../data';
 
-interface AddToCartModalProps {
+interface AddToOrderModalProps {
   item: MenuItem | null;
   isOpen: boolean;
   onClose: () => void;
@@ -35,13 +35,13 @@ function humanizeKey(key: string): string {
     .trim();
 }
 
-export const AddToCartModal: React.FC<AddToCartModalProps> = ({
+export const AddToOrderModal: React.FC<AddToOrderModalProps> = ({
   item,
   isOpen,
   onClose,
 }) => {
   const { t } = useTranslation();
-  const { addToCart, getItemQuantity } = useCartStore();
+  const { addToOrder, getItemQuantity } = useOrderStore();
   const [quantity, setQuantity] = useState(1);
   const [notes, setNotes] = useState('');
 
@@ -51,11 +51,11 @@ export const AddToCartModal: React.FC<AddToCartModalProps> = ({
     setQuantity(prev => Math.max(1, prev + delta));
   };
 
-  const handleAddToCart = () => {
+  const handleAddToOrder = () => {
     if (!item) return;
-    addToCart(item, quantity);
+    addToOrder(item, quantity);
     if (notes.trim()) {
-      useCartStore.getState().addNote(item.id, notes.trim());
+      useOrderStore.getState().addNote(item.id, notes.trim());
     }
     setQuantity(1);
     setNotes('');
@@ -87,7 +87,7 @@ export const AddToCartModal: React.FC<AddToCartModalProps> = ({
       <DialogContent className='sm:max-w-md'>
         <DialogHeader>
           <DialogTitle className='flex items-center justify-between'>
-            <span>{t('cart.addToCart', 'Add to Cart')}</span>
+            <span>{t('order.addToOrder', 'Add to Order')}</span>
           </DialogTitle>
         </DialogHeader>
 
@@ -115,7 +115,7 @@ export const AddToCartModal: React.FC<AddToCartModalProps> = ({
           {/* Quantity Selector */}
           <div className='space-y-2'>
             <Label className='text-sm font-medium'>
-              {t('cart.quantity', 'Quantity')}
+              {t('order.quantity', 'Quantity')}
             </Label>
             <div className='flex items-center gap-3'>
               <Button
@@ -144,13 +144,13 @@ export const AddToCartModal: React.FC<AddToCartModalProps> = ({
           {/* Notes */}
           <div className='space-y-2'>
             <Label htmlFor='notes' className='text-sm font-medium'>
-              {t('cart.notes', 'Special Notes')} (
-              {t('cart.optional', 'Optional')})
+              {t('order.notes', 'Special Notes')} (
+              {t('order.optional', 'Optional')})
             </Label>
             <Textarea
               id='notes'
               placeholder={t(
-                'cart.notesPlaceholder',
+                'order.notesPlaceholder',
                 'Add any special instructions...'
               )}
               value={notes}
@@ -161,11 +161,11 @@ export const AddToCartModal: React.FC<AddToCartModalProps> = ({
               maxLength={200}
             />
             <p className='text-xs text-gray-500 dark:text-gray-400'>
-              {notes.length}/200 {t('cart.characters', 'characters')}
+              {notes.length}/200 {t('order.characters', 'characters')}
             </p>
           </div>
 
-          {/* Current Cart Info */}
+          {/* Current Order Info */}
           {currentQuantity > 0 && (
             <motion.div
               initial={{ opacity: 0, y: 10 }}
@@ -173,8 +173,8 @@ export const AddToCartModal: React.FC<AddToCartModalProps> = ({
               className='bg-amber-50 dark:bg-amber-950/20 rounded-lg p-3'
             >
               <p className='text-sm text-amber-700 dark:text-amber-400'>
-                {t('cart.currentlyInCart', 'Currently in cart')}:{' '}
-                {currentQuantity} {t('cart.items', 'items')}
+                {t('order.currentlyInOrder', 'Currently in order')}:{' '}
+                {currentQuantity} {t('order.items', 'items')}
               </p>
             </motion.div>
           )}
@@ -182,7 +182,7 @@ export const AddToCartModal: React.FC<AddToCartModalProps> = ({
           {/* Total Price */}
           <div className='flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 rounded-lg'>
             <span className='font-medium text-gray-700 dark:text-gray-300'>
-              {t('cart.total', 'Total')}:
+              {t('order.total', 'Total')}:
             </span>
             <span className='text-xl font-bold text-gray-900 dark:text-white'>
               ${totalPrice.toFixed(2)}
@@ -195,11 +195,11 @@ export const AddToCartModal: React.FC<AddToCartModalProps> = ({
               {t('common.cancel', 'Cancel')}
             </Button>
             <Button
-              onClick={handleAddToCart}
+              onClick={handleAddToOrder}
               className='flex-1 bg-amber-600 hover:bg-amber-700'
             >
               <ShoppingCart className='h-4 w-4 mr-2' />
-              {t('cart.addToCart', 'Add to Cart')}
+              {t('order.addToOrder', 'Add to Order')}
             </Button>
           </div>
         </div>

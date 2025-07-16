@@ -7,12 +7,11 @@ import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '../ui/sheet';
 import {
-  useCartStore,
-  useCartTotals,
-  type CartItem,
-} from '../../stores/cart-store';
+  useOrderStore,
+  useOrderTotals,
+  type OrderItem,
+} from '../../stores/order-store';
 import { useOrdersStore } from '../../stores/orders-store';
-import type { OrderItem } from '../../stores/orders-store';
 
 interface CartSidebarProps {
   isOpen: boolean;
@@ -39,25 +38,25 @@ function humanizeKey(key: string): string {
 
 // Memoized cart item component to prevent unnecessary re-renders
 const CartItemComponent = React.memo<{
-  item: CartItem;
+  item: OrderItem;
   t: (key: string) => string;
 }>(({ item, t }) => {
-  const { updateQuantity, removeFromCart } = useCartStore();
+  const { updateQuantity, removeFromOrder } = useOrderStore();
 
   const handleQuantityChange = useCallback(
     (newQuantity: number) => {
       if (newQuantity <= 0) {
-        removeFromCart(item.id);
+        removeFromOrder(item.id);
       } else {
         updateQuantity(item.id, newQuantity);
       }
     },
-    [item.id, updateQuantity, removeFromCart]
+    [item.id, updateQuantity, removeFromOrder]
   );
 
   const handleRemove = useCallback(() => {
-    removeFromCart(item.id);
-  }, [item.id, removeFromCart]);
+    removeFromOrder(item.id);
+  }, [item.id, removeFromOrder]);
 
   const itemTotal = useMemo(
     () => (item.price * item.quantity).toFixed(2),
@@ -140,9 +139,9 @@ export const CartSidebar: React.FC<CartSidebarProps> = ({
 }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const items = useCartStore(state => state.items);
-  const clearCart = useCartStore(state => state.clearCart);
-  const { total, itemCount } = useCartTotals();
+  const items = useOrderStore(state => state.items);
+  const clearOrder = useOrderStore(state => state.clearOrder);
+  const { total, itemCount } = useOrderTotals();
   const { addOrder } = useOrdersStore();
   const [orderPlaced, setOrderPlaced] = useState(false);
 
@@ -159,10 +158,10 @@ export const CartSidebar: React.FC<CartSidebarProps> = ({
     };
   }, [total, taxRate, deliveryFee]);
 
-  const handleClearCart = useCallback(() => {
-    clearCart();
+  const handleClearOrder = useCallback(() => {
+    clearOrder();
     setOrderPlaced(false);
-  }, [clearCart]);
+  }, [clearOrder]);
 
   const handleCheckout = useCallback(() => {
     if (items.length === 0) return;
@@ -190,8 +189,8 @@ export const CartSidebar: React.FC<CartSidebarProps> = ({
       },
     });
 
-    // Clear cart
-    clearCart();
+    // Clear order
+    clearOrder();
 
     // Mark order as placed
     setOrderPlaced(true);
@@ -201,7 +200,7 @@ export const CartSidebar: React.FC<CartSidebarProps> = ({
 
     // Navigate to order details
     navigate(`/orders/${newOrder.id}`);
-  }, [items, total, addOrder, clearCart, onClose, navigate]);
+  }, [items, total, addOrder, clearOrder, onClose, navigate]);
 
   // Reset orderPlaced when sidebar is closed
   React.useEffect(() => {
@@ -216,13 +215,13 @@ export const CartSidebar: React.FC<CartSidebarProps> = ({
           <ShoppingBag className='h-8 w-8 text-gray-400' />
         </div>
         <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-2'>
-          {t('cart.emptyCart.title')}
+          {t('order.emptyOrder.title')}
         </h3>
         <p className='text-gray-600 dark:text-gray-400 mb-4'>
-          {t('cart.emptyCart.description')}
+          {t('order.emptyOrder.description')}
         </p>
         <Button onClick={onClose} variant='outline' className='px-6 py-2'>
-          {t('cart.emptyCart.action')}
+          {t('order.emptyOrder.action')}
         </Button>
       </div>
     ),
@@ -239,11 +238,11 @@ export const CartSidebar: React.FC<CartSidebarProps> = ({
               <SheetTitle className='text-xl font-bold'>
                 {orderPlaced
                   ? t('order', 'Your Order')
-                  : t('cart.yourCart', 'Your Cart')}
+                  : t('order.yourOrder', 'Your Order')}
                 {itemCount > 0 && !orderPlaced && (
                   <Badge className='ml-2 bg-orange-500 text-white text-xs px-2 py-1'>
                     {itemCount}{' '}
-                    {itemCount === 1 ? t('cart.item') : t('cart.items')}
+                    {itemCount === 1 ? t('order.item') : t('order.items')}
                   </Badge>
                 )}
               </SheetTitle>
@@ -304,14 +303,14 @@ export const CartSidebar: React.FC<CartSidebarProps> = ({
                 className='w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-semibold py-3 h-12 text-base shadow-lg hover:shadow-xl transition-all duration-200'
                 size='lg'
               >
-                {t('cart.proceedToCheckout')}
+                {t('order.proceedToCheckout')}
               </Button>
               <Button
                 variant='outline'
-                onClick={handleClearCart}
+                onClick={handleClearOrder}
                 className='w-full text-red-500 border-red-200 hover:bg-red-50 dark:hover:bg-red-950/20 py-2 h-10'
               >
-                Clear Cart
+                Clear Order
               </Button>
             </div>
           </div>

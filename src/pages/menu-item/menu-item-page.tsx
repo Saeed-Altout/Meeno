@@ -18,7 +18,7 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
-import { useCartStore } from '@/stores/cart-store';
+import { useOrderStore } from '@/stores/order-store';
 import { useFavoritesStore } from '@/stores/favorites-store';
 import { extendedMenuData, type MenuItem } from '@/data';
 import { DEFAULT_MESSAGES } from '@/constants/messages';
@@ -52,7 +52,7 @@ const MenuItemPage: React.FC = () => {
   const { t } = useTranslation();
   const [quantity, setQuantity] = useState<number>(1);
   const [notes, setNotes] = useState<string>('');
-  const { addToCart, getItemQuantity, addNote } = useCartStore();
+  const { addToOrder, getItemQuantity, addNote } = useOrderStore();
   const { addToFavorites, removeFromFavorites, isFavorite } =
     useFavoritesStore();
 
@@ -86,8 +86,8 @@ const MenuItemPage: React.FC = () => {
   const currentCartQuantity = getItemQuantity(item.id);
   const isInFavorites = isFavorite(item.id);
 
-  const handleAddToCart = (): void => {
-    addToCart(item, quantity);
+  const handleAddToOrder = (): void => {
+    addToOrder(item, quantity);
     if (notes.trim()) {
       addNote(item.id, notes.trim());
     }
@@ -357,7 +357,7 @@ const MenuItemPage: React.FC = () => {
               </div>
 
               <Button
-                onClick={handleAddToCart}
+                onClick={handleAddToOrder}
                 className='w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-semibold py-4 text-lg'
                 size='lg'
               >
@@ -435,7 +435,7 @@ const MenuItemPage: React.FC = () => {
                         size='sm'
                         onClick={e => {
                           e.stopPropagation();
-                          addToCart(relatedItem, 1);
+                          addToOrder(relatedItem, 1);
                         }}
                         className='bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white rounded-full p-0 h-8 w-8'
                       >

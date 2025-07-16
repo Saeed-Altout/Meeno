@@ -34,7 +34,7 @@
     "menu": "القائمة",
     "products": "جميع المنتجات",
     "orders": "طلباتي",
-    "cart": "السلة",
+    "order": "الطلب",
     "favorites": "المفضلة",
     "about": "من نحن",
     "contact": "تواصل معنا",
@@ -123,29 +123,29 @@
     "recentOrders": "الطلبات الأخيرة",
     "yourFavorites": "مفضلاتك"
   },
-  "cart": {
-    "addToCart": "أضف إلى السلة",
+  "order": {
+    "addToOrder": "أضف إلى الطلب",
     "quantity": "الكمية",
     "notes": "ملاحظات خاصة",
     "optional": "اختياري",
     "notesPlaceholder": "أضف أي تعليمات خاصة...",
     "characters": "حرف",
-    "currentlyInCart": "حالياً في السلة",
+    "currentlyInOrder": "حالياً في الطلب",
     "items": "عناصر",
     "total": "المجموع",
-    "yourCart": "سلة التسوق",
+    "yourOrder": "طلبك",
     "item": "عنصر",
     "subtotal": "المجموع الفرعي",
     "delivery": "التوصيل",
     "tax": "الضريبة",
     "proceedToCheckout": "متابعة الطلب",
-    "clearCart": "إفراغ السلة",
-    "emptyCart": {
-      "title": "سلة التسوق فارغة",
+    "clearOrder": "إفراغ الطلب",
+    "emptyOrder": {
+      "title": "طلبك فارغ",
       "description": "أضف بعض الأصناف اللذيذة للبدء!",
       "action": "متابعة التسوق"
     },
-    "inCart": "في السلة"
+    "inOrder": "في الطلب"
   },
   "products": {
     "title": "جميع المنتجات",
@@ -154,7 +154,7 @@
     "adjustFilters": "حاول تعديل البحث أو معايير التصفية",
     "clearFilters": "مسح جميع المرشحات",
     "viewDetails": "عرض التفاصيل",
-    "addToCart": "أضف إلى السلة",
+    "addToOrder": "أضف إلى الطلب",
     "quickAdd": "إضافة سريعة",
     "productsFound": "منتج تم العثور عليه",
     "filters": {

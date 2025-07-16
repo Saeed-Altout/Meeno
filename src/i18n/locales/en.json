@@ -34,7 +34,7 @@
     "menu": "Menu",
     "products": "All Products",
     "orders": "My Orders",
-    "cart": "Cart",
+    "order": "Order",
     "favorites": "Favorites",
     "about": "About Us",
     "contact": "Contact",
@@ -105,7 +105,7 @@
       "description": "Browse through all our delicious products and discover your favorites"
     },
     "step3": {
-      "title": "Add to Cart",
+      "title": "Add to Order",
       "description": "Add any items to your order and include special notes before confirming"
     },
     "step4": {
@@ -123,29 +123,29 @@
     "recentOrders": "Recent Orders",
     "yourFavorites": "Your Favorites"
   },
-  "cart": {
-    "addToCart": "Add to Cart",
+  "order": {
+    "addToOrder": "Add to Order",
     "quantity": "Quantity",
     "notes": "Special Notes",
     "optional": "Optional",
     "notesPlaceholder": "Add any special instructions...",
     "characters": "characters",
-    "currentlyInCart": "Currently in cart",
+    "currentlyInOrder": "Currently in order",
     "items": "items",
     "total": "Total",
-    "yourCart": "Your Cart",
+    "yourOrder": "Your Order",
     "item": "item",
     "subtotal": "Subtotal",
     "delivery": "Delivery",
     "tax": "Tax",
     "proceedToCheckout": "Proceed to Checkout",
-    "clearCart": "Clear Cart",
-    "emptyCart": {
-      "title": "Your cart is empty",
+    "clearOrder": "Clear Order",
+    "emptyOrder": {
+      "title": "Your order is empty",
       "description": "Add some delicious items to get started!",
       "action": "Continue Shopping"
     },
-    "inCart": "in cart"
+    "inOrder": "in order"
   },
   "products": {
     "title": "All Products",
@@ -154,7 +154,7 @@
     "adjustFilters": "Try adjusting your search or filter criteria",
     "clearFilters": "Clear all filters",
     "viewDetails": "View Details",
-    "addToCart": "Add to Cart",
+    "addToOrder": "Add to Order",
     "quickAdd": "Quick Add",
     "productsFound": "products found",
     "filters": {
@@ -316,7 +316,7 @@
       },
       "step3": {
         "title": "Browse & Order",
-        "description": "Explore the menu, add items to cart, and complete the order"
+        "description": "Explore the menu, add items to order, and complete the order"
       }
     },
     "actions": {
@@ -336,7 +336,7 @@
       },
       "completeOrdering": {
         "title": "Complete Ordering",
-        "description": "Full cart management and checkout process"
+        "description": "Full order management and checkout process"
       }
     }
   },

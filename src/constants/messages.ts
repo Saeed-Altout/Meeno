@@ -9,7 +9,7 @@ export const DEFAULT_MESSAGES = {
   },
 
   SUCCESS: {
-    ITEM_ADDED: 'Item added to cart',
+    ITEM_ADDED: 'Item added to order',
     ORDER_PLACED: 'Order placed successfully',
     SETTINGS_SAVED: 'Settings saved',
   },
@@ -32,7 +32,7 @@ export const DEFAULT_MESSAGES = {
     OPEN: 'Open',
     TOGGLE: 'Toggle',
     MENU: 'Menu',
-    CART: 'Shopping cart',
+    ORDER: 'Order',
     FAVORITE: 'Add to favorites',
     UNFAVORITE: 'Remove from favorites',
   },

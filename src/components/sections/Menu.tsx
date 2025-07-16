@@ -30,9 +30,9 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '../ui/carousel';
-import { useCartStore } from '../../stores/cart-store';
+import { useOrderStore } from '../../stores/order-store';
 import { useFavoritesStore } from '../../stores/favorites-store';
-import { AddToCartModal } from '../common/add-to-cart-modal';
+import { AddToOrderModal } from '../common/add-to-order-modal';
 
 import type { MenuItem } from '../../data';
 import {
@@ -43,7 +43,7 @@ import {
 
 export const Menu: React.FC = () => {
   const { t } = useTranslation();
-  const { getItemQuantity } = useCartStore();
+  const { getItemQuantity } = useOrderStore();
   const { addToFavorites, removeFromFavorites, isFavorite } =
     useFavoritesStore();
   const navigate = useNavigate();
@@ -212,7 +212,7 @@ export const Menu: React.FC = () => {
     }
   };
 
-  const handleAddToCart = (item: MenuItem) => {
+  const handleAddToOrder = (item: MenuItem) => {
     setSelectedItem(item);
     setIsModalOpen(true);
   };
@@ -411,7 +411,7 @@ export const Menu: React.FC = () => {
 
                         {cartQuantity > 0 && (
                           <Badge className='absolute bottom-3 left-3 bg-green-500 text-white border-0 shadow-lg font-semibold'>
-                            {cartQuantity} {t('cart.inCart', 'in cart')}
+                            {cartQuantity} {t('order.inOrder', 'in order')}
                           </Badge>
                         )}
                       </div>
@@ -450,7 +450,7 @@ export const Menu: React.FC = () => {
                             size='sm'
                             onClick={e => {
                               e.stopPropagation();
-                              handleAddToCart(item);
+                              handleAddToOrder(item);
                             }}
                             className='bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white rounded-full p-0 h-10 w-10 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110'
                           >
@@ -552,8 +552,8 @@ export const Menu: React.FC = () => {
         </div>
       </section>
 
-      {/* Add to Cart Modal */}
-      <AddToCartModal
+      {/* Add to Order Modal */}
+      <AddToOrderModal
         item={selectedItem}
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}

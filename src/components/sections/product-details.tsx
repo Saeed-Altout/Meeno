@@ -15,7 +15,7 @@ import { Button } from '../ui/button';
 import { Card } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
-import { useCartStore } from '../../stores/cart-store';
+import { useOrderStore } from '../../stores/order-store';
 import { useFavoritesStore } from '../../stores/favorites-store';
 import type { MenuItem } from '../../data';
 
@@ -36,7 +36,7 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({
 }) => {
   const { t } = useTranslation();
   const [quantity, setQuantity] = useState(1);
-  const { addToCart, getItemQuantity } = useCartStore();
+  const { addToOrder, getItemQuantity } = useOrderStore();
   const { addToFavorites, removeFromFavorites, isFavorite } =
     useFavoritesStore();
 
@@ -45,8 +45,8 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({
   const currentCartQuantity = getItemQuantity(item.id);
   const isInFavorites = isFavorite(item.id);
 
-  const handleAddToCart = () => {
-    addToCart(item, quantity);
+  const handleAddToOrder = () => {
+    addToOrder(item, quantity);
     setQuantity(1);
   };
 
@@ -245,7 +245,7 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({
               </div>
 
               <Button
-                onClick={handleAddToCart}
+                onClick={handleAddToOrder}
                 className='w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-semibold py-3'
                 size='lg'
               >

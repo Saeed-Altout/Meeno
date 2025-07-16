@@ -6,14 +6,14 @@ import { RotateCcw, Star, Plus, Clock } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Card } from '../ui/card';
 import { Badge } from '../ui/badge';
-import { useCartStore } from '../../stores/cart-store';
+import { useOrderStore } from '../../stores/order-store';
 import { useFavoritesStore } from '../../stores/favorites-store';
 import type { MenuItem } from '../../data';
 
 export const OrderAgain: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { addToCart } = useCartStore();
+  const { addToOrder } = useOrderStore();
   const { favorites } = useFavoritesStore();
 
   // Mock recent orders - in a real app this would come from a recent orders store/API
@@ -48,8 +48,8 @@ export const OrderAgain: React.FC = () => {
     },
   ];
 
-  const handleAddToCart = (item: MenuItem) => {
-    addToCart(item, 1);
+  const handleAddToOrder = (item: MenuItem) => {
+    addToOrder(item, 1);
   };
 
   const handleCardClick = (item: MenuItem) => {
@@ -100,7 +100,7 @@ export const OrderAgain: React.FC = () => {
           size='sm'
           onClick={e => {
             e.stopPropagation();
-            handleAddToCart(item);
+            handleAddToOrder(item);
           }}
           className='bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white rounded-full p-0 h-8 w-8 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110'
         >
