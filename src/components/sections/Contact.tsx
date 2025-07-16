@@ -245,7 +245,7 @@ export const Contact: React.FC = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            <Card className='p-8 border border-gray-200 dark:border-gray-700 bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 dark:from-amber-950/20 dark:via-orange-950/20 dark:to-yellow-950/20 rounded-3xl'>
+            <Card className='p-8 border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 rounded-3xl'>
               <div className='flex items-center space-x-4 mb-8'>
                 <div className='w-14 h-14 bg-gradient-to-r from-amber-500 to-orange-500 rounded-2xl flex items-center justify-center shadow-lg'>
                   <Clock className='h-7 w-7 text-white' />
@@ -268,7 +268,7 @@ export const Contact: React.FC = () => {
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.1 * index }}
-                    className='flex justify-between items-center p-4 bg-white/80 dark:bg-gray-800/80 rounded-2xl border border-gray-100 dark:border-gray-600 transition-colors duration-300'
+                    className='flex justify-between items-center p-4 bg-gray-50 dark:bg-gray-700 rounded-2xl border border-gray-200 dark:border-gray-600 transition-colors duration-300'
                   >
                     <span className='text-gray-700 dark:text-gray-300 font-semibold'>
                       {schedule.day.split(':')[0]}
