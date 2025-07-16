@@ -260,9 +260,9 @@ export const Menu: React.FC = () => {
         id='menu'
         className='py-16 bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-800'
       >
-        <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+        <div className='max-w-7xl mx-auto px-0 sm:px-4 lg:px-8'>
           {/* Header */}
-          <div className='flex items-center justify-between mb-8'>
+          <div className='flex items-center justify-between mb-8 px-4 sm:px-0'>
             <div>
               <motion.h2
                 className='text-3xl md:text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent mb-2'
@@ -288,7 +288,7 @@ export const Menu: React.FC = () => {
           </div>
 
           {/* Category Carousel */}
-          <div className='mb-12 px-4'>
+          <div className='mb-12 px-4 sm:px-0'>
             <Carousel opts={{ align: 'start', loop: false }} className='w-full'>
               <CarouselContent className='-ml-2 md:-ml-4 py-2'>
                 {categories.map((category, index) => {
@@ -358,7 +358,7 @@ export const Menu: React.FC = () => {
           <AnimatePresence mode='wait'>
             <motion.div
               key={activeCategory}
-              className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6'
+              className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 px-4 sm:px-0'
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
