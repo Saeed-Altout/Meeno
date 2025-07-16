@@ -42,16 +42,38 @@ export default function DemoPage() {
     generateQRCode();
   }, [tableNumber]);
 
+  // Regenerate QR code when theme changes
+  useEffect(() => {
+    const observer = new MutationObserver(mutations => {
+      mutations.forEach(mutation => {
+        if (
+          mutation.type === 'attributes' &&
+          mutation.attributeName === 'class'
+        ) {
+          generateQRCode();
+        }
+      });
+    });
+
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class'],
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
   const generateQRCode = async () => {
     setIsGenerating(true);
     try {
       const menuUrl = getMenuUrl();
+      const isDarkMode = document.documentElement.classList.contains('dark');
       const dataUrl = await QRCode.toDataURL(menuUrl, {
         width: 256,
         margin: 2,
         color: {
-          dark: '#1f2937', // Dark gray
-          light: '#ffffff', // White
+          dark: isDarkMode ? '#ffffff' : '#1f2937', // White in dark mode, dark gray in light mode
+          light: isDarkMode ? '#1f2937' : '#ffffff', // Dark gray in dark mode, white in light mode
         },
         errorCorrectionLevel: 'M',
       });
@@ -144,38 +166,50 @@ export default function DemoPage() {
           transition={{ delay: 0.2 }}
           className='max-w-2xl mx-auto'
         >
-          <Card className='h-full'>
-            <CardHeader>
+          <Card className='h-full shadow-lg dark:shadow-2xl border-0 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm'>
+            <CardHeader className='pb-4'>
               <div className='flex items-center justify-between'>
-                <CardTitle className='flex items-center gap-2'>
-                  <QrCode className='w-5 h-5 text-blue-500' />
-                  {t('demo.qrGenerator.titleWithTable')} {tableNumber}
+                <CardTitle className='flex items-center gap-3 text-xl font-bold'>
+                  <div className='w-10 h-10 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center'>
+                    <QrCode className='w-5 h-5 text-white' />
+                  </div>
+                  <div>
+                    <div className='text-lg font-semibold'>
+                      {t('demo.qrGenerator.titleWithTable')} {tableNumber}
+                    </div>
+                    <div className='text-sm text-gray-600 dark:text-gray-400 font-normal'>
+                      {t('demo.qrGenerator.subtitle')}
+                    </div>
+                  </div>
                 </CardTitle>
                 <Button
                   variant='ghost'
                   size='sm'
                   onClick={() => setIsAdminMode(!isAdminMode)}
-                  className='text-xs px-2 py-1 h-auto'
+                  className='text-xs px-3 py-2 h-auto bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-all duration-200'
                 >
-                  {isAdminMode
-                    ? t('demo.qrGenerator.userMode')
-                    : t('demo.qrGenerator.adminMode')}
+                  <div className='flex items-center gap-2'>
+                    <div className='w-2 h-2 bg-green-500 rounded-full'></div>
+                    {isAdminMode
+                      ? t('demo.qrGenerator.userMode')
+                      : t('demo.qrGenerator.adminMode')}
+                  </div>
                 </Button>
               </div>
-              <p className='text-sm text-gray-600 dark:text-gray-400 mt-2'>
+              <p className='text-sm text-gray-600 dark:text-gray-400 mt-3 pl-13'>
                 {isAdminMode
                   ? t('demo.qrGenerator.adminDescription')
                   : t('demo.qrGenerator.userDescription')}
               </p>
               {isAdminMode && (
-                <div className='flex items-center gap-3 pt-3 border-t border-gray-200 dark:border-gray-700 mt-3'>
+                <div className='flex items-center gap-3 pt-4 border-t border-gray-200 dark:border-gray-700 mt-4'>
                   <label className='text-sm font-medium text-gray-700 dark:text-gray-300'>
                     {t('demo.qrGenerator.adminSetTable')}
                   </label>
                   <select
                     value={tableNumber}
                     onChange={e => setTableNumber(Number(e.target.value))}
-                    className='px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500'
+                    className='px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200'
                   >
                     {Array.from({ length: 20 }, (_, i) => i + 1).map(num => (
                       <option key={num} value={num}>
@@ -186,22 +220,30 @@ export default function DemoPage() {
                 </div>
               )}
             </CardHeader>
-            <CardContent className='space-y-4 sm:space-y-6'>
+            <CardContent className='space-y-6'>
               {/* QR Code Display */}
               <div className='flex justify-center'>
-                <div className='bg-white p-3 sm:p-4 rounded-lg shadow-inner border-2 border-dashed border-gray-200'>
+                <div className='bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800 p-6 rounded-2xl shadow-inner border border-gray-200 dark:border-gray-600'>
                   {isGenerating ? (
                     <div className='w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 flex items-center justify-center'>
-                      <RefreshCw className='w-6 h-6 sm:w-8 sm:h-8 animate-spin text-gray-400' />
+                      <div className='flex flex-col items-center gap-3'>
+                        <RefreshCw className='w-8 h-8 animate-spin text-blue-500' />
+                        <p className='text-sm text-gray-500 dark:text-gray-400'>
+                          Generating...
+                        </p>
+                      </div>
                     </div>
                   ) : qrCodeDataUrl ? (
-                    <img
-                      src={qrCodeDataUrl}
-                      alt='Menu QR Code'
-                      className='w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64'
-                    />
+                    <div className='relative'>
+                      <img
+                        src={qrCodeDataUrl}
+                        alt='Menu QR Code'
+                        className='w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 rounded-lg shadow-lg'
+                      />
+                      <div className='absolute inset-0 bg-gradient-to-t from-transparent to-transparent hover:from-black/5 dark:hover:from-white/5 rounded-lg transition-all duration-300'></div>
+                    </div>
                   ) : (
-                    <div className='w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 flex items-center justify-center text-gray-400 text-sm text-center'>
+                    <div className='w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 flex items-center justify-center text-muted-foreground text-sm text-center'>
                       {t('demo.qrGenerator.failedGenerate')}
                     </div>
                   )}
@@ -209,22 +251,22 @@ export default function DemoPage() {
               </div>
 
               {/* QR Code Info */}
-              <div className='text-center space-y-2 px-2'>
+              <div className='text-center space-y-3'>
                 {isAdminMode && (
                   <Badge
                     variant='outline'
-                    className='text-xs break-all max-w-full'
+                    className='text-xs break-all max-w-full bg-blue-50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300'
                   >
                     {getMenuUrl()}
                   </Badge>
                 )}
-                <div className='space-y-1'>
-                  <p className='text-sm text-gray-600 dark:text-gray-400'>
+                <div className='space-y-2'>
+                  <p className='text-sm text-gray-600 dark:text-gray-400 font-medium'>
                     {t('demo.qrGenerator.scanText')}
                   </p>
                   {isAdminMode && (
-                    <p className='text-xs text-blue-600 dark:text-blue-400 font-medium'>
-                      {t('demo.qrGenerator.secureAccess')} {tableNumber}
+                    <p className='text-xs text-blue-600 dark:text-blue-400 font-medium bg-blue-50 dark:bg-blue-950/20 px-3 py-1 rounded-full inline-block'>
+                      🔒 {t('demo.qrGenerator.secureAccess')} {tableNumber}
                     </p>
                   )}
                 </div>
@@ -237,7 +279,7 @@ export default function DemoPage() {
                   variant='outline'
                   size='lg'
                   disabled={isGenerating}
-                  className='flex-1 sm:flex-none min-h-[44px] px-6 py-3 text-base font-medium border-2 border-blue-200 text-blue-700 hover:bg-blue-50 dark:border-blue-800 dark:text-blue-400 dark:hover:bg-blue-950/20 hover:scale-105 transition-all duration-200'
+                  className='flex-1 sm:flex-none min-h-[48px] px-6 py-3 text-base font-medium border-2 border-blue-200 text-blue-700 hover:bg-blue-50 dark:border-blue-800 dark:text-blue-400 dark:hover:bg-blue-950/20 hover:scale-105 transition-all duration-200 shadow-sm'
                 >
                   <RefreshCw
                     className={`w-5 h-5 mr-2 ${
@@ -251,7 +293,7 @@ export default function DemoPage() {
                   variant='outline'
                   size='lg'
                   disabled={!qrCodeDataUrl}
-                  className='flex-1 sm:flex-none min-h-[44px] px-6 py-3 text-base font-medium border-2 hover:scale-105 transition-all duration-200'
+                  className='flex-1 sm:flex-none min-h-[48px] px-6 py-3 text-base font-medium border-2 border-gray-200 text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700 hover:scale-105 transition-all duration-200 shadow-sm'
                 >
                   <Download className='w-5 h-5 mr-2' />
                   {t('demo.qrGenerator.download')}
@@ -261,7 +303,7 @@ export default function DemoPage() {
                   variant='outline'
                   size='lg'
                   disabled={!qrCodeDataUrl}
-                  className='flex-1 sm:flex-none min-h-[44px] px-6 py-3 text-base font-medium border-2 hover:scale-105 transition-all duration-200'
+                  className='flex-1 sm:flex-none min-h-[48px] px-6 py-3 text-base font-medium border-2 border-gray-200 text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700 hover:scale-105 transition-all duration-200 shadow-sm'
                 >
                   <Printer className='w-5 h-5 mr-2' />
                   {t('demo.qrGenerator.print')}
@@ -269,11 +311,11 @@ export default function DemoPage() {
               </div>
 
               {/* Simulate QR Scan Button */}
-              <div className='pt-4 sm:pt-6 border-t border-gray-200 dark:border-gray-700'>
+              <div className='pt-6 border-t border-gray-200 dark:border-gray-700'>
                 <Button
                   onClick={() => setShowScanner(true)}
                   variant='outline'
-                  className='w-full min-h-[48px] border-2 border-amber-200 text-amber-700 hover:bg-amber-50 dark:border-amber-800 dark:text-amber-400 dark:hover:bg-amber-950/20 hover:scale-105 transition-all duration-200'
+                  className='w-full min-h-[52px] border-2 border-amber-200 text-amber-700 hover:bg-amber-50 dark:border-amber-800 dark:text-amber-400 dark:hover:bg-amber-950/20 hover:scale-105 transition-all duration-200 shadow-sm bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-950/10 dark:to-orange-950/10'
                   size='lg'
                 >
                   <Smartphone className='w-5 h-5 mr-3' />

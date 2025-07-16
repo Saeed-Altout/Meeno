@@ -295,6 +295,7 @@
     "qrGenerator": {
       "title": "QR Code Generator",
       "titleWithTable": "QR Code Generator - Table",
+      "subtitle": "Generate QR codes for customer tables to access the digital menu",
       "generate": "Generate QR Code",
       "regenerate": "Regenerate QR Code",
       "download": "Download",

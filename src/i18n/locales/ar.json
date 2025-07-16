@@ -295,6 +295,7 @@
     "qrGenerator": {
       "title": "مولد رمز QR",
       "titleWithTable": "مولد رمز QR - الطاولة",
+      "subtitle": "إنشاء رموز QR لطاولات العملاء للوصول إلى القائمة الرقمية",
       "generate": "إنشاء رمز QR",
       "regenerate": "إعادة إنشاء رمز QR",
       "download": "تحميل",
