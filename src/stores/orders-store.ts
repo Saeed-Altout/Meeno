@@ -13,7 +13,7 @@ export interface Order {
   items: OrderItem[];
   total: number;
   status: 'pending' | 'preparing' | 'ready' | 'delivered' | 'cancelled';
-  orderDate: Date;
+  orderDate: Date | string;
   estimatedTime?: number; // in minutes
   notes?: string;
   customerInfo?: {
@@ -203,10 +203,17 @@ export const useOrdersStore = create<OrdersState>()(
       getRecentOrders: (limit = 10) => {
         const { orders } = get();
         return orders
-          .sort(
-            (a, b) =>
-              new Date(b.orderDate).getTime() - new Date(a.orderDate).getTime()
-          )
+          .sort((a, b) => {
+            const dateA =
+              typeof a.orderDate === 'string'
+                ? new Date(a.orderDate)
+                : a.orderDate;
+            const dateB =
+              typeof b.orderDate === 'string'
+                ? new Date(b.orderDate)
+                : b.orderDate;
+            return dateB.getTime() - dateA.getTime();
+          })
           .slice(0, limit);
       },
     }),

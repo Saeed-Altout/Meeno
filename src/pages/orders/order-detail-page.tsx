@@ -95,7 +95,7 @@ export default function OrderDetailPage() {
     return t(`orders.status.${status}`);
   };
 
-  const formatDate = (date: Date) => {
+  const formatDate = (date: Date | string) => {
     return new Intl.DateTimeFormat('en-US', {
       weekday: 'long',
       year: 'numeric',
@@ -106,7 +106,7 @@ export default function OrderDetailPage() {
     }).format(new Date(date));
   };
 
-  const getTimeAgo = (date: Date) => {
+  const getTimeAgo = (date: Date | string) => {
     const now = new Date();
     const diffInMinutes = Math.floor(
       (now.getTime() - new Date(date).getTime()) / (1000 * 60)

@@ -38,7 +38,8 @@
     "favorites": "Favorites",
     "about": "About Us",
     "contact": "Contact",
-    "welcome": "Authentic Italian Cuisine"
+    "welcome": "Authentic Italian Cuisine",
+    "orderProgress": "Order Progress"
   },
   "navigation": {
     "home": "Home",
@@ -225,6 +226,16 @@
       "description": "You haven't placed any orders yet",
       "filtered": "Try adjusting your search or filter criteria",
       "action": "Browse Menu"
+    },
+    "progress": {
+      "title": "Order Progress",
+      "noActiveOrders": "No Active Orders",
+      "noActiveOrdersDesc": "You don't have any orders in progress right now.",
+      "viewAllOrders": "View All Orders",
+      "viewDetails": "View Details",
+      "items": "Items",
+      "moreItems": "more items",
+      "minRemaining": "min remaining"
     },
     "orderInfo": {
       "orderNumber": "Order",

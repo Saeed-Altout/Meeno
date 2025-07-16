@@ -38,7 +38,8 @@
     "favorites": "المفضلة",
     "about": "من نحن",
     "contact": "تواصل معنا",
-    "welcome": "المطبخ الإيطالي الأصيل"
+    "welcome": "المطبخ الإيطالي الأصيل",
+    "orderProgress": "تقدم الطلب"
   },
   "navigation": {
     "home": "الرئيسية",
@@ -225,6 +226,16 @@
       "description": "لم تقم بتقديم أي طلبات بعد",
       "filtered": "حاول تعديل البحث أو معايير التصفية",
       "action": "تصفح القائمة"
+    },
+    "progress": {
+      "title": "تقدم الطلب",
+      "noActiveOrders": "لا توجد طلبات نشطة",
+      "noActiveOrdersDesc": "ليس لديك أي طلبات قيد التنفيذ حالياً.",
+      "viewAllOrders": "عرض جميع الطلبات",
+      "viewDetails": "عرض التفاصيل",
+      "items": "العناصر",
+      "moreItems": "عناصر أخرى",
+      "minRemaining": "دقيقة متبقية"
     },
     "orderInfo": {
       "orderNumber": "الطلب",
