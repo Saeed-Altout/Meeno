@@ -2,7 +2,7 @@ import React, { useCallback, useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Plus, Minus, ShoppingBag, Trash2 } from 'lucide-react';
+import { Plus, Minus, Utensils, Trash2 } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '../ui/sheet';
@@ -207,25 +207,22 @@ export const CartSidebar: React.FC<CartSidebarProps> = ({
     if (!isOpen) setOrderPlaced(false);
   }, [isOpen]);
 
-  // Empty cart content memoized
-  const emptyCartContent = useMemo(
+  // Empty order content memoized
+  const emptyOrderContent = useMemo(
     () => (
       <div className='flex flex-col items-center justify-center h-full text-center py-12'>
         <div className='w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mb-4'>
-          <ShoppingBag className='h-8 w-8 text-gray-400' />
+          <Utensils className='h-8 w-8 text-gray-400' />
         </div>
         <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-2'>
           {t('order.emptyOrder.title')}
         </h3>
-        <p className='text-gray-600 dark:text-gray-400 mb-4'>
+        <p className='text-gray-600 dark:text-gray-400'>
           {t('order.emptyOrder.description')}
         </p>
-        <Button onClick={onClose} variant='outline' className='px-6 py-2'>
-          {t('order.emptyOrder.action')}
-        </Button>
       </div>
     ),
-    [onClose]
+    [t]
   );
 
   return (
@@ -254,7 +251,7 @@ export const CartSidebar: React.FC<CartSidebarProps> = ({
         <div className='flex-1 overflow-hidden flex flex-col px-6'>
           <div className='flex-1 overflow-y-auto py-4 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 dark:scrollbar-thumb-gray-600 dark:scrollbar-track-gray-800'>
             {items.length === 0 ? (
-              emptyCartContent
+              emptyOrderContent
             ) : (
               <div className='space-y-3 pr-2'>
                 <AnimatePresence>

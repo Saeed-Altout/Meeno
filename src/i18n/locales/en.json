@@ -142,8 +142,7 @@
     "clearOrder": "Clear Order",
     "emptyOrder": {
       "title": "Your order is empty",
-      "description": "Add some delicious items to get started!",
-      "action": "Continue Shopping"
+      "description": "Add some delicious items to get started!"
     },
     "inOrder": "in order"
   },
