@@ -303,7 +303,7 @@ const MenuItemPage: React.FC = () => {
                   </span>
                   {currentCartQuantity > 0 && (
                     <div className='text-sm text-green-600 font-medium mt-1'>
-                      {currentCartQuantity} in cart
+                      {currentCartQuantity} {t('order.inOrder')}
                     </div>
                   )}
                 </div>
@@ -339,20 +339,20 @@ const MenuItemPage: React.FC = () => {
                   htmlFor='notes'
                   className='text-sm font-medium text-gray-700 dark:text-gray-300'
                 >
-                  {t('cart.notes')}{' '}
-                  <span className='text-gray-500'>({t('cart.optional')})</span>
+                  {t('order.notes')}{' '}
+                  <span className='text-gray-500'>({t('order.optional')})</span>
                 </Label>
                 <Textarea
                   id='notes'
-                  placeholder={t('cart.notesPlaceholder')}
+                  placeholder={t('order.notesPlaceholder')}
                   value={notes}
                   onChange={handleNotesChange}
-                  className='resize-none'
+                  className='resize-none dark:bg-input/30 bg-transparent'
                   rows={3}
                   maxLength={200}
                 />
                 <div className='text-xs text-gray-500 dark:text-gray-400 text-right'>
-                  {notes.length}/200 {t('cart.characters')}
+                  {notes.length}/200 {t('order.characters')}
                 </div>
               </div>
 
@@ -362,7 +362,8 @@ const MenuItemPage: React.FC = () => {
                 size='lg'
               >
                 <ShoppingCart className='h-5 w-5 mr-2' />
-                Add {quantity} to Cart - ${(item.price * quantity).toFixed(2)}
+                {t('order.addToOrder')} {quantity} - $
+                {(item.price * quantity).toFixed(2)}
               </Button>
             </div>
           </motion.div>
@@ -387,7 +388,11 @@ const MenuItemPage: React.FC = () => {
               {relatedItems.map(relatedItem => (
                 <Card
                   key={relatedItem.id}
-                  className='cursor-pointer hover:shadow-lg transition-shadow overflow-hidden pt-0'
+                  className={`cursor-pointer hover:shadow-lg transition-shadow overflow-hidden pt-0 ${
+                    relatedItem.featured
+                      ? 'ring-2 ring-orange-400 shadow-lg shadow-orange-500/25 bg-gradient-to-br from-orange-50 to-white dark:from-orange-950/30 dark:to-gray-800'
+                      : 'bg-white dark:bg-gray-800 hover:shadow-xl shadow-gray-500/10 dark:shadow-black/20'
+                  }`}
                   onClick={() => navigate(`/menu/${relatedItem.id}`)}
                 >
                   <div className='relative'>
