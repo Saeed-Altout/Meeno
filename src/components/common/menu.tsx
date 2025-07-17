@@ -29,6 +29,7 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
+  type CarouselApi,
 } from '../ui/carousel';
 import { useOrderStore } from '../../stores/order-store';
 import { useFavoritesStore } from '../../stores/favorites-store';
@@ -52,6 +53,11 @@ export const Menu: React.FC = () => {
   const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // Carousel API state
+  const [carouselApi, setCarouselApi] = useState<CarouselApi | null>(null);
+  const [currentSlide, setCurrentSlide] = useState<number>(0);
+  const [isCategoryChanging, setIsCategoryChanging] = useState<boolean>(false);
+
   // Infinite scroll state
   const [displayedItems, setDisplayedItems] = useState<MenuItem[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(0);
@@ -60,6 +66,20 @@ export const Menu: React.FC = () => {
   const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true);
 
   const observerRef = useRef<IntersectionObserver | null>(null);
+
+  // Carousel event handlers
+  useEffect(() => {
+    if (!carouselApi) return;
+
+    const onSelect = () => {
+      setCurrentSlide(carouselApi.selectedScrollSnap());
+    };
+
+    carouselApi.on('select', onSelect);
+    return () => {
+      carouselApi.off('select', onSelect);
+    };
+  }, [carouselApi]);
 
   const categories = [
     {
@@ -245,7 +265,26 @@ export const Menu: React.FC = () => {
   );
 
   const handleCategoryChange = (categoryId: string) => {
+    // Add haptic feedback for mobile devices
+    if ('vibrate' in navigator) {
+      navigator.vibrate(50);
+    }
+
+    setIsCategoryChanging(true);
     setActiveCategory(categoryId);
+
+    // Find the index of the selected category
+    const categoryIndex = categories.findIndex(cat => cat.id === categoryId);
+
+    // Scroll to the selected category with smooth animation
+    if (carouselApi && categoryIndex !== -1) {
+      carouselApi.scrollTo(categoryIndex);
+    }
+
+    // Reset the changing state after a short delay
+    setTimeout(() => {
+      setIsCategoryChanging(false);
+    }, 300);
   };
 
   return (
@@ -283,7 +322,18 @@ export const Menu: React.FC = () => {
 
           {/* Category Carousel */}
           <div className='mb-12 px-4 sm:px-0'>
-            <Carousel opts={{ align: 'start', loop: false }} className='w-full'>
+            <Carousel
+              opts={{
+                align: 'start',
+                loop: false,
+                duration: 20,
+                startIndex: 0,
+                skipSnaps: false,
+                inViewThreshold: 0.7,
+              }}
+              className='w-full'
+              setApi={setCarouselApi}
+            >
               <CarouselContent className='-ml-2 md:-ml-4 py-2'>
                 {categories.map((category, index) => {
                   const Icon = category.icon;
@@ -300,15 +350,31 @@ export const Menu: React.FC = () => {
                           onClick={() => handleCategoryChange(category.id)}
                           className={`relative flex flex-col items-center p-4 md:p-6 rounded-2xl min-w-[100px] md:min-w-[120px] transition-all duration-300 group ${
                             isActive
-                              ? `bg-gradient-to-br ${category.color} text-white shadow-xl shadow-orange-500/25`
+                              ? `bg-gradient-to-br ${category.color} text-white shadow-[0_5px_10px_rgba(0,0,0,0.1)] shadow-orange-500/45`
                               : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:shadow-lg border border-gray-100 dark:border-gray-700'
                           }`}
-                          whileHover={{ scale: isActive ? 1.08 : 1.05 }}
+                          whileHover={{ scale: isActive ? 1.05 : 1.02 }}
                           whileTap={{ scale: 0.95 }}
                           initial={{ opacity: 0, y: 20 }}
                           whileInView={{ opacity: 1, y: 0 }}
                           viewport={{ once: true }}
                           transition={{ delay: index * 0.05 }}
+                          animate={
+                            isActive
+                              ? {
+                                  scale: isCategoryChanging
+                                    ? [1, 1.1, 1]
+                                    : [1, 1.05, 1],
+                                  boxShadow: [
+                                    '0 5px 10px rgba(0,0,0,0.1)',
+                                    isCategoryChanging
+                                      ? '0 12px 35px rgba(249, 115, 22, 0.6)'
+                                      : '0 8px 25px rgba(249, 115, 22, 0.4)',
+                                    '0 5px 10px rgba(0,0,0,0.1)',
+                                  ],
+                                }
+                              : {}
+                          }
                         >
                           <div
                             className={`p-3 md:p-4 rounded-xl mb-3 transition-all duration-300 ${
@@ -346,6 +412,25 @@ export const Menu: React.FC = () => {
               <CarouselPrevious className='hidden md:flex -left-4 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border-gray-200 dark:border-gray-700 hover:bg-white dark:hover:bg-gray-800' />
               <CarouselNext className='hidden md:flex -right-4 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border-gray-200 dark:border-gray-700 hover:bg-white dark:hover:bg-gray-800' />
             </Carousel>
+
+            {/* Mobile Slide Indicator */}
+            <div className='flex justify-center mt-4 md:hidden'>
+              <div className='flex space-x-2'>
+                {categories.map((_, index) => (
+                  <motion.div
+                    key={index}
+                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                      index === currentSlide
+                        ? 'bg-orange-500 scale-125'
+                        : 'bg-gray-300 dark:bg-gray-600'
+                    }`}
+                    initial={{ scale: 0.8 }}
+                    animate={{ scale: index === currentSlide ? 1.2 : 0.8 }}
+                    transition={{ duration: 0.2 }}
+                  />
+                ))}
+              </div>
+            </div>
           </div>
 
           {/* Menu Items Grid */}
@@ -353,9 +438,17 @@ export const Menu: React.FC = () => {
             <motion.div
               key={activeCategory}
               className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 px-4 sm:px-0'
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
+              initial={{ opacity: 0, y: 20, scale: 0.95 }}
+              animate={{
+                opacity: 1,
+                y: 0,
+                scale: 1,
+                transition: {
+                  duration: 0.4,
+                  ease: 'easeOut',
+                },
+              }}
+              exit={{ opacity: 0, y: -20, scale: 0.95 }}
               transition={{ duration: 0.3 }}
             >
               {displayedItems.map((item, index) => {
